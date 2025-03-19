@@ -1,6 +1,5 @@
 package com.gestionatalento.gestiona_talento.Service.Usuario;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gestionatalento.gestiona_talento.Entities.Permiso;
 import com.gestionatalento.gestiona_talento.Entities.Role;
 import com.gestionatalento.gestiona_talento.Entities.Usuario;
+import com.gestionatalento.gestiona_talento.Jwt.ApplicationConfig;
 import com.gestionatalento.gestiona_talento.Repository.PermisoRepository;
 import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
@@ -17,33 +17,55 @@ import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
+    private final Jwt.ApplicationConfig applicationConfig;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private PermisoRepository permisoRepository; // Correcto
+    private PermisoRepository permisoRepository;
+
+    UsuarioServiceImpl(Jwt.ApplicationConfig applicationConfig) {
+        this.applicationConfig = applicationConfig;
+    }
 
     @Override
-    public Usuario save(Usuario usuario) {
-        //Si el usuario es Admin entonces
-        if(usuario.isAdmin()){
-            Role rolAdmin = roleRepository.findByName("ADMIN")
-            .orElseThrow(() -> new RuntimeException("El rol ADMIN no existe"));
+    public Usuario crearUsuario(Usuario usuario) {
+       if(usuario.isAdmin()){
 
-            // Obtenemos toda la lista de permisos
-            List<Permiso> todosPermisos = permisoRepository.findAll();
+            //DEJAMOS UNOS LOG
+            System.out.println("Creando usuario ADMIN...");
 
-            // Asignamos todos los permisos al rol ADMIN
-            rolAdmin.setPermissions(new HashSet<>(todosPermisos));;
+            //Buscamos que exista el rol de admin
+            Role roleAdmin = roleRepository.findByName("ADMIN").orElseThrow(() -> new RuntimeException("El rol ADMIN no existe"));
 
-             // Guardamos el rol actualizado en la base de datos
-             roleRepository.save(rolAdmin);
-        
-        }
+            //Asiganamos el rol ADMIN
+            if (!usuario.getRoles().contains(roleAdmin)) {
+                usuario.getRoles().add(roleAdmin);
+            }
 
-        return usuarioRepository.save(usuario);
-    } 
+            //Luego agregamos los permisos
+            List<Permiso> allPermisos = permisoRepository.findAll();
+
+            usuario.getPermisosAdicionales().addAll(allPermisos);
+
+       }else{
+            System.out.println("Creando usuario USER...");
+
+            //Buscamos si hay un rol usuario
+            Role rolUser = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("El rol ADMIN no existe"));
+
+            // Asignar rol USER
+            if (!usuario.getRoles().contains(rolUser)) {
+                usuario.getRoles().add(rolUser);
+            }
+       }
+
+       return usuarioRepository.save(usuario);
+    }
+    
+
 
     @Override
     public Usuario delete(Usuario usuario) {
@@ -74,7 +96,23 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("El usuario con nombre " + username + " no existe"));
     }
+
+
+
+    @Override
+    public Usuario asiganarPermisos(Usuario usuario, List<Long> permisoIds) {
+        //Primero buscamos si existe 
+        Optional<Usuario> userOptional = usuarioRepository.findById(usuario.getId());
+        if(!userOptional.isPresent()){
+            new T
+        }
+        
+        return null;
+    }
+
     
+    
+
 
    
 

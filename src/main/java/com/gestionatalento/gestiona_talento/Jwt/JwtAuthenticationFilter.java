@@ -17,68 +17,66 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
-@RequiredArgsConstructor
+@Component // Marca esta clase como un componente Spring que debe ser detectado y registrado automáticamente
+@RequiredArgsConstructor // Genera un constructor con todos los campos final como parámetros
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
-    private JwtService jwtService;
-    private UserDetailsService userDetailsService;
-
+    // Inyección de dependencias a través del constructor (@RequiredArgsConstructor)
+    private final JwtService jwtService; // Servicio para manejar operaciones JWT
+    private final UserDetailsService userDetailsService; // Servicio para cargar detalles del usuario
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        //Primero obtenemos el TOKEN del request
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
+            throws ServletException, IOException {
+        
+        // Obtenemos el token JWT del request
         final String token = getTokenFromRequest(request);
         final String username;
 
+        // Si no hay token, continuamos con la cadena de filtros sin autenticar
         if (token == null) {
-            filterChain.doFilter(request, response);//devolvemos a la cadena de filtros
+            filterChain.doFilter(request, response);
             return;
         }
 
-        //Si todo va bien yo debo de accerder al uusername del token que nos provee el servicio de jwt
-        username=jwtService.getUsernameFromToken(token); //aqui obtemos el dato puro y duro del token
+        // Extraemos el username del token
+        username = jwtService.getUsernameFromToken(token);
 
-        //Aca si el username que obtenemos del token no es nulo y no se encuenta en el security context holder lo buscamos en la base de datos
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        // Validamos que el username exista y que el usuario no esté ya autenticado
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Cargamos los detalles del usuario desde la base de datos
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            //debemos validar si el token es valido
-            if(jwtService.isTokenValid(token,userDetails )){
-                //si esto es valido debemos de actualizar el security context
+            // Verificamos que el token sea válido para este usuario
+            if (jwtService.isTokenValid(token, userDetails)) {
+                // Creamos un token de autenticación con los detalles del usuario y sus autoridades (roles y permisos)
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
+                        userDetails, // Principal (el usuario)
+                        null, // Credenciales (no necesarias después de la autenticación)
+                        userDetails.getAuthorities() // Autoridades (roles y permisos)
                 );
-                //Una vez que se crea el UsernamePasswordAuthenticationToken debemos de settear el details
+                
+                // Agregamos detalles de la solicitud al token de autenticación
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+                
+                // Establecemos la autenticación en el contexto de seguridad
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
-
-
             }
-
         }
-
+        
+        // Continuamos con la cadena de filtros
+        filterChain.doFilter(request, response);
     }
 
-    /*Este nos devuelve el token y el token no es mas que una cadena de caracteres*/
+    // Método para extraer el token JWT del encabezado de autorización
     private String getTokenFromRequest(HttpServletRequest request) {
-        //Primero obtemos el encabezado del request porque es ahi donde se encuentra el token
-        final String authHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
+        // Obtenemos el encabezado de autorización
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        //Este encabezado que vamos a extraer va a comenzar con la plabra Bearer es decir que authHeader comienza con Bearer
-        //Es por esto es que debemos omitir este encabezado
-        if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); //aqui extraemos el token puro y duro
-        }else{
-            return null;
+        // Si el encabezado existe y comienza con "Bearer ", extraemos el token
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7); // Quitamos "Bearer " para obtener solo el token
         }
-
-
+        return null; // Si no hay token o no tiene el formato correcto, retornamos null
     }
 }

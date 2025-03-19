@@ -3,6 +3,7 @@ package com.gestionatalento.gestiona_talento.Entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,14 +32,13 @@ public class Role {
     @Column(unique = true)
     private String name; // "ROLE_ADMIN" o "ROLE_USER"
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
     name = "role_permisos",
     joinColumns = @JoinColumn(name = "role_id"),
     inverseJoinColumns = @JoinColumn(name = "permisos_id")
     )
-    private Set<Permiso> permissions = new HashSet<>();
-
+    private Set<Permiso> permisos = new HashSet<>();
 
 
 }

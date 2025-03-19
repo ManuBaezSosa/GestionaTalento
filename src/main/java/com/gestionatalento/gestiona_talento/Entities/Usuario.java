@@ -53,15 +53,27 @@ public class Usuario implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+    name = "usuario_permisos",
+    joinColumns = @JoinColumn(name = "usuario_id"),
+    inverseJoinColumns = @JoinColumn(name = "permiso_id")
+    )
+    private Set<Permiso> permisosAdicionales = new HashSet<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        
+    
+        // Permisos de rol
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName())); // "ROLE_ADMIN" o "ROLE_USER"
-            role.getPermissions().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getName())));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPermisos().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getName())));
         }
-
+        
+        // Permisos adicionales específicos del usuario
+        permisosAdicionales.forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getName())));
+    
         return authorities;
     }
 

@@ -12,9 +12,10 @@ import com.gestionatalento.gestiona_talento.Entities.Usuario;
 public interface UsuarioService  {
     public List<Usuario> findAll(); 
     public Optional<Usuario> findById(Long id);
-    public Usuario save(Usuario usuario);
+    public Usuario crearUsuario(Usuario usuario);
     public Usuario delete(Usuario usuario);
     public Usuario findByUsername(String user);   
+    public Usuario asiganarPermisos(Usuario usuario, List<Long> permisoIds);
     
     //Este metodo nos devolvera una lista de usuario con sus roles y permisos
 
