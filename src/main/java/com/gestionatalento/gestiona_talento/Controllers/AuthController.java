@@ -1,5 +1,8 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
+import com.gestionatalento.gestiona_talento.Entities.Usuario;
+import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,42 +18,112 @@ import com.gestionatalento.gestiona_talento.Entities.AuthResponse;
 import com.gestionatalento.gestiona_talento.Entities.LoginRequest;
 import com.gestionatalento.gestiona_talento.Jwt.JwtService;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.util.Optional;
 
 @RestController // Indica que esta clase es un controlador REST
 @RequestMapping("/auth") // Define la ruta base para todas las solicitudes a este controlador
-@RequiredArgsConstructor // Genera constructor con todos los campos final
+@AllArgsConstructor
 public class AuthController {
-    
+
     // Inyección de dependencias
+    @Autowired
     private final AuthenticationManager authenticationManager; // Gestor de autenticación de Spring Security
+    @Autowired
     private final JwtService jwtService; // Servicio personalizado para manipular tokens JWT
-    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        // Buscamos el usuario en la base de datos
+        Optional<Usuario> usuarioBd = usuarioRepository.findByUsername(loginRequest.getUsername());
+
+        // Verificamos si el usuario existe
+        if (!usuarioBd.isPresent()) {
+            return ResponseEntity.status(401).body("Usuario no encontrado");
+        }
+
+        // Verificamos si el usuario está bloqueado
+        if (usuarioBd.get().isBlocked()) {
+            return ResponseEntity.status(403).body("La cuenta está bloqueada");
+        }
+
+        try {
+            // Intentamos autenticar el usuario con las credenciales proporcionadas
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+
+            // Si la autenticación es exitosa, reiniciamos los intentos fallidos
+            Usuario usuario = usuarioBd.get();
+            usuario.setIntentosFallidos(0);
+            usuarioRepository.save(usuario);
+
+            // Generamos el token
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            String token = jwtService.getToken(user);
+
+            return ResponseEntity.ok(new AuthResponse(token));
+
+        } catch (BadCredentialsException e) {
+            // Si las credenciales son incorrectas, incrementamos los intentos fallidos
+            Usuario usuario = usuarioBd.get();
+            
+            // Manejamos el caso donde intentosFallidos es null
+            Integer intentosActuales = usuario.getIntentosFallidos();
+            if (intentosActuales == null) {
+                intentosActuales = 0;
+            }
+            
+            // Incrementamos y guardamos
+            usuario.setIntentosFallidos(intentosActuales + 1);
+            
+            // Si los intentos fallidos llegan a 3, bloqueamos al usuario
+            if (usuario.getIntentosFallidos() >= 3) {
+                usuario.setEstado("BLOQUEADO");
+            }
+            
+            // Guardamos los cambios en la base de datos
+            usuarioRepository.save(usuario);
+            
+            return ResponseEntity.status(401).body("Credenciales inválidas");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error en la autenticación: " + e.getMessage());
+        }
+    }
+}
+
     /**
      * Endpoint para iniciar sesión y obtener token JWT
+     *
      * @param request Contiene username y password del usuario
      * @return ResponseEntity con el token JWT si la autenticación es exitosa
-     */
+     
     @PostMapping("/login") // Mapea este método al endpoint POST /auth/login
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             // Intentamos autenticar al usuario con las credenciales proporcionadas
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    request.getUsername(), // Username proporcionado
-                    request.getPassword()  // Password proporcionado
-                )
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(), // Username proporcionado
+                            request.getPassword()  // Password proporcionado
+                    )
             );
-            
+
             // Si llegamos aquí, la autenticación fue exitosa
             UserDetails user = (UserDetails) authentication.getPrincipal(); // Obtenemos el usuario autenticado
-            
+
             // Generamos un token JWT para el usuario
             String token = jwtService.getToken(user);
-            
+
             // Retornamos una respuesta exitosa con el token
             return ResponseEntity.ok(new AuthResponse(token));
-            
+
         } catch (BadCredentialsException e) {
             // Si las credenciales son incorrectas, devolvemos un error 401 Unauthorized
             return ResponseEntity.status(401).body("Credenciales inválidas");
@@ -58,7 +131,6 @@ public class AuthController {
             // Capturamos cualquier otra excepción y devolvemos un error 500
             return ResponseEntity.status(500).body("Error en la autenticación: " + e.getMessage());
         }
-    }
+    }*/
 
     
-}

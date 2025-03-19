@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "usuarios", schema = "login_pruba")
+@Table(name = "usuarios", schema = "prueba")
 public class Usuario implements UserDetails {
     
     @Id
@@ -44,6 +44,11 @@ public class Usuario implements UserDetails {
     private String cargo;
     private String estado;
     private boolean admin;
+
+    public boolean isBlocked() {
+        return "BLOQUEADO".equals(estado) || (intentosFallidos != null && intentosFallidos >= 3);
+    }
+
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -61,19 +66,28 @@ public class Usuario implements UserDetails {
     )
     private Set<Permiso> permisosAdicionales = new HashSet<>();
 
+    @Column(name = "intentos_fallidos")
+    private Integer intentosFallidos = 0;
+
+    @Column(name = "creado_por")
+    private String creadoPor;
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-    
-        // Permisos de rol
+
+        // Solo agregar roles como authorities
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getPermisos().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getName())));
         }
         
-        // Permisos adicionales específicos del usuario
-        permisosAdicionales.forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getName())));
-    
+        // Agregar permisos directos del usuario
+        for (Permiso permiso : permisosAdicionales) {
+            authorities.add(new SimpleGrantedAuthority(permiso.getName()));
+        }
+
         return authorities;
     }
 
@@ -90,6 +104,7 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() { return true; }
 
+  
     
 
 }

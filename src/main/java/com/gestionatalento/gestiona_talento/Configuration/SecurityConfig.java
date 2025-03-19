@@ -1,5 +1,6 @@
 package com.gestionatalento.gestiona_talento.Configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,9 +22,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor // Genera un constructor con todos los campos final como parámetros
 public class SecurityConfig {
 
-    // Inyección de dependencias
-    private final JwtAuthenticationFilter jwtAuthenticationFilter; // Filtro JWT personalizado
-    private final AuthenticationProvider authProvider; // Proveedor de autenticación
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private AuthenticationProvider authProvider;
 
     @Bean // Indica que este método proporciona un bean para el contenedor de Spring
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

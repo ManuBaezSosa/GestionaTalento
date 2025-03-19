@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +24,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // Inyección de dependencias a través del constructor (@RequiredArgsConstructor)
-    private final JwtService jwtService; // Servicio para manejar operaciones JWT
-    private final UserDetailsService userDetailsService; // Servicio para cargar detalles del usuario
+    @Autowired
+    private JwtService jwtService; // Servicio para manejar operaciones JWT
+    @Autowired
+    private UserDetailsService userDetailsService; // Servicio para cargar detalles del usuario
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 

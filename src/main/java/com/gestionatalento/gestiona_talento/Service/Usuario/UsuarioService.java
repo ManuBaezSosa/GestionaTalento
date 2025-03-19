@@ -15,8 +15,7 @@ public interface UsuarioService  {
     public Usuario crearUsuario(Usuario usuario);
     public Usuario delete(Usuario usuario);
     public Usuario findByUsername(String user);   
-    public Usuario asiganarPermisos(Usuario usuario, List<Long> permisoIds);
-    
-    //Este metodo nos devolvera una lista de usuario con sus roles y permisos
+    public Usuario asignarPermisos(Long idUsuario, List<Long> permisoIds);
+    Usuario eleminarPermisosUsuarios(Long idUsuario, List<Long> permisoIds);
 
 }

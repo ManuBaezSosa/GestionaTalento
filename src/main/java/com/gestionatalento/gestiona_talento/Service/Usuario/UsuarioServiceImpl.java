@@ -1,23 +1,23 @@
 package com.gestionatalento.gestiona_talento.Service.Usuario;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gestionatalento.gestiona_talento.Entities.Permiso;
 import com.gestionatalento.gestiona_talento.Entities.Role;
 import com.gestionatalento.gestiona_talento.Entities.Usuario;
-import com.gestionatalento.gestiona_talento.Jwt.ApplicationConfig;
 import com.gestionatalento.gestiona_talento.Repository.PermisoRepository;
 import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-
-    private final Jwt.ApplicationConfig applicationConfig;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -26,16 +26,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private PermisoRepository permisoRepository;
 
-    UsuarioServiceImpl(Jwt.ApplicationConfig applicationConfig) {
-        this.applicationConfig = applicationConfig;
-    }
 
+    /**
+     * Este metodo crea a los usuarios
+     */
     @Override
     public Usuario crearUsuario(Usuario usuario) {
        if(usuario.isAdmin()){
 
-            //DEJAMOS UNOS LOG
-            System.out.println("Creando usuario ADMIN...");
 
             //Buscamos que exista el rol de admin
             Role roleAdmin = roleRepository.findByName("ADMIN").orElseThrow(() -> new RuntimeException("El rol ADMIN no existe"));
@@ -51,10 +49,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.getPermisosAdicionales().addAll(allPermisos);
 
        }else{
-            System.out.println("Creando usuario USER...");
 
             //Buscamos si hay un rol usuario
-            Role rolUser = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("El rol ADMIN no existe"));
+            Role rolUser = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("El rol USER no existe"));
 
             // Asignar rol USER
             if (!usuario.getRoles().contains(rolUser)) {
@@ -69,16 +66,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario delete(Usuario usuario) {
+        Usuario usuario1 = obtenerUsuarioPorId(usuario.getId());
 
-        Optional<Usuario> optUser = usuarioRepository.findById(usuario.getId());
-        if(optUser.isPresent()){
-            usuarioRepository.delete(usuario);
-        }else{
-            throw new RuntimeException("No se encontro el usuario a borrar");
-        }
         usuarioRepository.delete(usuario);
 
-        return optUser.get();
+        return usuario1;
     }
 
     @Override
@@ -100,22 +92,40 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Override
-    public Usuario asiganarPermisos(Usuario usuario, List<Long> permisoIds) {
-        //Primero buscamos si existe 
-        Optional<Usuario> userOptional = usuarioRepository.findById(usuario.getId());
-        if(!userOptional.isPresent()){
-            new T
-        }
-        
-        return null;
+    public Usuario asignarPermisos(Long idUsuario, List<Long> permisoIds) {
+        Usuario usuario = obtenerUsuarioPorId(idUsuario);
+        Set<Permiso> permisosEncontrados = obtenerPermisosPorIds(permisoIds);
+
+        usuario.getPermisosAdicionales().addAll(permisosEncontrados);
+
+        return usuarioRepository.save(usuario);
     }
 
-    
-    
+    @Override
+    public Usuario eleminarPermisosUsuarios(Long idUsuario, List<Long> permisoIds) {
+        Usuario usuario = obtenerUsuarioPorId(idUsuario);
+        Set<Permiso> permisosEncontrados = obtenerPermisosPorIds(permisoIds);
+
+        usuario.getPermisosAdicionales().removeAll(permisosEncontrados);
+
+        return usuarioRepository.save(usuario);
+    }
+
+    private Usuario obtenerUsuarioPorId(Long idUsuario) {
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("El usuario con id " + idUsuario + " no existe"));
+    }
+
+    private Set<Permiso> obtenerPermisosPorIds(List<Long> permisoIds) {
+        List<Permiso> permisos = permisoRepository.findAllById(permisoIds);
+        if (permisos.isEmpty()) {
+            throw new EntityNotFoundException("No se encontraron permisos con los IDs: " + permisoIds);
+        }
+        return new HashSet<>(permisos);
+    }
 
 
-   
 
 
-    
+
 }
