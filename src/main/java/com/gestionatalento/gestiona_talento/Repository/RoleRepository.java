@@ -9,7 +9,8 @@ import com.gestionatalento.gestiona_talento.Entities.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role,Long>{
-    Optional<Role> findByName(String name);
+    public Optional<Role> findByName(String name);
+    
 
 
 }

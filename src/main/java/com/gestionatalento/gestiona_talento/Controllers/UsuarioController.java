@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionatalento.gestiona_talento.Entities.Usuario;
-import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 import com.gestionatalento.gestiona_talento.Request.UsuarioRequest;
 import com.gestionatalento.gestiona_talento.Service.Usuario.UsuarioServiceImpl;
@@ -27,7 +26,7 @@ import com.gestionatalento.gestiona_talento.Service.Usuario.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/api/admin/users") // Define la ruta base para todas las solicitudes
-public class UsuaroiController {
+public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;

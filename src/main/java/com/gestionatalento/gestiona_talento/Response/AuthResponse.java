@@ -1,4 +1,4 @@
-package com.gestionatalento.gestiona_talento.Entities;
+package com.gestionatalento.gestiona_talento.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -16,7 +16,7 @@ public class UsuarioRequest {
     private String role; // "ADMIN" o "USER"
 
      // Helper method
-     public boolean isAdmin() {
+    public boolean isAdmin() {
         return "ADMIN".equalsIgnoreCase(this.role);
     }
 

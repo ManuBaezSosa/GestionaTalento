@@ -20,10 +20,10 @@ public class PermisoServiceImpl implements PermisoService  {
 
     @Override
     public Permiso findById(Long id) {
-       Optional<Permiso> permisoOtp = permisoRepository.findById(id);
-       if(!permisoOtp.isPresent()){
+    Optional<Permiso> permisoOtp = permisoRepository.findById(id);
+    if(!permisoOtp.isPresent()){
             throw new RolNotFoundException("El permiso con el id " + id + " no existe");
-       }
+    }
 
         return permisoOtp.get();
     }
@@ -37,7 +37,7 @@ public class PermisoServiceImpl implements PermisoService  {
     public Permiso delete(Permiso permiso) {
         Optional<Permiso> permisoOtp = permisoRepository.findById(permiso.getId());
         if(!permisoOtp.isPresent()){
-             throw new RolNotFoundException("El permiso con el id " + permiso.getId() + " no existe");
+            throw new RolNotFoundException("El permiso con el id " + permiso.getId() + " no existe");
         }
         permisoRepository.delete(permiso);
         return permisoOtp.get();
