@@ -1,11 +1,12 @@
-package com.gestionatalento.gestiona_talento.Entities;
-
+package com.gestionatalento.gestiona_talento.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,15 +16,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "permisos")
-public class Permiso {
-    
+@Table(name = "correos")
+public class Correo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name =  "id_correo")
+    private Long idCorreo;
+    
+    @ManyToOne
+    @JoinColumn(name = "cod_persona", nullable = false)
+    private Persona persona;
 
-    @Column(unique = true)
-    private String name; // "ACCESS_VENTAS" o "ACCESS_COMPRAS"
+    private String descripcion;
+
+    private String observacion;
+
 
 
 }

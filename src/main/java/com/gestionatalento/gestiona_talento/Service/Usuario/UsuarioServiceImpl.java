@@ -9,9 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gestionatalento.gestiona_talento.Entities.Permiso;
-import com.gestionatalento.gestiona_talento.Entities.Role;
-import com.gestionatalento.gestiona_talento.Entities.Usuario;
+import com.gestionatalento.gestiona_talento.Entity.Permiso;
+import com.gestionatalento.gestiona_talento.Entity.Role;
+import com.gestionatalento.gestiona_talento.Entity.Usuario;
 import com.gestionatalento.gestiona_talento.Repository.PermisoRepository;
 import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;

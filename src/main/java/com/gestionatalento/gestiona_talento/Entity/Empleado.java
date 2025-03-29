@@ -1,4 +1,4 @@
-package com.gestionatalento.gestiona_talento.Entities;
+package com.gestionatalento.gestiona_talento.Entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -45,14 +46,14 @@ public class Empleado {
     
     private String observacion;
     
-    @Column(name = "cod_cargo")
-    private String codCargo;
+    @Column(name = "desc_cargo")
+    private String cargo;
     
-    @Column(name = "cod_sede")
-    private String codSede;
+    @Column(name = "desc_sede")
+    private String descSede;
     
-    @Column(name = "cod_sit_laboral")
-    private String codSitLaboral;
+    @Column(name = "desc_sit_laboral")
+    private String descSitLaboral;
     
     private Double asignacion;
     
@@ -65,6 +66,12 @@ public class Empleado {
     @Column(name = "hora_salida")
     private LocalTime horaSalida;
 
+    @Column(name = "pasante")
+    private boolean pasante;
+
+    @ManyToOne
+    @JoinColumn(name = "cod_area", referencedColumnName = "cod_area")
+    private Area area;
 
     
 }

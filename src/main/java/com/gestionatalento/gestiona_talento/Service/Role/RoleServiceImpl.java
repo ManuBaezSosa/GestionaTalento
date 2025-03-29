@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.gestionatalento.gestiona_talento.Entities.Role;
+import com.gestionatalento.gestiona_talento.Entity.Role;
 import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 
 public class RoleServiceImpl implements RoleService {

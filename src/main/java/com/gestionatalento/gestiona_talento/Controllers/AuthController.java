@@ -1,6 +1,5 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
-import com.gestionatalento.gestiona_talento.Entities.Usuario;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 import com.gestionatalento.gestiona_talento.Request.LoginRequest;
 import com.gestionatalento.gestiona_talento.Response.AuthResponse;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestionatalento.gestiona_talento.Entity.Usuario;
 import com.gestionatalento.gestiona_talento.Jwt.JwtService;
 
 import lombok.AllArgsConstructor;

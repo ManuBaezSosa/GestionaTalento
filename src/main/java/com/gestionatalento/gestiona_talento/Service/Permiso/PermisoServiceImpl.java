@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.gestionatalento.gestiona_talento.Entities.Permiso;
+import com.gestionatalento.gestiona_talento.Entity.Permiso;
 import com.gestionatalento.gestiona_talento.Repository.PermisoRepository;
 
 public class PermisoServiceImpl implements PermisoService  {

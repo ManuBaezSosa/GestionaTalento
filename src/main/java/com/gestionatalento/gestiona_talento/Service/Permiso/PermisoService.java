@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.gestionatalento.gestiona_talento.Entities.Permiso;
+import com.gestionatalento.gestiona_talento.Entity.Permiso;
 
 @Service
 public interface PermisoService {

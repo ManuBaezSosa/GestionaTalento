@@ -1,4 +1,4 @@
-package com.gestionatalento.gestiona_talento.Entities;
+package com.gestionatalento.gestiona_talento.Entity;
 
 import java.sql.Date;
 import java.util.Collection;

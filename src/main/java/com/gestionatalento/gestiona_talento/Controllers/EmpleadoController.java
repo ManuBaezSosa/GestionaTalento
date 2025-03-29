@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionatalento.gestiona_talento.Entities.Empleado;
+import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
+import com.gestionatalento.gestiona_talento.Dto.PasantesDto;
+import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Request.EmpleadoRequest;
+import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Service.Empleados.EmpleadoServiceImpl;
+
+import io.jsonwebtoken.lang.Collections;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -59,18 +67,6 @@ public class EmpleadoController {
         }
     }
 
-    @GetMapping("/buscarEmpleado")
-    public ResponseEntity<?> buscarEmpleado(@RequestBody EmpleadoRequest request) {
-        try {
-            Object empleado = empleadoRepository.findById(request.getId_persona());
-            return ResponseEntity.ok(empleado);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Ocurrió un error inesperado: " + e.getMessage());
-        }
-    }
 
     @DeleteMapping("{codPersona}/eliminarEmpleado")
     public ResponseEntity<?> eliminarEmpleado(@PathVariable Long codPersona){
@@ -82,6 +78,49 @@ public class EmpleadoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ocurrió un error inesperado: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscar/Empleado")
+    public ResponseEntity<?> obtenerFuncionario(@RequestBody PersonaRequest request) {
+        try {
+            return ResponseEntity.ok(empleadoServiceImpl.buscarEmpleado(request));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocurrió un error inesperado: " + e.getMessage());
+        }
+    }
+    
+    // En tu Controller
+    @PostMapping("/empleado/actualizarDatos")
+    public ResponseEntity<?> updateEmpleado(@RequestBody EmpleadoDto request) {
+        try {
+            Empleado empleadoActualizado = empleadoServiceImpl.actualizarEmpleado(request);
+            return ResponseEntity.ok()
+                .body(Map.of(
+                    "mensaje", "Empleado actualizado exitosamente",
+                    "id", empleadoActualizado.getCodPersona(),
+                    "empleado", empleadoActualizado
+                ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                .body(Map.of(
+                    "error", "Error al actualizar empleado",
+                    "detalle", e.getMessage()
+                ));
+        }
+    }
+
+    @GetMapping("/pasantes")
+    public ResponseEntity<?> getEmpleadosPasantes(@RequestParam(defaultValue = "true") Boolean isPasante) {
+        try {
+            Map<String, Object> empleados = empleadoServiceImpl.findByAllPasante(isPasante);
+            return ResponseEntity.ok(empleados);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no hay pasantes");
+            // Alternativa: return ResponseEntity.notFound().build();
         }
     }
 

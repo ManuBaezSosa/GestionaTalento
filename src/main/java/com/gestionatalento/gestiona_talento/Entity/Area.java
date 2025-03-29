@@ -1,5 +1,4 @@
-package com.gestionatalento.gestiona_talento.Entities;
-
+package com.gestionatalento.gestiona_talento.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,18 +11,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "areas")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "roles")
-public class Role {
-
+@NoArgsConstructor
+public class Area {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cod_area")
     private Long id;
 
-    @Column(unique = true)
-    private String name; // "ROLE_ADMIN" o "ROLE_USER"
+    @Column(name = "nombre")
+    private String nombre;
 
+    @Column(name = "descripcion")
+    private String descripcion;
 
+    // Puedes añadir más campos según tu modelo
+    @Column(name = "estado")
+    private String estado;
 }

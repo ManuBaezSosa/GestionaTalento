@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.gestionatalento.gestiona_talento.Entities.Usuario;
+import com.gestionatalento.gestiona_talento.Entity.Usuario;
 
 @Service
 public interface UsuarioService  {

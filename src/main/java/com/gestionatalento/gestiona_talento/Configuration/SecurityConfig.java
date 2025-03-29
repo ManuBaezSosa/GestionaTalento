@@ -41,14 +41,16 @@ public class SecurityConfig {
                     .requestMatchers("/auth/**").permitAll()
                     
                     // Restringimos el acceso a rutas de administrador solo a usuarios con rol ADMIN
-                    .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                    //.requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+
+                    .requestMatchers("/api/admin/**").permitAll()
 
                     .requestMatchers("/empleados/**").permitAll()
 
                     .requestMatchers("/api/v1/Persona/**").permitAll()
 
-                    
                     // Cualquier otra solicitud requiere autenticación
+                    //
                     .anyRequest().authenticated()
             )
             

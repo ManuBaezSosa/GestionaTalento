@@ -1,11 +1,16 @@
 package com.gestionatalento.gestiona_talento.Service.Persona;
 
+import java.lang.StackWalker.Option;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gestionatalento.gestiona_talento.Entities.Persona;
+import com.gestionatalento.gestiona_talento.Dto.PersonaDTO;
+import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
 import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 
@@ -22,6 +27,8 @@ public class PersonaServiceImpl implements PersonaService{
 
     @Override
     public Persona crearPersona(Persona persona) {
+        
+        validarCampo(persona);
         return personaRepository.save(persona);
     }
 
@@ -54,6 +61,45 @@ public class PersonaServiceImpl implements PersonaService{
         return personaEliminada;
     }
 
+
+    private void validarCampo(Persona personaCampo){
+           // Validar campos obligatorios
+        if (personaCampo.getRuc() == null || personaCampo.getRuc().trim().isEmpty()) {
+            throw new IllegalArgumentException("El RUC es obligatorio");
+        }
+        if (personaCampo.getNombre() == null || personaCampo.getNombre().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+        if (personaCampo.getApellido() == null || personaCampo.getApellido().trim().isEmpty()) {
+            throw new IllegalArgumentException("El apellido es obligatorio");
+        }
+    }
+
+    @Override
+    public Persona actualizarPersona(PersonaDTO personaDTO) {
+        // Validar que el ID de la persona no sea nulo
+        if (personaDTO.getCodPersona() == null) {
+            throw new IllegalArgumentException("El ID de la persona no puede ser nulo");
+        }
+
+        // Buscar persona en la base de datos
+        Persona personaDatosActuales = personaRepository.findById(personaDTO.getCodPersona())
+                .orElseThrow(() -> new NoSuchElementException("La persona no fue hallada"));
+
+        // Actualizar solo si los valores no son nulos
+        Optional.ofNullable(personaDTO.getNombre()).ifPresent(personaDatosActuales::setNombre);
+        Optional.ofNullable(personaDTO.getApellido()).ifPresent(personaDatosActuales::setApellido);
+        Optional.ofNullable(personaDTO.getNroDocumento()).ifPresent(personaDatosActuales::setNroDocumento);
+        Optional.ofNullable(personaDTO.getRuc()).ifPresent(personaDatosActuales::setRuc);
+        Optional.ofNullable(personaDTO.getFechaNacimiento()).ifPresent(personaDatosActuales::setFecNacimiento);
+        Optional.ofNullable(personaDTO.getPoseeDispacidad()).ifPresent(personaDatosActuales::setDiscapacidad);
+        Optional.ofNullable(personaDTO.getDescripcionDisca()).ifPresent(personaDatosActuales::setObsDiscapacidad);
+        Optional.ofNullable(personaDTO.getLugarNacimiento()).ifPresent(personaDatosActuales::setLugarNacimiento);
+
+
+        // Guardar y devolver persona actualizada
+        return personaRepository.save(personaDatosActuales);
+    }
 
 
     

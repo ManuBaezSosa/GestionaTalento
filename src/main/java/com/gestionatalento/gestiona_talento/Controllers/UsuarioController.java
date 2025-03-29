@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionatalento.gestiona_talento.Entities.Usuario;
+import com.gestionatalento.gestiona_talento.Entity.Usuario;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 import com.gestionatalento.gestiona_talento.Request.UsuarioRequest;
 import com.gestionatalento.gestiona_talento.Service.Usuario.UsuarioServiceImpl;
@@ -42,7 +42,7 @@ public class UsuarioController {
      * Solo administradores pueden acceder
      */
     @PostMapping // Mapea este método al endpoint POST /api/admin/users
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
+   // @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
     public ResponseEntity<?> crearUsuario(@RequestBody UsuarioRequest request) {
         try {
             // Verificar si ya existe un usuario con ese username
@@ -99,20 +99,6 @@ public class UsuarioController {
         }
     }
 
-
-    /**
-     * Endpoint para obtener todos los usuarios
-     * Solo administradores pueden acceder
-     */
-    @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
-    public ResponseEntity<?> getAllUsers() {
-        try {
-            return ResponseEntity.ok(usuarioRepository.findAllWithPermisos());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al obtener usuarios: " + e.getMessage());
-        }
-    }
 
     /**
      * Endpoint para obtener un usuario por su ID

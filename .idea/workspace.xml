@@ -5,21 +5,56 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e468365c-ff0f-42a1-95f1-0e6215b25642" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/UsuaroiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/UsuaroiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/AuthResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Funcionario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/GestionaTalentoApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/GestionaTalentoApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/EmpleadoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/EmpleadoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/PersonaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/PersonaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Controllers/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Empleado.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Permiso.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Persona.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Entities/Usuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/EmpleadoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/EmpleadoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/PermisoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/PermisoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/PersonaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/PersonaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/RoleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Request/UsuarioRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Request/UsuarioRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Request/EmpleadoRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Request/EmpleadoRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Empleados/EmpleadoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Empleados/EmpleadoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Empleados/EmpleadoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Empleados/EmpleadoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Persona/PersonaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Persona/PersonaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Persona/PersonaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Persona/PersonaServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Role/RoleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Role/RoleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Configuration/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Configuration/SecurityConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Controllers/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Controllers/AuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Controllers/UsuaroiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Controllers/UsuaroiController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Entities/AuthResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Entities/LoginRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Entities/Permiso.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Entities/Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Entities/Usuario.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/GestionaTalentoApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/GestionaTalentoApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/ApplicationConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/ApplicationConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/JwtAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/JwtAuthenticationFilter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/JwtService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Jwt/JwtService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/PermisoRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/PermisoRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/RoleRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/RoleRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/UsuarioRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Repository/UsuarioRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Request/UsuarioRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Request/UsuarioRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl$RolNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl$RolNotFoundException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Permiso/PermisoServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl$RolNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl$RolNotFoundException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Role/RoleServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gestionatalento/gestiona_talento/Service/Usuario/UsuarioServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/gestionatalento/gestiona_talento/GestionaTalentoApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/gestionatalento/gestiona_talento/GestionaTalentoApplicationTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,23 +91,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.GestionaTalentoApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ACCESO_CABAL/AccesoCabal-master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GestionaTalentoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mbaez/Documents/CURSO SPRING/gestiona-talento&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="GestionaTalentoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -103,6 +138,9 @@
       <workItem from="1742306698223" duration="7664000" />
       <workItem from="1742331402586" duration="108000" />
       <workItem from="1742471700624" duration="23000" />
+      <workItem from="1742562004445" duration="1289000" />
+      <workItem from="1742563327383" duration="155000" />
+      <workItem from="1742927221333" duration="2409000" />
     </task>
     <servers />
   </component>
