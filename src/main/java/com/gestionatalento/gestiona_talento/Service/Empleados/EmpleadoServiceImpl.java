@@ -9,11 +9,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
-import com.gestionatalento.gestiona_talento.Dto.PasantesDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
@@ -26,6 +27,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class EmpleadoServiceImpl implements EmpleadoService {
+    private static final Logger logger = LoggerFactory.getLogger(EmpleadoServiceImpl.class);
 
     @Autowired
     EmpleadoRepository empleadoRepository;
@@ -36,17 +38,28 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public Empleado crearEmpleado(EmpleadoRequest request) {
          // Primero buscamos a la persona
-        Optional<Persona> personaOpt = personaRepository.findById(request.getId_persona());
-        
+         logger.info("Empleado: {}", request);
+        Optional<Persona> personaOpt = personaRepository.findById(request.getPersona().getCodPersona());
         if (personaOpt.isPresent()) {
             Persona persona = personaOpt.get();
             
+
             // Configuramos el empleado
-            Empleado empleadoPersona = request.getEmpleado();
-            
-            // Con @MapsId, solo deberías necesitar establecer la persona
-            // No establecer manualmente el codPersona
+            Empleado empleadoPersona = new Empleado();
+
             empleadoPersona.setPersona(persona);
+            empleadoPersona.setEstado(request.getEstado());
+            empleadoPersona.setFecActoAdministrativo(request.getFecActoAdministrativo());
+            empleadoPersona.setFecIngreso(request.getFecIngreso());
+            empleadoPersona.setFecEgreso(request.getFecEgreso());
+            empleadoPersona.setObservacion(request.getObservacion());
+            empleadoPersona.setAsignacion(request.getAsignacion());
+            empleadoPersona.setNroResolucion(request.getNroResolucion());
+            empleadoPersona.setHoraEntrada(request.getHoraEntrada());
+            empleadoPersona.setHoraSalida(request.getHoraSalida());
+            empleadoPersona.setCargo(request.getCargo());
+            empleadoPersona.setSede(request.getSede());
+            empleadoPersona.setSituacionLaboral(request.getSituacionLaboral());
             
             return empleadoRepository.save(empleadoPersona);
         }
@@ -92,7 +105,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
                     .orElseThrow(() -> new RuntimeException("La persona con el documento proporcionado no existe"))
                 );
 
-            case "nombre":
+            case "nombres":
                 List<Empleado> empleadoPersona = empleadoRepository.findByNombre(request.getValor());
                 if (empleadoPersona.isEmpty()) {
                     throw new RuntimeException("La persona con el nombre proporcionado no existe");
@@ -110,11 +123,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         FindEmpleadoResponse response = new FindEmpleadoResponse();
         
         // Mapeo de datos básicos
-        response.setNombreCompleto(empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
-        response.setArea(empleado.getArea() != null ? empleado.getArea().getDescripcion() : "Sin área asignada");
-        response.setFechaIngreso(empleado.getFecInicio());
+        response.setNombreCompleto(empleado.getPersona().getNombres() + " " + empleado.getPersona().getApellidos());
+        response.setArea(empleado.getCargo() != null ? empleado.getCargo().getDescripcion() : "Sin área asignada");
+        response.setFechaIngreso(empleado.getFecIngreso());
         response.setFechaEgreso(empleado.getFecEgreso());
-        response.setAntiguedad(calcularAntiguedad(empleado.getFecInicio()));
+        response.setAntiguedad(calcularAntiguedad(empleado.getFecIngreso()));
         response.setDescripcion(empleado.getObservacion());
     
 
@@ -164,58 +177,29 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
     @Override
     public Empleado actualizarEmpleado(EmpleadoDto empleadoDto) {
-        if (empleadoDto.getCodPersona() == null) {
+        if (empleadoDto.getCodEmpleado() == null) {
             throw new RuntimeException("El ID del empleado no puede ser nulo");
         }
 
         // Buscar empleado existente
-        Empleado empleado = empleadoRepository.findById(empleadoDto.getCodPersona())
+        Empleado empleado = empleadoRepository.findById(empleadoDto.getCodEmpleado())
                 .orElseThrow(() -> new RuntimeException("El Empleado no fue hallado"));
 
 
         // Actualizar datos solo si los valores no son nulos
         Optional.ofNullable(empleadoDto.getCargo()).ifPresent(empleado::setCargo);
-        Optional.ofNullable(empleadoDto.getFechaInicio()).ifPresent(empleado::setFecInicio);
-        Optional.ofNullable(empleadoDto.getFechaActo()).ifPresent(empleado::setFecActo);
+        Optional.ofNullable(empleadoDto.getFecIngreso()).ifPresent(empleado::setFecIngreso);
+        Optional.ofNullable(empleadoDto.getFecActoAdministrativo()).ifPresent(empleado::setFecActoAdministrativo);
         Optional.ofNullable(empleadoDto.getAsignacion()).ifPresent(empleado::setAsignacion);
-        Optional.ofNullable(empleadoDto.getSituacionLaboral()).ifPresent(empleado::setDescSitLaboral);
-        Optional.ofNullable(empleadoDto.getSede()).ifPresent(empleado::setDescSede);
+        Optional.ofNullable(empleadoDto.getSituacionLaboral()).ifPresent(empleado::setSituacionLaboral);
+        Optional.ofNullable(empleadoDto.getSede()).ifPresent(empleado::setSede);
         Optional.ofNullable(empleadoDto.getNroResolucion()).ifPresent(empleado::setNroResolucion);
         Optional.ofNullable(empleadoDto.getHoraEntrada()).ifPresent(empleado::setHoraEntrada);
         Optional.ofNullable(empleadoDto.getHoraSalida()).ifPresent(empleado::setHoraSalida);
-        Optional.ofNullable(empleadoDto.getCargo()).ifPresent(empleado::setCargo);
+        Optional.ofNullable(empleadoDto.getEstado()).ifPresent(empleado::setEstado);
     
-
         // Guardar cambios
         return empleadoRepository.save(empleado);
-
-
-    }
-
-    @Override
-    public Map<String, Object> findByAllPasante(Boolean pasante) {
-        List<Empleado> empleados = empleadoRepository.findByPasante(pasante);
-    
-        if (empleados.isEmpty()) {
-            throw new RuntimeException("No se encontraron empleados pasantes");
-        }
-
-        Empleado empleado = empleados.get(0); // Tomamos el primer resultado
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("codPersona", empleado.getCodPersona());
-
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("asignacion", empleado.getAsignacion());
-        datos.put("nombre", empleado.getPersona().getNombre());
-        datos.put("apellido", empleado.getPersona().getApellido());
-        datos.put("nroDocumento", empleado.getPersona().getNroDocumento());
-        datos.put("fechaInicio", empleado.getFecInicio());
-        datos.put("fechaEgreso", empleado.getFecEgreso());
-
-        response.put("datos", datos);
-        
-        return response;
     }
 
     

@@ -47,7 +47,7 @@ public class EmpleadoController {
         try {
             empleadoServiceImpl.crearEmpleado(request);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Empleado creado exitosamente con ID: " + request.getId_persona());
+                    .body("Empleado creado exitosamente con ID: " + request.getPersona().getCodPersona());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al crear usuario: " + e.getMessage());
@@ -67,7 +67,32 @@ public class EmpleadoController {
         }
     }
 
+    @GetMapping("/buscar/Empleado/{idPersona}")
+    public ResponseEntity<?> buscarEmpleado(@PathVariable Long idPersona) {
+        Optional<Empleado> empleado = empleadoRepository.findById(idPersona);
 
+        if (empleado.isPresent()) {
+            return ResponseEntity.ok(empleado.get()); // Si existe, devolver el objeto
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("Empleado no encontrado con ID: " + idPersona);
+        }
+    }
+/* 
+    @GetMapping("/buscar/Empleado/{idPersona}")
+    public ResponseEntity<?> buscarEmpleado(@PathVariable Long idPersona) {
+        try {
+            Object empleado = empleadoRepository.findById(idPersona);
+            return ResponseEntity.ok(empleado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Ocurrió un error inesperado: " + e.getMessage());
+        }
+    }
+
+*/
     @DeleteMapping("{codPersona}/eliminarEmpleado")
     public ResponseEntity<?> eliminarEmpleado(@PathVariable Long codPersona){
         try {
@@ -81,7 +106,7 @@ public class EmpleadoController {
         }
     }
 
-    @GetMapping("/buscar/Empleado")
+    /*@GetMapping("/buscar/Empleado")
     public ResponseEntity<?> obtenerFuncionario(@RequestBody PersonaRequest request) {
         try {
             return ResponseEntity.ok(empleadoServiceImpl.buscarEmpleado(request));
@@ -91,7 +116,7 @@ public class EmpleadoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ocurrió un error inesperado: " + e.getMessage());
         }
-    }
+    }*/
     
     // En tu Controller
     @PostMapping("/empleado/actualizarDatos")
@@ -101,7 +126,7 @@ public class EmpleadoController {
             return ResponseEntity.ok()
                 .body(Map.of(
                     "mensaje", "Empleado actualizado exitosamente",
-                    "id", empleadoActualizado.getCodPersona(),
+                    "id", empleadoActualizado.getPersona().getCodPersona(),
                     "empleado", empleadoActualizado
                 ));
         } catch (Exception e) {
@@ -112,17 +137,5 @@ public class EmpleadoController {
                 ));
         }
     }
-
-    @GetMapping("/pasantes")
-    public ResponseEntity<?> getEmpleadosPasantes(@RequestParam(defaultValue = "true") Boolean isPasante) {
-        try {
-            Map<String, Object> empleados = empleadoServiceImpl.findByAllPasante(isPasante);
-            return ResponseEntity.ok(empleados);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no hay pasantes");
-            // Alternativa: return ResponseEntity.notFound().build();
-        }
-    }
-
 
 }

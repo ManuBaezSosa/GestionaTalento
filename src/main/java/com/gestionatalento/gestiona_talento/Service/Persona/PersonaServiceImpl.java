@@ -40,9 +40,9 @@ public class PersonaServiceImpl implements PersonaService{
                 .orElseThrow(() -> new RuntimeException("La persona con el documento proporcionado no existe"));
         }
     
-        if ("nombre".equals(request.getTipoBusqueda())) {
+        if ("nombres".equals(request.getTipoBusqueda())) {
             // Búsqueda por nombre (pueden ser varias personas)
-            List<Persona> personas = personaRepository.findByNombre(request.getValor());
+            List<Persona> personas = personaRepository.findByNombres(request.getValor());
             if (personas.isEmpty()) {
                 throw new RuntimeException("La persona con el nombre proporcionado no existe");
             }
@@ -64,14 +64,14 @@ public class PersonaServiceImpl implements PersonaService{
 
     private void validarCampo(Persona personaCampo){
            // Validar campos obligatorios
-        if (personaCampo.getRuc() == null || personaCampo.getRuc().trim().isEmpty()) {
-            throw new IllegalArgumentException("El RUC es obligatorio");
+        if (personaCampo.getNroDocumento() == null || personaCampo.getNroDocumento().trim().isEmpty()) {
+            throw new IllegalArgumentException("El numero de documento es obligatorio");
         }
-        if (personaCampo.getNombre() == null || personaCampo.getNombre().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre es obligatorio");
+        if (personaCampo.getNombres() == null || personaCampo.getNombres().trim().isEmpty()) {
+            throw new IllegalArgumentException("Los nombres son obligatorios");
         }
-        if (personaCampo.getApellido() == null || personaCampo.getApellido().trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido es obligatorio");
+        if (personaCampo.getApellidos() == null || personaCampo.getApellidos().trim().isEmpty()) {
+            throw new IllegalArgumentException("Los apellidos son obligatorios");
         }
     }
 
@@ -87,14 +87,18 @@ public class PersonaServiceImpl implements PersonaService{
                 .orElseThrow(() -> new NoSuchElementException("La persona no fue hallada"));
 
         // Actualizar solo si los valores no son nulos
-        Optional.ofNullable(personaDTO.getNombre()).ifPresent(personaDatosActuales::setNombre);
-        Optional.ofNullable(personaDTO.getApellido()).ifPresent(personaDatosActuales::setApellido);
         Optional.ofNullable(personaDTO.getNroDocumento()).ifPresent(personaDatosActuales::setNroDocumento);
-        Optional.ofNullable(personaDTO.getRuc()).ifPresent(personaDatosActuales::setRuc);
-        Optional.ofNullable(personaDTO.getFechaNacimiento()).ifPresent(personaDatosActuales::setFecNacimiento);
-        Optional.ofNullable(personaDTO.getPoseeDispacidad()).ifPresent(personaDatosActuales::setDiscapacidad);
-        Optional.ofNullable(personaDTO.getDescripcionDisca()).ifPresent(personaDatosActuales::setObsDiscapacidad);
+        Optional.ofNullable(personaDTO.getNroRuc()).ifPresent(personaDatosActuales::setNroRuc);
+        Optional.ofNullable(personaDTO.getNombres()).ifPresent(personaDatosActuales::setNombres);
+        Optional.ofNullable(personaDTO.getApellidos()).ifPresent(personaDatosActuales::setApellidos);
+        Optional.ofNullable(personaDTO.getCodNivelEstudio()).ifPresent(personaDatosActuales::setCodNivelEstudio);
+        Optional.ofNullable(personaDTO.getCodPaisNacimiento()).ifPresent(personaDatosActuales::setCodPaisNacimiento);
+        Optional.ofNullable(personaDTO.getFecNacimiento()).ifPresent(personaDatosActuales::setFecNacimiento);
         Optional.ofNullable(personaDTO.getLugarNacimiento()).ifPresent(personaDatosActuales::setLugarNacimiento);
+        Optional.ofNullable(personaDTO.getPoseeDiscapacidad()).ifPresent(personaDatosActuales::setPoseeDiscapacidad);
+        Optional.ofNullable(personaDTO.getDescripcionDiscapacidad()).ifPresent(personaDatosActuales::setDescripcionDiscapacidad);
+        Optional.ofNullable(personaDTO.getRutaFoto()).ifPresent(personaDatosActuales::setRutaFoto);
+        Optional.ofNullable(personaDTO.getEstadoCivil()).ifPresent(personaDatosActuales::setEstadoCivil);
 
 
         // Guardar y devolver persona actualizada

@@ -17,10 +17,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
     @Query("SELECT e FROM Empleado e JOIN e.persona p WHERE p.nroDocumento = :nroDocumento")
     Optional<Empleado> findByNroDocumento(@Param("nroDocumento") String nroDocumento);
     
-    @Query("SELECT e FROM Empleado e JOIN e.persona p WHERE p.nombre = :nombre")
-    List<Empleado> findByNombre(@Param("nombre") String nombre);
-
-    @Query("SELECT e FROM Empleado e WHERE e.pasante = :pasante")
-    List<Empleado> findByPasante(@Param("pasante") Boolean pasante);
+    @Query("SELECT e FROM Empleado e JOIN e.persona p WHERE p.nombres = :nombres")
+    List<Empleado> findByNombre(@Param("nombres") String nombre);
     
 }

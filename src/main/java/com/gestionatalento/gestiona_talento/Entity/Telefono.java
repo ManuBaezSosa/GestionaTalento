@@ -21,15 +21,17 @@ import lombok.NoArgsConstructor;
 public class Telefono {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name =  "id_telefono")
-    private Long idCorreo;
+    @Column(name =  "cod_telefono")
+    private Long codTelefono;
     
     @ManyToOne
     @JoinColumn(name = "cod_persona", nullable = false)
     private Persona persona;
 
-    private String descripcion;
+    @Column(name =  "numero_telefono")
+    private String numeroTelefono;
 
+    @Column(name =  "observacion")
     private String observacion;
     
 }

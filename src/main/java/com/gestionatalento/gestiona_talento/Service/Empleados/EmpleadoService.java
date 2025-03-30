@@ -19,7 +19,5 @@ public interface EmpleadoService {
     List<Empleado> obtenerAllEmpleado();
     Object buscarEmpleado(PersonaRequest request);
     Empleado actualizarEmpleado(EmpleadoDto empleadoDto);
-    //me busca todos los pasantes
-    Map<String, Object> findByAllPasante(Boolean pasante);
     
 }

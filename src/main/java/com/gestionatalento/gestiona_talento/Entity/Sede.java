@@ -5,30 +5,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "areas")
+@Table(name = "sedes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Area {
+public class Sede {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_area")
-    private Long id;
-
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "cod_sede")
+    private Long codSede;
 
     @Column(name = "descripcion")
     private String descripcion;
 
-    // Puedes añadir más campos según tu modelo
     @Column(name = "estado")
     private String estado;
 }

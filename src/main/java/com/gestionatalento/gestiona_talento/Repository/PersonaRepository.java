@@ -11,7 +11,7 @@ import com.gestionatalento.gestiona_talento.Entity.Persona;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona,Long> {
     // Método personalizado para buscar por nombre
-    public List<Persona> findByNombre(String nombre);
+    public List<Persona> findByNombres(String nombres);
     // Método personalizado para buscar por nombre
     public Optional<Persona> findByNroDocumento(String nroDocumento);
     

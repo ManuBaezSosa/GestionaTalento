@@ -2,6 +2,11 @@ package com.gestionatalento.gestiona_talento.Dto;
 
 import java.time.LocalDate;
 
+import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +17,15 @@ import lombok.NoArgsConstructor;
 public class PersonaDTO {
     private Long codPersona;
     private String nroDocumento;
+    private String nroRuc;
+    private String nombres;
+    private String apellidos;
+    private String codNivelEstudio;
+    private Long codPaisNacimiento;
+    private LocalDate fecNacimiento;
     private String lugarNacimiento;
-    private String nombre;
-    private String apellido;
-    private String ruc;
-    private String paisNacimineto;
-    private LocalDate fechaNacimiento;
-    private String formacionAcademica;
-    private Boolean poseeTitulo;
-    private Boolean poseeDispacidad;
-    private String descripcionDisca;
-    private String estadoCivil;
-    private String fotoPersona;
+    private String poseeDiscapacidad;
+    private String descripcionDiscapacidad;
+    private String rutaFoto;
+    private EstadoCivil estadoCivil;
 }

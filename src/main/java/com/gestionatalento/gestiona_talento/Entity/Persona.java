@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -24,26 +26,30 @@ import lombok.NoArgsConstructor;
 public class Persona {
     
     @Id
-    @Column(name = "cod_persona")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cod_persona")
     private Long codPersona;
-    
+
+    @OneToMany(mappedBy = "persona")
+    private List<Empleado> empleados;
     
     @Column(name = "nro_documento")
     private String nroDocumento;
     
-    private String ruc;
-    private String nombre;
-    private String apellido;
+    @Column(name = "nro_ruc")
+    private String nroRuc;
 
-    @Column(name = "titulo_universitario")
-    private String tituloUniversitario;
+    @Column(name = "nombres")
+    private String nombres;
 
-    @Column(name = "estado_civil")
-    private String estadoCivil;
+    @Column(name = "apellidos")
+    private String apellidos;
 
-    @Column(name = "pais_nacimiento")
-    private String paisNacimiento;
+    @Column(name = "cod_nivel_estudio")
+    private String codNivelEstudio;
+
+    @Column(name = "cod_pais_nacimiento")
+    private Long codPaisNacimiento;
 
     @Column(name = "fec_nacimiento")
     private LocalDate fecNacimiento;
@@ -51,14 +57,19 @@ public class Persona {
     @Column(name = "lugar_nacimiento")
     private String lugarNacimiento;
     
-    private Boolean discapacidad;
+    @Column(name = "posee_discapacidad")
+    private String poseeDiscapacidad;
     
-    @Column(name = "obs_discapacidad")
-    private String obsDiscapacidad;
+    @Column(name = "descripcion_discapacidad")
+    private String descripcionDiscapacidad;
     
     @Column(name = "ruta_foto")
     private String rutaFoto;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "cod_estado_civil", referencedColumnName = "cod_estado_civil")
+    private EstadoCivil estadoCivil;
+    
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Correo> correo;
 

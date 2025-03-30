@@ -1,7 +1,17 @@
 package com.gestionatalento.gestiona_talento.Request;
 
-import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+import com.gestionatalento.gestiona_talento.Entity.Cargo;
+import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Entity.Persona;
+import com.gestionatalento.gestiona_talento.Entity.Sede;
+import com.gestionatalento.gestiona_talento.Entity.SituacionLaboral;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +21,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmpleadoRequest {
-    private Long id_persona;
-    private Empleado empleado;
+    private Persona persona;
+    private String estado;
+    private LocalDate fecActoAdministrativo;
+    private LocalDate fecIngreso;
+    private LocalDate fecEgreso;
+    private String observacion;
+    private Double asignacion;
+    private String nroResolucion;
+    private LocalTime horaEntrada;
+    private LocalTime horaSalida;
+    private Cargo cargo;
+    private Sede sede;
+    private SituacionLaboral situacionLaboral;
 }
