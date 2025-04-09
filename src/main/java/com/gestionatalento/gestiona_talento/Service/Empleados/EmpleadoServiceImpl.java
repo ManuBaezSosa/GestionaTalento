@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,12 @@ import org.springframework.stereotype.Service;
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
+import com.gestionatalento.gestiona_talento.Mapper.EmpleadoMapper;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
-import com.gestionatalento.gestiona_talento.Request.EmpleadoRequest;
 import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Response.FindEmpleadoResponse;
+import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 
 import jakarta.transaction.Transactional;
 
@@ -34,61 +36,107 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Autowired
     PersonaRepository personaRepository;
 
-    //Para que exista el empleado primero debe de existir la persona 
+    /* Para que exista el empleado primero debe de existir la persona */
     @Override
-    public Empleado crearEmpleado(EmpleadoRequest request) {
-         // Primero buscamos a la persona
-         logger.info("Empleado: {}", request);
-        Optional<Persona> personaOpt = personaRepository.findById(request.getPersona().getCodPersona());
-        if (personaOpt.isPresent()) {
-            Persona persona = personaOpt.get();
-            
-
-            // Configuramos el empleado
-            Empleado empleadoPersona = new Empleado();
-
-            empleadoPersona.setPersona(persona);
-            empleadoPersona.setEstado(request.getEstado());
-            empleadoPersona.setFecActoAdministrativo(request.getFecActoAdministrativo());
-            empleadoPersona.setFecIngreso(request.getFecIngreso());
-            empleadoPersona.setFecEgreso(request.getFecEgreso());
-            empleadoPersona.setObservacion(request.getObservacion());
-            empleadoPersona.setAsignacion(request.getAsignacion());
-            empleadoPersona.setNroResolucion(request.getNroResolucion());
-            empleadoPersona.setHoraEntrada(request.getHoraEntrada());
-            empleadoPersona.setHoraSalida(request.getHoraSalida());
-            empleadoPersona.setCargo(request.getCargo());
-            empleadoPersona.setSede(request.getSede());
-            empleadoPersona.setSituacionLaboral(request.getSituacionLaboral());
-            
-            return empleadoRepository.save(empleadoPersona);
-        }
-    
-        throw new RuntimeException("No se encontró la persona con el ID proporcionado");
-
-        
+    public GenericResponse crearEmpleado(EmpleadoDto empleadoDto) {
+        /* Buscamos a la persona */
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En EmpleadoDto, en el Request: {}", empleadoDto);
+            Optional<Persona> personaResponse = personaRepository.findById(empleadoDto.getPersona().getCodPersona());
+            if (personaResponse.isPresent()) {
+                Persona persona = personaResponse.get();
+                Empleado empleadoExistente = empleadoRepository.findByCodPersonaEmpleadoActivo(persona.getCodPersona());
+                if (empleadoExistente == null) {
+                    /* Cargamos los datos del DTO al Empleado */
+                    Empleado empleado = EmpleadoMapper.setEmpleado(empleadoDto, persona);
+                    logger.info("En EmpleadoMapper, en el Request: {}", empleado);
+                    /* Guardamos el empleado */
+                    empleado = empleadoRepository.save(empleado);
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("200");
+                    genericResponse.setMensaje("Empleado dado de alta exitosamente");
+                    genericResponse.setObjeto(empleado);
+                    return genericResponse;
+                }else{
+                    genericResponse.setCodigoMensaje("409");
+                    genericResponse.setMensaje("Ya existe un empleado activo con la persona ingresada");
+                    genericResponse.setObjeto(null);
+                    return genericResponse;
+                }
+                
+            }else{
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No se encuentra una persona con el valor proporcionado. ID: " + empleadoDto.getPersona().getCodPersona());
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            return genericResponse;
+        }        
     }
 
     @Override
-    public Empleado eliminarEmpleado(Long codPersona) {
-        Optional<Empleado> empleadoOptional = empleadoRepository.findById(codPersona);
-        
-        if (empleadoOptional.isPresent()) {
-            empleadoRepository.deleteById(codPersona);
-            Empleado empleadoEliminado = empleadoOptional.get();
-            return empleadoEliminado;
-        } else {
-            throw new RuntimeException("No se encontró el Empleado con ID " + codPersona);
-        }
+    public GenericResponse actualizarEmpleado(EmpleadoDto empleadoDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En EmpleadoDto, en el Request: {}", empleadoDto);
+            Empleado empleadoExistente = empleadoRepository.findByIdEmpleadoActivo(empleadoDto.getCodEmpleado());
+            if (empleadoExistente != null) {
+                /* Cargamos los datos del DTO al Empleado */
+                Empleado empleado = EmpleadoMapper.setActualizarEmpleado(empleadoExistente, empleadoDto);
+                logger.info("En EmpleadoMapper, en el Request: {}", empleado);
+                /* Guardar cambios */
+                empleado = empleadoRepository.save(empleado);
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Empleado actualizado exitosamente");
+                genericResponse.setObjeto(empleado);
+                return genericResponse;
+            }else{
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No se encuentra un empleado activo con el valor proporcionado. ID: " + empleadoDto.getCodEmpleado());
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            return genericResponse;
+        }   
     }
 
     @Override
-    public List<Empleado> obtenerAllEmpleado() {
-        List<Empleado> validacionEmpleados = empleadoRepository.findAll();;
-        if(validacionEmpleados.isEmpty()){
-            throw new RuntimeException("No hay empleados" );
+    public GenericResponse bajarEmpleado(EmpleadoDto request) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(request.getCodEmpleado());
+            if (empleado != null) {
+                /* Asignamos los valores por baja de empleado */
+                empleado.setFecEgreso(request.getFecEgreso());
+                empleado.setEstado("I");
+                /* Enviamos el request */
+                empleadoRepository.save(empleado);
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Empleado dado de baja correctamente con valor proporcionado. ID: " + request.getCodEmpleado());
+                return genericResponse;
+            } else {
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No se encuentra un empleado activo con el valor proporcionado. ID: " + request.getCodEmpleado());
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            return genericResponse;
         }
-        return validacionEmpleados;
     }
 
     @Override
@@ -175,32 +223,4 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }
     }
 
-    @Override
-    public Empleado actualizarEmpleado(EmpleadoDto empleadoDto) {
-        if (empleadoDto.getCodEmpleado() == null) {
-            throw new RuntimeException("El ID del empleado no puede ser nulo");
-        }
-
-        // Buscar empleado existente
-        Empleado empleado = empleadoRepository.findById(empleadoDto.getCodEmpleado())
-                .orElseThrow(() -> new RuntimeException("El Empleado no fue hallado"));
-
-
-        // Actualizar datos solo si los valores no son nulos
-        Optional.ofNullable(empleadoDto.getCargo()).ifPresent(empleado::setCargo);
-        Optional.ofNullable(empleadoDto.getFecIngreso()).ifPresent(empleado::setFecIngreso);
-        Optional.ofNullable(empleadoDto.getFecActoAdministrativo()).ifPresent(empleado::setFecActoAdministrativo);
-        Optional.ofNullable(empleadoDto.getAsignacion()).ifPresent(empleado::setAsignacion);
-        Optional.ofNullable(empleadoDto.getSituacionLaboral()).ifPresent(empleado::setSituacionLaboral);
-        Optional.ofNullable(empleadoDto.getSede()).ifPresent(empleado::setSede);
-        Optional.ofNullable(empleadoDto.getNroResolucion()).ifPresent(empleado::setNroResolucion);
-        Optional.ofNullable(empleadoDto.getHoraEntrada()).ifPresent(empleado::setHoraEntrada);
-        Optional.ofNullable(empleadoDto.getHoraSalida()).ifPresent(empleado::setHoraSalida);
-        Optional.ofNullable(empleadoDto.getEstado()).ifPresent(empleado::setEstado);
-    
-        // Guardar cambios
-        return empleadoRepository.save(empleado);
-    }
-
-    
 }

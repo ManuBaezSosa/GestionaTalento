@@ -27,37 +27,34 @@ public class Persona {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_persona")
+    @Column(name = "cod_persona", nullable = false)
     private Long codPersona;
-
-    @OneToMany(mappedBy = "persona")
-    private List<Empleado> empleados;
     
-    @Column(name = "nro_documento")
+    @Column(name = "nro_documento", nullable = false, unique = true)
     private String nroDocumento;
     
     @Column(name = "nro_ruc")
     private String nroRuc;
 
-    @Column(name = "nombres")
+    @Column(name = "nombres", nullable = false)
     private String nombres;
 
-    @Column(name = "apellidos")
+    @Column(name = "apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "cod_nivel_estudio")
+    @Column(name = "cod_nivel_estudio", nullable = false)
     private String codNivelEstudio;
 
-    @Column(name = "cod_pais_nacimiento")
+    @Column(name = "cod_pais_nacimiento", nullable = false)
     private Long codPaisNacimiento;
 
-    @Column(name = "fec_nacimiento")
+    @Column(name = "fec_nacimiento", nullable = false)
     private LocalDate fecNacimiento;
 
-    @Column(name = "lugar_nacimiento")
+    @Column(name = "lugar_nacimiento", nullable = false)
     private String lugarNacimiento;
     
-    @Column(name = "posee_discapacidad")
+    @Column(name = "posee_discapacidad", nullable = false)
     private String poseeDiscapacidad;
     
     @Column(name = "descripcion_discapacidad")

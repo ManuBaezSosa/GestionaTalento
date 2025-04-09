@@ -5,17 +5,21 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gestionatalento.gestiona_talento.Dto.PersonaDTO;
-import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
+import com.gestionatalento.gestiona_talento.Mapper.PersonaMapper;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
 import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
+import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 
 @Service
 public class PersonaServiceImpl implements PersonaService{
+    private static final Logger logger = LoggerFactory.getLogger(PersonaServiceImpl.class);
 
     @Autowired
     PersonaRepository personaRepository;
@@ -26,10 +30,34 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public Persona crearPersona(Persona persona) {
-        
-        validarCampo(persona);
-        return personaRepository.save(persona);
+    public GenericResponse crearPersona(PersonaDto personaDto) {
+        /* Buscamos a la persona */
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En PersonaDto, en el Request: {}", personaDto);
+            Optional<Persona> personaResponse = personaRepository.findByNroDocumento(personaDto.getNroDocumento());
+            if (!personaResponse.isPresent()) {
+                Persona persona = PersonaMapper.setPersona(personaDto);
+                logger.info("En PersonaMapper, en el Request: {}", persona);
+                /* Guardamos la persona */
+                persona = personaRepository.save(persona);
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Persona creada exitosamente");
+                genericResponse.setObjeto(persona);
+                return genericResponse;
+            }else{
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("409");
+                genericResponse.setMensaje("Ya existe una persona con el numero de documento ingresado.");
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            return genericResponse;
+        }        
     }
 
     @Override
@@ -53,30 +81,49 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public Persona elimminarPersonaId(Long id) {
-        Persona personaEliminada = personaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("La persona con el ID " + id + " no existe"));
-        
-        personaRepository.delete(personaEliminada);
-        return personaEliminada;
+    public GenericResponse actualizarPersona(PersonaDto personaDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En PersonaDto, en el Request: {}", personaDto);
+            Optional<Persona> personaResponse = personaRepository.findById(personaDto.getCodPersona());
+            if (personaResponse.isPresent()) {
+                Persona personaOriginal = personaResponse.get();
+                logger.info("En personaOriginal, en el Request: {}", personaOriginal);
+                /* Cargamos los datos del DTO al Empleado */
+                Persona personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto);
+                logger.info(personaActualizada.getNroDocumento()+" hola " +personaOriginal.getNroDocumento());
+                if (personaActualizada.getNroDocumento() != personaOriginal.getNroDocumento()) {
+                    personaResponse = personaRepository.findByNroDocumento(personaActualizada.getNroDocumento());
+                    if (personaResponse.isPresent()) {
+                        genericResponse.setCodigoMensaje("409");
+                        genericResponse.setMensaje("Ya existe una persona con el numero de documento ingresado");
+                        genericResponse.setObjeto(personaActualizada);
+                        return genericResponse;
+                    }
+                }
+                logger.info("En PersonaMapper, en el Request: {}", personaActualizada);
+                /* Guardar cambios */
+                personaActualizada = personaRepository.save(personaActualizada);
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Persona actualizada exitosamente");
+                genericResponse.setObjeto(personaActualizada);
+                return genericResponse;
+            }else{
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No se encuentra la persona con el valor proporcionado. ID: " + personaDto.getCodPersona());
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            return genericResponse;
+        }   
     }
-
-
-    private void validarCampo(Persona personaCampo){
-           // Validar campos obligatorios
-        if (personaCampo.getNroDocumento() == null || personaCampo.getNroDocumento().trim().isEmpty()) {
-            throw new IllegalArgumentException("El numero de documento es obligatorio");
-        }
-        if (personaCampo.getNombres() == null || personaCampo.getNombres().trim().isEmpty()) {
-            throw new IllegalArgumentException("Los nombres son obligatorios");
-        }
-        if (personaCampo.getApellidos() == null || personaCampo.getApellidos().trim().isEmpty()) {
-            throw new IllegalArgumentException("Los apellidos son obligatorios");
-        }
-    }
-
-    @Override
-    public Persona actualizarPersona(PersonaDTO personaDTO) {
+    /*
+    public Persona actualizarPersona(PersonaDto personaDTO) {
         // Validar que el ID de la persona no sea nulo
         if (personaDTO.getCodPersona() == null) {
             throw new IllegalArgumentException("El ID de la persona no puede ser nulo");
@@ -103,7 +150,7 @@ public class PersonaServiceImpl implements PersonaService{
 
         // Guardar y devolver persona actualizada
         return personaRepository.save(personaDatosActuales);
-    }
+    }*/
 
 
     

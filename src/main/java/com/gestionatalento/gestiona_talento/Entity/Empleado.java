@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class Empleado {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Ahora `Empleado` tiene su propia PK
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // `Empleado` tiene su propia PK
     @Column(name = "cod_empleado")
     private Long codEmpleado;
 

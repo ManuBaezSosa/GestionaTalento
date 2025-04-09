@@ -7,6 +7,7 @@ import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonaDTO {
+public class PersonaDto {
     private Long codPersona;
+    @NotNull(message = "El numero de documento es obligatorio")
     private String nroDocumento;
     private String nroRuc;
+    @NotNull(message = "Los nombres son obligatorios")
     private String nombres;
+    @NotNull(message = "Los apellidos son obligatorios")
     private String apellidos;
     private String codNivelEstudio;
     private Long codPaisNacimiento;

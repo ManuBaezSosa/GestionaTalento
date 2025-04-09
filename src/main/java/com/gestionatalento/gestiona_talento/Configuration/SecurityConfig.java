@@ -47,7 +47,7 @@ public class SecurityConfig {
 
                     .requestMatchers("/empleados/**").permitAll()
 
-                    .requestMatchers("/api/v1/Persona/**").permitAll()
+                    .requestMatchers("/personas/**").permitAll()
 
                     // Cualquier otra solicitud requiere autenticación
                     //
