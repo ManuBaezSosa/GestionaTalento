@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
-import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.Service.Empleados.EmpleadoServiceImpl;
@@ -49,77 +51,43 @@ public class EmpleadoController {
 
     /* Este metodo crea los empleados, se debe de ver el metodo de crearEmpleado en la clase de EmpleadoServiceImpl */
     @PostMapping("/crear")
-    public ResponseEntity<?> crearEmpleado(@Valid @RequestBody EmpleadoDto empleadoDto) {
-        try {
-            // Intentamos crear el empleado
-            GenericResponse genericResponse = empleadoServiceImpl.crearEmpleado(empleadoDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(genericResponse);
-        } catch (Exception e) {
-            // Si hay un error en la creación del empleado, retornamos un error interno
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(
-                        "codigoMensaje", "500",
-                        "mensaje", "Ha ocurrido un error interno en el servidor al dar de alta el empleado: " + e.getMessage()
-                    ));
-        }
-    }
-    
-    // Handler de validación de errores
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        // Crear un objeto GenericResponse
+    public GenericResponse crearEmpleado(@Valid @RequestBody EmpleadoDto empleadoDto) {
         GenericResponse genericResponse = new GenericResponse();
-        genericResponse.setCodigoMensaje("400");
-        genericResponse.setMensaje("Existen campos con valores incorrectos");
-        
-        // Mapa para almacenar los errores de validación
-        Map<String, String> errors = new HashMap<>();
-        
-        // Llenar el mapa de errores con los mensajes de validación
-        BindingResult result = ex.getBindingResult();
-        for (FieldError fieldError : result.getFieldErrors()) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        try {
+            genericResponse = empleadoServiceImpl.crearEmpleado(empleadoDto);
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
-        
-        // Establecer los errores directamente en el campo 'objeto' del GenericResponse
-        genericResponse.setObjeto(errors);
-
-        // Usar LinkedHashMap para mantener el orden de inserción
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("codigoMensaje", genericResponse.getCodigoMensaje());
-        response.put("mensaje", genericResponse.getMensaje());
-        response.put("objeto", genericResponse.getObjeto());
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarEmpleado(@Valid @RequestBody EmpleadoDto empleadoDto) {
+    public GenericResponse actualizarEmpleado(@Valid @RequestBody EmpleadoDto empleadoDto) {
+        GenericResponse genericResponse = new GenericResponse();
         try {
-            GenericResponse genericResponse = empleadoServiceImpl.actualizarEmpleado(empleadoDto);
-            return ResponseEntity.status(HttpStatus.OK).body(genericResponse);
+            genericResponse = empleadoServiceImpl.actualizarEmpleado(empleadoDto);
+            return genericResponse;
         } catch (Exception e) {
-            // Si hay un error en la creación del empleado, retornamos un error interno
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(
-                        "codigoMensaje", "500",
-                        "mensaje", "Ha ocurrido un error interno en el servidor al actualizar el empleado: " + e.getMessage()
-                    ));
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 
     @GetMapping("/obtenerLista")
-    public ResponseEntity<?> listarPersonas() {
+    public GenericResponse listarPersonas() {
+        GenericResponse genericResponse = new GenericResponse();
         try {
             List<Empleado> empleados = empleadoRepository.findAll();
 
             // Verificamos si la lista está vacía
             if (empleados.isEmpty()) {
-                GenericResponse genericResponse = new GenericResponse();
                  /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
                 genericResponse.setMensaje("No existen empleados registrados");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(genericResponse);
+                return genericResponse;
             }
             
             // Creamos un contenedor para la respuesta
@@ -131,50 +99,74 @@ public class EmpleadoController {
                 response.put("empleado", empleado);  // Aquí agregamos el objeto Persona bajo la clave "persona"
                 responseList.add(response);
             }
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Han sido obtenidos los empleados correctamente");
+            genericResponse.setObjeto(responseList);
 
-            return ResponseEntity.ok(responseList);
+            return genericResponse;
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ocurrió un error inesperado: " + e.getMessage());
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 
-    @GetMapping("/obtener/id/{idEmpleado}")
-    public ResponseEntity<?> buscarEmpleado(@PathVariable Long idEmpleado) {
-        Optional<Empleado> empleado = empleadoRepository.findById(idEmpleado);
-
-        if (empleado.isPresent()) {
-            return ResponseEntity.ok(empleado.get()); // Si existe, devolver el objeto
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body("Empleado no encontrado con ID: " + idEmpleado);
+    @GetMapping("/obtener/id/{codEmpleado}")
+    public GenericResponse buscarEmpleado(@Valid @PathVariable Long codEmpleado) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            Optional<Empleado> empleado = empleadoRepository.findById(codEmpleado);
+            if (empleado.isPresent()) {
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Empleado obtenido exitosamente");
+                genericResponse.setObjeto(empleado.get());
+                return genericResponse; // Si existe, devolver el objeto
+            } else {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existe empleado registrado con el valor proporcionado. ID: " + codEmpleado);
+                return genericResponse;
+            }
+        } catch (Exception e){
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
+
     }
 
     @GetMapping("/obtener/documento/{nroDocumento}")
-    public ResponseEntity<?> buscarEmpleado(@PathVariable String nroDocumento) {
-        Optional<Empleado> empleado = empleadoRepository.findByNroDocumento(nroDocumento);
+    public GenericResponse buscarEmpleado(@PathVariable String nroDocumento) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            Optional<Empleado> empleado = empleadoRepository.findByNroDocumento(nroDocumento);
 
-        if (empleado.isPresent()) {
-            return ResponseEntity.ok(empleado.get()); // Si existe, devolver el objeto
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body("Empleado no encontrado con ID: " + nroDocumento);
+            if (empleado.isPresent()) {
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Empleado obtenido exitosamente");
+                genericResponse.setObjeto(empleado.get());
+                return genericResponse; // Si existe, devolver el objeto
+            } else {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existe empleado registrado con el valor proporcionado. NroDocumento: " + nroDocumento);
+                return genericResponse;
+            }
+        } catch (Exception e){
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 
     @PutMapping("/bajar")
-    public ResponseEntity<?> bajarEmpleado(@RequestBody EmpleadoDto request){
+    public GenericResponse bajarEmpleado(@RequestBody EmpleadoDto request){
+        GenericResponse genericResponse = new GenericResponse();
         try {
-            GenericResponse genericResponse = empleadoServiceImpl.bajarEmpleado(request);
-            return ResponseEntity.ok()
-                .body(genericResponse);
+            genericResponse = empleadoServiceImpl.bajarEmpleado(request);
+            return genericResponse;
         } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                .body(Map.of(
-                    "codigoMensaje", "500",
-                    "mensaje", "Ha ocurrido un error interno en el servidor al dar de Baja Empleado: " + e.getMessage()
-                ));
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 

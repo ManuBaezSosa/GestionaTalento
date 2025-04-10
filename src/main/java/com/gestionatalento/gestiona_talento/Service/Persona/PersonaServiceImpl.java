@@ -55,7 +55,7 @@ public class PersonaServiceImpl implements PersonaService{
         }catch (Exception e){
             /* Completamos los mensajes de retorno */
             genericResponse.setCodigoMensaje("500");
-            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }        
     }
@@ -89,15 +89,17 @@ public class PersonaServiceImpl implements PersonaService{
             if (personaResponse.isPresent()) {
                 Persona personaOriginal = personaResponse.get();
                 logger.info("En personaOriginal, en el Request: {}", personaOriginal);
+
                 /* Cargamos los datos del DTO al Empleado */
-                Persona personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto);
-                logger.info(personaActualizada.getNroDocumento()+" hola " +personaOriginal.getNroDocumento());
+                Persona personaActualizada = new Persona();
+                personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto);
+                logger.info(personaOriginal.getNroDocumento() + " hola " + personaActualizada.getNroDocumento());
                 if (personaActualizada.getNroDocumento() != personaOriginal.getNroDocumento()) {
                     personaResponse = personaRepository.findByNroDocumento(personaActualizada.getNroDocumento());
                     if (personaResponse.isPresent()) {
                         genericResponse.setCodigoMensaje("409");
                         genericResponse.setMensaje("Ya existe una persona con el numero de documento ingresado");
-                        genericResponse.setObjeto(personaActualizada);
+                        genericResponse.setObjeto(null);
                         return genericResponse;
                     }
                 }
@@ -118,7 +120,7 @@ public class PersonaServiceImpl implements PersonaService{
         }catch (Exception e){
             /* Completamos los mensajes de retorno */
             genericResponse.setCodigoMensaje("500");
-            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }   
     }

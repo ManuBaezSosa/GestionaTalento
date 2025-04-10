@@ -74,7 +74,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }catch (Exception e){
             /* Completamos los mensajes de retorno */
             genericResponse.setCodigoMensaje("500");
-            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }        
     }
@@ -105,7 +105,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }catch (Exception e){
             /* Completamos los mensajes de retorno */
             genericResponse.setCodigoMensaje("500");
-            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }   
     }
@@ -134,7 +134,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }catch (Exception e){
             /* Completamos los mensajes de retorno */
             genericResponse.setCodigoMensaje("500");
-            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor " + e.getMessage());
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
     }

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Jwt.ApplicationConfig;
@@ -48,77 +47,46 @@ public class PersonaController {
 
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse crearPersona(@Valid @RequestBody PersonaDto personaDto) {
+        GenericResponse genericResponse = new GenericResponse();
         try {
             // Intentamos crear el empleado
-            GenericResponse genericResponse = personaServiceImpl.crearPersona(personaDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(genericResponse);
+            genericResponse = personaServiceImpl.crearPersona(personaDto);
+            return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(
-                        "codigoMensaje", "500",
-                        "mensaje", "Ha ocurrido un error interno en el servidor al crear la persona: " + e.getMessage()
-                    ));
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
-    }
-
-    // Handler de validación de errores
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        // Crear un objeto GenericResponse
-        GenericResponse genericResponse = new GenericResponse();
-        genericResponse.setCodigoMensaje("400");
-        genericResponse.setMensaje("Existen campos con valores incorrectos");
-        
-        // Mapa para almacenar los errores de validación
-        Map<String, String> errors = new HashMap<>();
-        
-        // Llenar el mapa de errores con los mensajes de validación
-        BindingResult result = ex.getBindingResult();
-        for (FieldError fieldError : result.getFieldErrors()) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        
-        // Establecer los errores directamente en el campo 'objeto' del GenericResponse
-        genericResponse.setObjeto(errors);
-
-        // Usar LinkedHashMap para mantener el orden de inserción
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("codigoMensaje", genericResponse.getCodigoMensaje());
-        response.put("mensaje", genericResponse.getMensaje());
-        response.put("objeto", genericResponse.getObjeto());
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto) {
+        GenericResponse genericResponse = new GenericResponse();
         try {
-            GenericResponse genericResponse = personaServiceImpl.actualizarPersona(personaDto);
-            return ResponseEntity.status(HttpStatus.OK).body(genericResponse);
+            genericResponse = personaServiceImpl.actualizarPersona(personaDto);
+            return genericResponse;
         } catch (Exception e) {
-            // Si hay un error en la creación de la persona, retornamos un error interno
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(
-                        "codigoMensaje", "500",
-                        "mensaje", "Ha ocurrido un error interno en el servidor al crear la persona: " + e.getMessage()
-                    ));
+            // Si hay un error en la creación del empleado, retornamos un error interno
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 
     @GetMapping("/obtenerLista")
-    public ResponseEntity<?> listarPersonas() {
+    public GenericResponse listarPersonas() {
+        GenericResponse genericResponse = new GenericResponse();
         try {
             List<Persona> personas = personaRepository.findAll();
 
             // Verificamos si la lista está vacía
             if (personas.isEmpty()) {
-                GenericResponse genericResponse = new GenericResponse();
                  /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
                 genericResponse.setMensaje("No existen personas registradas");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(genericResponse);
+                return genericResponse;
             }
             
             // Creamos un contenedor para la respuesta
@@ -130,11 +98,16 @@ public class PersonaController {
                 response.put("persona", persona);  // Aquí agregamos el objeto Persona bajo la clave "persona"
                 responseList.add(response);
             }
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Han sido obtenidas las personas correctamente");
+            genericResponse.setObjeto(responseList);
 
-            return ResponseEntity.ok(responseList);
+            return genericResponse;
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ocurrió un error inesperado: " + e.getMessage());
+            // Si hay un error en la creación del empleado, retornamos un error interno
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
         }
     }
 

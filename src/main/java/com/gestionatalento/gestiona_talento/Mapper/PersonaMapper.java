@@ -24,18 +24,32 @@ public interface PersonaMapper {
         return persona;
     }
     public static Persona setActualizarPersona(Persona persona, PersonaDto personaDto) {
-        Optional.ofNullable(personaDto.getNroDocumento()).ifPresent(persona::setNroDocumento);
-        Optional.ofNullable(personaDto.getNroRuc()).ifPresent(persona::setNroRuc);
-        Optional.ofNullable(personaDto.getNombres()).ifPresent(persona::setNombres);
-        Optional.ofNullable(personaDto.getApellidos()).ifPresent(persona::setApellidos);
-        Optional.ofNullable(personaDto.getCodNivelEstudio()).ifPresent(persona::setCodNivelEstudio);
-        Optional.ofNullable(personaDto.getCodPaisNacimiento()).ifPresent(persona::setCodPaisNacimiento);
-        Optional.ofNullable(personaDto.getFecNacimiento()).ifPresent(persona::setFecNacimiento);
-        Optional.ofNullable(personaDto.getLugarNacimiento()).ifPresent(persona::setLugarNacimiento);
-        Optional.ofNullable(personaDto.getPoseeDiscapacidad()).ifPresent(persona::setPoseeDiscapacidad);
-        Optional.ofNullable(personaDto.getDescripcionDiscapacidad()).ifPresent(persona::setDescripcionDiscapacidad);
-        Optional.ofNullable(personaDto.getRutaFoto()).ifPresent(persona::setRutaFoto);
-        return persona;
+        Persona personaActualizada = new Persona();
+        personaActualizada.setCodPersona(persona.getCodPersona());
+        personaActualizada.setNroDocumento(persona.getNroDocumento());
+        personaActualizada.setNroRuc(persona.getNroRuc());
+        personaActualizada.setNombres(persona.getNombres());
+        personaActualizada.setApellidos(persona.getApellidos());
+        personaActualizada.setCodNivelEstudio(persona.getCodNivelEstudio());
+        personaActualizada.setCodPaisNacimiento(persona.getCodPaisNacimiento());
+        personaActualizada.setFecNacimiento(persona.getFecNacimiento());
+        personaActualizada.setLugarNacimiento(persona.getLugarNacimiento());
+        personaActualizada.setPoseeDiscapacidad(persona.getPoseeDiscapacidad());
+        personaActualizada.setDescripcionDiscapacidad(persona.getDescripcionDiscapacidad());
+        personaActualizada.setRutaFoto(persona.getRutaFoto());
+
+        Optional.ofNullable(personaDto.getNroDocumento()).ifPresent(personaActualizada::setNroDocumento);
+        Optional.ofNullable(personaDto.getNroRuc()).ifPresent(personaActualizada::setNroRuc);
+        Optional.ofNullable(personaDto.getNombres()).ifPresent(personaActualizada::setNombres);
+        Optional.ofNullable(personaDto.getApellidos()).ifPresent(personaActualizada::setApellidos);
+        Optional.ofNullable(personaDto.getCodNivelEstudio()).ifPresent(personaActualizada::setCodNivelEstudio);
+        Optional.ofNullable(personaDto.getCodPaisNacimiento()).ifPresent(personaActualizada::setCodPaisNacimiento);
+        Optional.ofNullable(personaDto.getFecNacimiento()).ifPresent(personaActualizada::setFecNacimiento);
+        Optional.ofNullable(personaDto.getLugarNacimiento()).ifPresent(personaActualizada::setLugarNacimiento);
+        Optional.ofNullable(personaDto.getPoseeDiscapacidad()).ifPresent(personaActualizada::setPoseeDiscapacidad);
+        Optional.ofNullable(personaDto.getDescripcionDiscapacidad()).ifPresent(personaActualizada::setDescripcionDiscapacidad);
+        Optional.ofNullable(personaDto.getRutaFoto()).ifPresent(personaActualizada::setRutaFoto);
+        return personaActualizada;
     }
     
 }
