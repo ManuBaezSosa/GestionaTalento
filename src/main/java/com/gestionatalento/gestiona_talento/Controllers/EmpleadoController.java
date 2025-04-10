@@ -170,4 +170,31 @@ public class EmpleadoController {
         }
     }
 
+    @GetMapping("/altas")
+    public ResponseEntity<GenericResponse> obtenerInformeAltas(@RequestParam("periodo") String periodo) {
+        GenericResponse response = empleadoServiceImpl.obtenerInformeAltas(periodo);
+        return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
+    }
+
+    @GetMapping("/bajas")
+    public ResponseEntity<GenericResponse> obtenerInformeBajas(@RequestParam("periodo") String periodo) {
+        GenericResponse response = empleadoServiceImpl.obtenerInformeBajas(periodo);
+        return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
+    }
+
+    @GetMapping("/modificaionSalario")
+    public ResponseEntity<GenericResponse> obtenerInformeHistoricoAsignacion(@RequestParam("periodo") String periodo) {
+        GenericResponse response = empleadoServiceImpl.obtenerInformeHistoricoAsignacion(periodo);
+        return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
+    }
+
+    private HttpStatus getStatusFromCodigo(String codigo) {
+        switch (codigo) {
+            case "200": return HttpStatus.OK;
+            case "404": return HttpStatus.NOT_FOUND;
+            case "409": return HttpStatus.CONFLICT;
+            default: return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
 }

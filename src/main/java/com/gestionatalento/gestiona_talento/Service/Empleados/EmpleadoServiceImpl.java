@@ -13,6 +13,7 @@ import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
@@ -35,6 +36,9 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     EmpleadoRepository empleadoRepository;
     @Autowired
     PersonaRepository personaRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
 
     /* Para que exista el empleado primero debe de existir la persona */
     @Override
@@ -221,6 +225,55 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }else {
             return "No posee antiguedad";
         }
+    }
+
+    public GenericResponse obtenerInformeAltas(String periodo) {
+        GenericResponse response = new GenericResponse();
+        try {
+            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("CALL sp_informe_altas(?)", periodo);
+            response.setCodigoMensaje("200");
+            response.setMensaje("Informe de altas generado exitosamente.");
+            response.setObjeto(resultado);
+        } catch (Exception e) {
+            response.setCodigoMensaje("500");
+            response.setMensaje("Error al obtener el informe de altas: " + e.getMessage());
+            response.setObjeto(null);
+        }
+        return response;
+    }
+
+    public GenericResponse obtenerInformeBajas(String periodo) {
+        GenericResponse response = new GenericResponse();
+        try {
+            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("CALL sp_informe_bajas(?)", periodo);
+            response.setCodigoMensaje("200");
+            response.setMensaje("Informe de bajas generado exitosamente.");
+            response.setObjeto(resultado);
+        } catch (Exception e) {
+            response.setCodigoMensaje("500");
+            response.setMensaje("Error al obtener el informe de bajas: " + e.getMessage());
+            response.setObjeto(null);
+        }
+        return response;
+    }
+
+    public GenericResponse obtenerInformeHistoricoAsignacion(String periodo) {
+        GenericResponse response = new GenericResponse();
+        try {
+            List<Map<String, Object>> resultado = jdbcTemplate.queryForList(
+                "CALL sp_informe_historico_asignacion(?)", 
+                periodo
+            );
+            
+            response.setCodigoMensaje("200");
+            response.setMensaje("Informe histórico de asignaciones generado exitosamente.");
+            response.setObjeto(resultado);
+        } catch (Exception e) {
+            response.setCodigoMensaje("500");
+            response.setMensaje("Error al obtener el informe histórico de asignaciones: " + e.getMessage());
+            response.setObjeto(null);
+        }
+        return response;
     }
 
 }
