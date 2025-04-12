@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
+import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Jwt.ApplicationConfig;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
@@ -31,6 +32,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -105,6 +107,29 @@ public class PersonaController {
             return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
+
+    @GetMapping("/obtener/documento/{nroDocumento}")
+    public GenericResponse buscarEmpleado(@PathVariable String nroDocumento) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            Optional<Persona> persona = personaRepository.findByNroDocumento(nroDocumento);
+
+            if (persona.isPresent()) {
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Persona obtenida exitosamente");
+                genericResponse.setObjeto(persona.get());
+                return genericResponse; // Si existe, devolver el objeto
+            } else {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existe persona registrada con el valor proporcionado. NroDocumento: " + nroDocumento);
+                return genericResponse;
+            }
+        } catch (Exception e){
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
