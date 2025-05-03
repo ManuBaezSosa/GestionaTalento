@@ -2,6 +2,7 @@ package com.gestionatalento.gestiona_talento.Entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -27,4 +28,18 @@ public class MarcacionExportadaTmpPK implements Serializable {
 
     public LocalDateTime getFecMarcacion() { return fecMarcacion; }
     public void setFecMarcacion(LocalDateTime fecMarcacion) { this.fecMarcacion = fecMarcacion; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MarcacionExportadaTmpPK)) return false;
+        MarcacionExportadaTmpPK that = (MarcacionExportadaTmpPK) o;
+        return Objects.equals(codUsuario, that.codUsuario) &&
+               Objects.equals(fecMarcacion, that.fecMarcacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codUsuario, fecMarcacion);
+    }
 }

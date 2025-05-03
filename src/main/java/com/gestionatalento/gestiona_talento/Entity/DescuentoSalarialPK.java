@@ -2,6 +2,7 @@ package com.gestionatalento.gestiona_talento.Entity;
 
 import java.io.Serializable;
 
+import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -26,4 +27,18 @@ public class DescuentoSalarialPK implements Serializable {
 
     public String getCodPeriodo() { return codPeriodo; }
     public void setCodPeriodo(String codPeriodo) { this.codPeriodo = codPeriodo; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DescuentoSalarialPK)) return false;
+        DescuentoSalarialPK that = (DescuentoSalarialPK) o;
+        return Objects.equals(codEmpleado, that.codEmpleado) &&
+               Objects.equals(codPeriodo, that.codPeriodo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codEmpleado, codPeriodo);
+    }
 }
