@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,6 @@ import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 @RestController
 @RequestMapping("/marcaciones/exportacion")
 public class MarcacionExportadaTmpController {
-
     @Autowired
     MarcacionExportadaTmpRepository marcacionExportadaRepository;
 
@@ -49,14 +50,13 @@ public class MarcacionExportadaTmpController {
                     continue;
                 }
 
-                String[] datos = line.split(",");
+                String[] datos = line.split(";");
                 MarcacionExportadaTmpDto marcacionExportadaTmpDto = new MarcacionExportadaTmpDto();
 
                 UsuarioExportadoTmp usuarioExportadoTmp = new UsuarioExportadoTmp();
                 usuarioExportadoTmp.setCodUsuario(Long.parseLong(datos[0].trim()));
                 marcacionExportadaTmpDto.setUsuarioExportadoTmp(usuarioExportadoTmp);
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy HH:mm:ss"); 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
                 LocalDateTime fechaMarcacion = LocalDateTime.parse(datos[1].trim(), formatter);
                 marcacionExportadaTmpDto.setFecMarcacion(fechaMarcacion);
 

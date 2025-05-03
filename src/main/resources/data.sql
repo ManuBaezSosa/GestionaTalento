@@ -1,3 +1,4 @@
+DELETE FROM DESCUENTOS_SALARIALES;
 DELETE FROM EMPLEADOS;
 DELETE FROM PERSONAS;
 DELETE FROM USUARIOS;
@@ -75,9 +76,14 @@ VALUES (5, 'PASANTIA UNIVERSITARIA', 'A');
 INSERT INTO USUARIOS(COD_USUARIO, ADMIN, PASSWORD, USERNAME)
 VALUES (1, 1, "$2a$10$foCsZkbjViW4kioy84PPAupIk8G.kb80X29q6wKtV3mDpYTqkk/J6", "juan"); /*Contraseña: 12345*/
 
-/*CREAMOS LAS VISTAS TANTO PARA LAS ALTAS, BAJAS Y MODIFICACIONES*/
---USE proyecto2; --AQUI DEBE IR EL NOMBRE DEL ESQUEMA DE LA BASE DE DATOS  /* USAMOS MIENTRAS PUBLIC, COMENTAMOS */
-CREATE VIEW v_informe_altas AS 
+--- =============================================================== ---
+--- SECCION PROCEDIMINENTOS, TRIGGERS Y VISTAS PARA LOS INFORMES
+--- SE DEBE TENER CUIDADO QUE SE DEBE CAMBIAR LA BASE DE DATOS, ES DECIR EN MI CASO ES proyecto2
+--- =============================================================== ---
+
+/* CREAMOS LAS VISTAS TANTO PARA LAS ALTAS */
+--USE proyecto2; --AQUI DEBE IR EL NOMBRE DEL ESQUEMA DE LA BASE DE DATOS
+CREATE OR REPLACE VIEW v_informe_altas AS 
 SELECT 
     p.nro_documento AS "C.I.N°",
     p.apellidos AS "APELLIDOS",
@@ -103,8 +109,9 @@ WHERE
 ORDER BY 
     e.fec_ingreso DESC;
 
---USE proyecto2; /* USAMOS MIENTRAS PUBLIC, COMENTAMOS */
-CREATE VIEW v_informe_bajas AS 
+/* CREAMOS LAS VISTAS TANTO PARA LAS BAJAS */
+--USE proyecto2;-- Se le debe cambiar el nombre por el esquema correcto
+CREATE OR REPLACE VIEW v_informe_bajas AS 
 SELECT 
     p.nro_documento AS "C.I.N°",
     p.apellidos AS "APELLIDOS",
@@ -130,48 +137,134 @@ WHERE
 ORDER BY 
     e.fec_ingreso DESC;
 
+/* CREAMOS EL PROCEDIMINENTO PARA LAS ALTAS */
+DELIMITER //
+CREATE PROCEDURE sp_informe_altas(
+    IN p_periodo VARCHAR(6) -- Formato "MMAAAA" (ej. "032025" para marzo 2025)
+)
+BEGIN
+    DECLARE v_fecha_inicio DATE;
+    DECLARE v_fecha_fin DATE;
+    
+    -- Extraer el mes y año del período
+    SET @mes = SUBSTRING(p_periodo, 1, 2);
+    SET @anio = SUBSTRING(p_periodo, 3, 4);
+    
+    -- Calcular el primer y último día del mes
+    SET v_fecha_inicio = STR_TO_DATE(CONCAT(@anio, '-', @mes, '-01'), '%Y-%m-%d');
+    SET v_fecha_fin = LAST_DAY(v_fecha_inicio);
+    
+    -- Ejecutar el informe de altas
+    SELECT * FROM v_informe_altas 
+    WHERE FECHA_ALTA BETWEEN v_fecha_inicio AND v_fecha_fin;
+END //
+DELIMITER ;
+	
+--- =============================================================== ---
+--- PARA CREAR LOS REPORTES DE CAMBIO DE SALIARIO SE DEDE CREAR
+--- =============================================================== ---
 
+-- 1. UNA TABLA DONDE SE ALMACENEN LOS HISTORICOS
+CREATE TABLE historico_asignacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nro_documento VARCHAR(20),
+    apellidos VARCHAR(100),
+    nombres VARCHAR(100),
+    dependencia VARCHAR(100),
+    departamento_division VARCHAR(100),
+    cargo VARCHAR(100),
+    salario_anterior DECIMAL(12,2),
+    diferencia DECIMAL(12,2),
+    salario_actual DECIMAL(12,2),
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    usuario_modificacion VARCHAR(50),
+    nro_resolucion VARCHAR(50)
+);
 
-
- 
-/*Si solo necesitas insertar datos al iniciar la aplicación, puedes usar un archivo data.sql en src/main/resources/:
-
-📌 Crea el archivo data.sql y agrega tus INSERTs:
-
-sql
-Copiar
-Editar
-INSERT INTO empleados (id_persona, nombre, apellido, email, salario)
-VALUES (1, 'Juan', 'Pérez', 'juan.perez@example.com', 50000);
-
-INSERT INTO empleados (id_persona, nombre, apellido, email, salario)
-VALUES (2, 'Ana', 'Gómez', 'ana.gomez@example.com', 55000);
-📌 Configura Spring Boot para ejecutar data.sql en application.properties o application.yml:
-
-properties
-Copiar
-Editar
-spring.sql.init.mode=always
-
-
-INSERT IGNORE INTO empleados (id_persona, nombre, apellido, email, salario)
-VALUES (1, 'Juan', 'Pérez', 'juan.perez@example.com', 50000);
-
-INSERT IGNORE INTO empleados (id_persona, nombre, apellido, email, salario)
-VALUES (2, 'Ana', 'Gómez', 'ana.gomez@example.com', 55000);
-*/
-
-/*
-🔹 Opción 3: Configurar Spring Boot para ejecutar data.sql solo en la primera ejecución
-En application.properties, usa esta configuración para que data.sql solo se ejecute cuando la base de datos esté vacía:
-
-properties
-Copiar
-Editar
-spring.sql.init.mode=always
-spring.jpa.hibernate.ddl-auto=update
-Si ddl-auto=update, Spring Boot solo creará tablas si no existen y luego ejecutará data.sql solo la primera vez.
-
-✅ Ventaja: Spring Boot se encarga de manejar la base de datos sin sobrescribir datos.
-❌ Desventaja: No funciona si la base de datos ya está poblada y se cambia ddl-auto.
-*/
+-- 2. UN TRIGGER DONDE SE PUEDA POBLAR ESTA TABLA
+-- Primero elimina el trigger existente
+DROP TRIGGER IF EXISTS tr_actualizar_historico_asignacion;
+-- Luego crea el nuevo trigger
+DELIMITER //
+CREATE TRIGGER tr_actualizar_historico_asignacion 
+AFTER UPDATE ON empleados
+FOR EACH ROW
+BEGIN
+    IF NEW.asignacion <> OLD.asignacion THEN
+        INSERT INTO historico_asignacion (
+            nro_documento,
+            apellidos,
+            nombres,
+            dependencia,
+            departamento_division,
+            cargo,
+            salario_anterior,
+            diferencia,
+            salario_actual,
+            fecha_modificacion,  -- Añadida explícitamente
+            usuario_modificacion,
+            nro_resolucion
+        )
+        SELECT 
+            p.nro_documento,
+            p.apellidos,
+            p.nombres,
+            s.descripcion,
+            c.descripcion,
+            sl.descripcion,
+            OLD.asignacion,
+            (NEW.asignacion - OLD.asignacion),
+            NEW.asignacion,
+            NOW(),  -- Función MySQL que devuelve la fecha y hora actual
+            CURRENT_USER(),
+            NEW.nro_resolucion
+        FROM 
+            personas p
+        JOIN 
+            cargos c ON NEW.cod_cargo = c.cod_cargo
+        JOIN 
+            sedes s ON NEW.cod_sede = s.cod_sede
+        JOIN 
+            situaciones_laborales sl ON NEW.cod_situacion_laboral = sl.cod_situacion_laboral
+        WHERE 
+            p.cod_persona = NEW.cod_persona;
+    END IF;
+END //
+DELIMITER ;
+-- 3. CREAMOS UN PROCEDIMINENTO DONDE PUEDA REFLEJAR EL INFORME CORRESPONDIENTE
+CREATE PROCEDURE sp_informe_historico_asignacion(
+    IN p_periodo VARCHAR(6) -- Formato "MMAAAA" (ej. "032025" para marzo 2025)
+)
+BEGIN
+    DECLARE v_fecha_inicio DATE;
+    DECLARE v_fecha_fin DATE;
+    
+    -- Extraer el mes y año del período
+    SET @mes = SUBSTRING(p_periodo, 1, 2);
+    SET @anio = SUBSTRING(p_periodo, 3, 4);
+    
+    -- Calcular el primer y último día del mes
+    SET v_fecha_inicio = STR_TO_DATE(CONCAT(@anio, '-', @mes, '-01'), '%Y-%m-%d');
+    SET v_fecha_fin = LAST_DAY(v_fecha_inicio);
+    
+    -- Ejecutar el informe de modificaciones de asignación
+    SELECT 
+        ROW_NUMBER() OVER() AS "N",
+        nro_documento AS "C.I.N°",
+        apellidos AS "APELLIDOS",
+        nombres AS "NOMBRES",
+        dependencia AS "DEPENDENCIA",
+        departamento_division AS "DEPARTAMENTO O DIVISION",
+        cargo AS "CARGO",
+        salario_anterior AS "SAL. ANTERIOR",
+        diferencia AS "DIFERENCIA",
+        salario_actual AS "SAL. ACTUAL",
+        nro_resolucion AS "REF"
+    FROM 
+        historico_asignacion
+    WHERE 
+        fecha_modificacion BETWEEN v_fecha_inicio AND v_fecha_fin
+    ORDER BY 
+        fecha_modificacion DESC;
+END //
+DELIMITER ;

@@ -16,6 +16,8 @@ import com.gestionatalento.gestiona_talento.Dto.UsuarioExportadoTmpDto;
 import com.gestionatalento.gestiona_talento.Entity.UsuarioExportadoTmp;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioExportadoTmpRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
+import com.gestionatalento.gestiona_talento.ServiceImpl.EventoServiceImpl;
+import com.gestionatalento.gestiona_talento.ServiceImpl.UsuarioExportadoServiceImpl;
 
 @RestController
 @RequestMapping("/marcaciones/exportacion")
@@ -23,6 +25,9 @@ public class UsuarioExportadoTmpController {
 
     @Autowired
     UsuarioExportadoTmpRepository usuarioExportadoRepository;
+
+    @Autowired
+    UsuarioExportadoServiceImpl usuarioExportadoServiceImpl;
 
     @PostMapping("/cargar-usuario")
     public GenericResponse cargarUsuario(@RequestParam("file") MultipartFile file) {
@@ -33,6 +38,15 @@ public class UsuarioExportadoTmpController {
             return genericResponse;
         }
 
+        try {
+            genericResponse = usuarioExportadoServiceImpl.cargarUsuario(file);
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+/*
         try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             boolean firstLine = true;
@@ -44,7 +58,7 @@ public class UsuarioExportadoTmpController {
                     continue;
                 }
 
-                String[] datos = line.split(",");
+                String[] datos = line.split(";");
                 UsuarioExportadoTmpDto usuarioExportadoDto = new UsuarioExportadoTmpDto();
                 usuarioExportadoDto.setCodUsuario(Long.parseLong(datos[0].trim()));
                 usuarioExportadoDto.setNroDocumento(datos[1].trim());
@@ -67,7 +81,7 @@ public class UsuarioExportadoTmpController {
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
-        }
+        }*/
         
     }
 }

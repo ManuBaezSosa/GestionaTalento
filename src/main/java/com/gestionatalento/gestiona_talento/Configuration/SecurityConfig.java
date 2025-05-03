@@ -53,6 +53,8 @@ public class SecurityConfig {
 
                     .requestMatchers("/descuentos-salariales/**").permitAll()
 
+                    .requestMatchers("/marcaciones/**").permitAll()
+
 
                     // Cualquier otra solicitud requiere autenticación
                     //

@@ -182,7 +182,7 @@ public class EmpleadoController {
         return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
     }
 
-    @GetMapping("/modificaionSalario")
+    @GetMapping("/modificacionSalario")
     public ResponseEntity<GenericResponse> obtenerInformeHistoricoAsignacion(@RequestParam("periodo") String periodo) {
         GenericResponse response = empleadoServiceImpl.obtenerInformeHistoricoAsignacion(periodo);
         return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
