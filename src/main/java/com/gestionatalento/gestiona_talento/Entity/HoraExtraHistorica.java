@@ -19,8 +19,8 @@ public class HoraExtraHistorica {
     
     @Id
     @ManyToOne
-    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona")
-    private Persona persona;
+    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado")
+    private Empleado empleado;
 
     @Id
     @Column(name = "cod_periodo")

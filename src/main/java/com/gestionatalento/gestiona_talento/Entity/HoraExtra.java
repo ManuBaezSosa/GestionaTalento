@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -17,14 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HoraExtra {
     
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona")
-    private Persona persona;
+    @EmbeddedId
+    private HoraExtraPK id;
 
-    @Id
-    @Column(name = "cod_periodo")
-    private String codPeriodo;
+    @ManyToOne
+    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado", insertable = false, updatable = false)
+    private Empleado empleado;
 
     @Column(name = "hora_extra")
     private int horaExtra;

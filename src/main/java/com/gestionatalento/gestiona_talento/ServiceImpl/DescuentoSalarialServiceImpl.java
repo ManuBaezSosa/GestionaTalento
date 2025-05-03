@@ -144,7 +144,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getCodPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                genericResponse.setMensaje("No existe empleado activo con el valor proporcionado. ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){
