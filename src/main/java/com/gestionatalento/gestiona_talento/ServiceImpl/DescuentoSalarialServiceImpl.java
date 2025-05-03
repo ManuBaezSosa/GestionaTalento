@@ -100,6 +100,32 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
     }
 
     @Override
+    public GenericResponse eliminarDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En DescuentoSalarialDto, en el Request: {}", descuentoSalarialDto);
+            DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+            if (descuentoSalarialFind != null) {
+                descuentoSalarialRepository.deleteByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Descuento Salarial eliminado exitosamente");
+                genericResponse.setObjeto(descuentoSalarialDto);
+                return genericResponse;
+            }else{
+                /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getCodPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                return genericResponse;
+            }
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }   
+    }
+
+    @Override
     public GenericResponse calcularDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto) {
         GenericResponse genericResponse = new GenericResponse();
         try{

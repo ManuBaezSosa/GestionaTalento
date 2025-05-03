@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 
 @Service
-public interface UsuarioExportadoService {
-    GenericResponse cargarUsuario(MultipartFile file);
+public interface MarcacionExportadaTmpService {
+    GenericResponse cargarMarcacion(MultipartFile file);
 }

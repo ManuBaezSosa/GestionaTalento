@@ -20,6 +20,7 @@ import com.gestionatalento.gestiona_talento.ServiceImpl.DescuentoSalarialService
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -49,6 +50,19 @@ public class DescuentoSalarialController {
         GenericResponse genericResponse = new GenericResponse();
         try {
             genericResponse = descuentoSalarialServiceImpl.actualizarDescuentoSalarial(descuentoSalarialDto);
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
+
+    @DeleteMapping("/eliminar")
+    public GenericResponse eliminarDescuentoSalarial(@Valid @RequestBody DescuentoSalarialDto descuentoSalarialDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try {
+            genericResponse = descuentoSalarialServiceImpl.eliminarDescuentoSalarial(descuentoSalarialDto);
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");

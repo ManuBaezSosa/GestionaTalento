@@ -10,5 +10,6 @@ import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 public interface DescuentoSalarialService {
     GenericResponse crearDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto);
     GenericResponse actualizarDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto);
+    GenericResponse eliminarDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto);
     GenericResponse calcularDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto);
 }
