@@ -101,6 +101,14 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.2.Final</version> <!-- Usa la última versión disponible -->
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
 		
 	</dependencies>
 
