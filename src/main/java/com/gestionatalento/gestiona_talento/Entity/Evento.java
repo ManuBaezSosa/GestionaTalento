@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
-import java.time.LocalDate;
+import java.sql.Date;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,29 +16,33 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "eventos")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "justificativos")
-public class Justificativo {
+@NoArgsConstructor
+public class Evento {
+    
     @Id
-    @Column(name = "nro_justificativo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long nroJustificativo;
+    @Column(name = "nro_evento")
+    private Long nroEvento;
 
     @Column(name = "fecha")
-    private LocalDate fecha;
+    private Date fecha;
 
     @Column(name = "descripcion")
     private String descripcion;
-
-    @Column(name = "tipo")
-    private String tipo;
-
-    @Column(name = "estado")
-    private String estado;
-
+    
     @ManyToOne
-    @JoinColumn(name = "cod_persona")
-    private Persona persona;
+    @JoinColumn(name = "cod_tip_evento", referencedColumnName = "cod_tip_evento")
+    private TipoEvento tipoEvento;
+
+    @Column(name = "hora_inicial")
+    private LocalTime horaInicial;
+    
+    @Column(name = "hora_final")
+    private LocalTime horaFinal;
+
+    @Column(name = "vigente")
+    private String vigente;
 }

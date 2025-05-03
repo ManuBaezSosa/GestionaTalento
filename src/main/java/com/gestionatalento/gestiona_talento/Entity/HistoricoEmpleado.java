@@ -28,7 +28,7 @@ public class HistoricoEmpleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_persona")
+    @Column(name = "cod_persona")
     private Long codPersona;
 
     //Persona que realiza la modificacion

@@ -13,26 +13,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "usuarios_exportados")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "correos")
-public class Correo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name =  "cod_correo")
-    private Long codCorreo;
+@NoArgsConstructor
+public class UsuarioExportado {
     
-    @ManyToOne
-    @JoinColumn(name = "cod_persona", nullable = false)
-    private Persona persona;
+    @Id
+    @Column(name = "cod_usuario")
+    private Long codUsuario;
 
-    @Column(name =  "correo")
-    private String correo;
-
-    @Column(name =  "observacion")
-    private String observacion;
-
-
+    @Column(name = "nro_documento")
+    private String nroDocumento;
 
 }

@@ -1,38 +1,34 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.sql.Date;
+import java.time.LocalTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "tipos_eventos")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "correos")
-public class Correo {
+@NoArgsConstructor
+public class TipoEvento {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name =  "cod_correo")
-    private Long codCorreo;
+    @Column(name = "cod_tip_evento")
+    private Long codTipEvento;
+
+    @Column(name = "descripcion")
+    private Date descripcion;
+
+    @Column(name = "activo")
+    private String activo;
     
-    @ManyToOne
-    @JoinColumn(name = "cod_persona", nullable = false)
-    private Persona persona;
-
-    @Column(name =  "correo")
-    private String correo;
-
-    @Column(name =  "observacion")
-    private String observacion;
-
-
-
 }

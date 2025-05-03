@@ -49,6 +49,11 @@ public class SecurityConfig {
 
                     .requestMatchers("/personas/**").permitAll()
 
+                    .requestMatchers("/configuraciones/**").permitAll()
+
+                    .requestMatchers("/descuentos-salariales/**").permitAll()
+
+
                     // Cualquier otra solicitud requiere autenticación
                     //
                     .anyRequest().authenticated()

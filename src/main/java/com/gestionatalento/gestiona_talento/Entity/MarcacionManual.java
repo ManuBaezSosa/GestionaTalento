@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,26 +15,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "marcaciones_manuales")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "correos")
-public class Correo {
+@NoArgsConstructor
+public class MarcacionManual {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name =  "cod_correo")
-    private Long codCorreo;
-    
+    @Column(name = "nro_marcacion")
+    private Long nroMarcacion;
+
     @ManyToOne
-    @JoinColumn(name = "cod_persona", nullable = false)
+    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona")
     private Persona persona;
 
-    @Column(name =  "correo")
-    private String correo;
-
-    @Column(name =  "observacion")
-    private String observacion;
-
-
-
+    @Column(name = "fec_marcacion")
+    private LocalDateTime fecMarcacion;
 }

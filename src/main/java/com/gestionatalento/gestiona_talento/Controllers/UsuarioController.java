@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gestionatalento.gestiona_talento.Entity.Usuario;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 import com.gestionatalento.gestiona_talento.Request.UsuarioRequest;
-import com.gestionatalento.gestiona_talento.Service.Usuario.UsuarioServiceImpl;
+import com.gestionatalento.gestiona_talento.ServiceImpl.UsuarioServiceImpl;
 
 
 @RestController

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,39 +12,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
-import com.gestionatalento.gestiona_talento.Entity.Persona;
-import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
+import com.gestionatalento.gestiona_talento.Dto.DescuentoSalarialDto;
+import com.gestionatalento.gestiona_talento.Entity.DescuentoSalarial;
+import com.gestionatalento.gestiona_talento.Repository.DescuentoSalarialRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
-import com.gestionatalento.gestiona_talento.ServiceImpl.PersonaServiceImpl;
+import com.gestionatalento.gestiona_talento.ServiceImpl.DescuentoSalarialServiceImpl;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 
 @RestController
-@RequestMapping("/personas") // Define la ruta base para todas las solicitudes
-public class PersonaController {
-
+@RequestMapping("/descuentos-salariales")
+public class DescuentoSalarialController {
 
     @Autowired
-    PersonaRepository  personaRepository;
+    DescuentoSalarialRepository descuentoSalarialRepository;
     @Autowired
-    PersonaServiceImpl personaServiceImpl;
-
-
+    DescuentoSalarialServiceImpl descuentoSalarialServiceImpl;
 
     @PostMapping("/crear")
-    public GenericResponse crearPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse crearDescuentoSalarial(@Valid @RequestBody DescuentoSalarialDto descuentoSalarialDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            // Intentamos crear el empleado
-            genericResponse = personaServiceImpl.crearPersona(personaDto);
+            genericResponse = descuentoSalarialServiceImpl.crearDescuentoSalarial(descuentoSalarialDto);
             return genericResponse;
         } catch (Exception e) {
-            // Si hay un error en la creación del empleado, retornamos un error interno
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
@@ -53,13 +45,12 @@ public class PersonaController {
     }
 
     @PutMapping("/actualizar")
-    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse actualizarDescuentoSalarial(@Valid @RequestBody DescuentoSalarialDto descuentoSalarialDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = personaServiceImpl.actualizarPersona(personaDto);
+            genericResponse = descuentoSalarialServiceImpl.actualizarDescuentoSalarial(descuentoSalarialDto);
             return genericResponse;
         } catch (Exception e) {
-            // Si hay un error en la creación del empleado, retornamos un error interno
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
@@ -67,63 +58,49 @@ public class PersonaController {
     }
 
     @GetMapping("/obtenerLista")
-    public GenericResponse listarPersonas() {
+    public GenericResponse listarDescuentos() {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            List<Persona> personas = personaRepository.findAll();
+            List<DescuentoSalarial> descuentos = descuentoSalarialRepository.findAll();
 
             // Verificamos si la lista está vacía
-            if (personas.isEmpty()) {
+            if (descuentos.isEmpty()) {
                  /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No existen personas registradas");
+                genericResponse.setMensaje("No existen descuentos salariales registrados");
                 return genericResponse;
             }
             
             // Creamos un contenedor para la respuesta
             List<Map<String, Object>> responseList = new ArrayList<>();
 
-            // Para cada persona en la lista, envolvemos el objeto en un mapa con la clave "persona"
-            for (Persona persona : personas) {
+            for (DescuentoSalarial descuentoSalarial : descuentos) {
                 Map<String, Object> response = new HashMap<>();
-                response.put("persona", persona);  // Aquí agregamos el objeto Persona bajo la clave "persona"
+                response.put("descuentoSalarial", descuentoSalarial); 
                 responseList.add(response);
             }
             genericResponse.setCodigoMensaje("200");
-            genericResponse.setMensaje("Han sido obtenidas las personas correctamente");
+            genericResponse.setMensaje("Han sido obtenidos los descuentos salariales correctamente");
             genericResponse.setObjeto(responseList);
 
             return genericResponse;
         } catch (Exception e) {
-            // Si hay un error en la creación del empleado, retornamos un error interno
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
     }
 
-    @GetMapping("/obtener/documento/{nroDocumento}")
-    public GenericResponse buscarEmpleado(@PathVariable String nroDocumento) {
+    @GetMapping("/calcular")
+    public GenericResponse calcularDescuentoSalarial(@Valid @RequestBody DescuentoSalarialDto descuentoSalarialDto) {
         GenericResponse genericResponse = new GenericResponse();
-        try{
-            Optional<Persona> persona = personaRepository.findByNroDocumento(nroDocumento);
-
-            if (persona.isPresent()) {
-                genericResponse.setCodigoMensaje("200");
-                genericResponse.setMensaje("Persona obtenida exitosamente");
-                genericResponse.setObjeto(persona.get());
-                return genericResponse; // Si existe, devolver el objeto
-            } else {
-                genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No existe persona registrada con el valor proporcionado. NroDocumento: " + nroDocumento);
-                return genericResponse;
-            }
-        } catch (Exception e){
+        try {
+            genericResponse = descuentoSalarialServiceImpl.calcularDescuentoSalarial(descuentoSalarialDto);
+            return genericResponse;
+        } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
     }
-
-
 }

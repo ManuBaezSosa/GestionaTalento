@@ -25,7 +25,7 @@ import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
-import com.gestionatalento.gestiona_talento.Service.Empleados.EmpleadoServiceImpl;
+import com.gestionatalento.gestiona_talento.ServiceImpl.EmpleadoServiceImpl;
 
 import io.jsonwebtoken.lang.Collections;
 import jakarta.validation.Valid;
