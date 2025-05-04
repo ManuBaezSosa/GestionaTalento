@@ -103,7 +103,7 @@ public class PersonaController {
     }
 
     @GetMapping("/obtener/documento/{nroDocumento}")
-    public GenericResponse buscarEmpleado(@PathVariable String nroDocumento) {
+    public GenericResponse buscarPersona(@PathVariable String nroDocumento) {
         GenericResponse genericResponse = new GenericResponse();
         try{
             Optional<Persona> persona = personaRepository.findByNroDocumento(nroDocumento);

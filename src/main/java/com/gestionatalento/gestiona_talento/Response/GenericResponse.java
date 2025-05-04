@@ -11,4 +11,5 @@ public class GenericResponse {
     private String codigoMensaje;
     private String mensaje;
     private Object objeto;
+    private String datoAdicional;
 }

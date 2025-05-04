@@ -94,7 +94,8 @@ public class PersonaServiceImpl implements PersonaService{
                 /* Cargamos los datos del DTO al Empleado */
                 Persona personaActualizada = new Persona();
                 personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto);
-                if (personaActualizada.getNroDocumento() != personaOriginal.getNroDocumento()) {
+                logger.info("En PersonaMapper, en el Request: {}", personaActualizada);
+                if (!personaActualizada.getNroDocumento().equals(personaOriginal.getNroDocumento())) {
                     personaResponse = personaRepository.findByNroDocumento(personaActualizada.getNroDocumento());
                     if (personaResponse.isPresent()) {
                         genericResponse.setCodigoMensaje("409");
@@ -103,7 +104,6 @@ public class PersonaServiceImpl implements PersonaService{
                         return genericResponse;
                     }
                 }
-                logger.info("En PersonaMapper, en el Request: {}", personaActualizada);
                 /* Guardar cambios */
                 personaActualizada = personaRepository.save(personaActualizada);
                 /* Completamos los mensajes de retorno */

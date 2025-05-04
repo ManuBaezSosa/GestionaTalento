@@ -1,5 +1,6 @@
 DELETE FROM DESCUENTOS_SALARIALES;
 DELETE FROM HORAS_EXTRAS;
+DELETE FROM EVENTOS;
 DELETE FROM JUSTIFICATIVOS;
 DELETE FROM MARCACIONES_MANUALES;
 DELETE FROM EMPLEADOS;
@@ -81,8 +82,45 @@ VALUES (5, 'PASANTIA UNIVERSITARIA', 'A');
 INSERT INTO USUARIOS(COD_USUARIO, ADMIN, PASSWORD, USERNAME)
 VALUES (1, 1, "$2a$10$foCsZkbjViW4kioy84PPAupIk8G.kb80X29q6wKtV3mDpYTqkk/J6", "juan"); /*Contraseña: 12345*/
 
-INSERT INTO TIPOS_JUSTIFICATIVOS(COD_TIP_JUSTIFICATIVO, DESCRIPCION, ACTIVO)
-VALUES (1, 'REPOSO MEDICO', 'S');
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (1, 'S', 'Reposo Medico');
 
-INSERT INTO TIPOS_JUSTIFICATIVOS(COD_TIP_JUSTIFICATIVO, DESCRIPCION, ACTIVO)
-VALUES (2, 'VACACIONES', 'S');
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (2, 'S', 'Permiso por Maternidad');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (3, 'S', 'Permiso por Lactancia');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (4, 'S', 'Permiso por Paternidad');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (5, 'S', 'Duelo');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (6, 'S', 'Permiso Particular');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (7, 'S', 'Orden de Trabajo');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (8, 'S', 'Otros');
+
+insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
+values (9, 'S', 'Vacaciones');
+
+
+insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
+values (1, 'S', 'Feriado');
+
+insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
+values (2, 'S', 'Asueto');
+
+insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
+values (3, 'S', 'Otros');
+
+insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
+values (4, 'S', 'Con Exoneracion de Entrada');
+
+insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
+values (5, 'S', 'Con Exoneracion de Salida');

@@ -10,7 +10,7 @@ import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 @Service
 public interface EmpleadoService {
     GenericResponse crearEmpleado(EmpleadoDto request);
-    Object buscarEmpleado(PersonaRequest request);
+   // Object buscarEmpleado(PersonaRequest request);
     GenericResponse actualizarEmpleado(EmpleadoDto empleadoDto);
     GenericResponse bajarEmpleado(EmpleadoDto empleadoDto);
     

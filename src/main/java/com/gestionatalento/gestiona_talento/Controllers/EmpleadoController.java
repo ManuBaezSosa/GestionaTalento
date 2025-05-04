@@ -81,28 +81,24 @@ public class EmpleadoController {
         GenericResponse genericResponse = new GenericResponse();
         try {
             List<Empleado> empleados = empleadoRepository.findAll();
-
+    
             // Verificamos si la lista está vacía
             if (empleados.isEmpty()) {
-                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
                 genericResponse.setMensaje("No existen empleados registrados");
                 return genericResponse;
             }
-            
-            // Creamos un contenedor para la respuesta
-            List<Map<String, Object>> responseList = new ArrayList<>();
-
-            // Para cada persona en la lista, envolvemos el objeto en un mapa con la clave "persona"
-            for (Empleado empleado : empleados) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("empleado", empleado);  // Aquí agregamos el objeto Persona bajo la clave "persona"
-                responseList.add(response);
-            }
+    
+            // Creamos una lista de respuesta para agregar los objetos empleados directamente
+            List<Empleado> responseList = new ArrayList<>();
+    
+            // Añadimos cada empleado directamente a la lista de respuesta
+            responseList.addAll(empleados);
+    
             genericResponse.setCodigoMensaje("200");
             genericResponse.setMensaje("Han sido obtenidos los empleados correctamente");
-            genericResponse.setObjeto(responseList);
-
+            genericResponse.setObjeto(responseList);  // Ahora la respuesta es una lista de empleados directamente
+    
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");
@@ -131,23 +127,47 @@ public class EmpleadoController {
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
-
     }
 
     @GetMapping("/obtener/documento/{nroDocumento}")
     public GenericResponse buscarEmpleado(@PathVariable String nroDocumento) {
         GenericResponse genericResponse = new GenericResponse();
         try{
-            Optional<Empleado> empleado = empleadoRepository.findByNroDocumento(nroDocumento);
+            List<Empleado> empleados = empleadoRepository.findByNroDocumento(nroDocumento);
 
-            if (empleado.isPresent()) {
+            if (!empleados.isEmpty()) {
                 genericResponse.setCodigoMensaje("200");
                 genericResponse.setMensaje("Empleado obtenido exitosamente");
-                genericResponse.setObjeto(empleado.get());
+                genericResponse.setObjeto(empleados);
                 return genericResponse; // Si existe, devolver el objeto
             } else {
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No existe empleado registrado con el valor proporcionado. NroDocumento: " + nroDocumento);
+                genericResponse.setMensaje("No existe empleado registrado con el valor proporcionado.");
+                genericResponse.setDatoAdicional("Nro de Documento: " + nroDocumento);
+                return genericResponse;
+            }
+        } catch (Exception e){
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
+
+    @GetMapping("/obtener/documento/activo/{nroDocumento}")
+    public GenericResponse buscarEmpleadoActivo(@PathVariable String nroDocumento) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            Empleado empleados = empleadoRepository.findByNroDocumentoEmpleadoActivo(nroDocumento);
+
+            if (empleados != null) {
+                genericResponse.setCodigoMensaje("200");
+                genericResponse.setMensaje("Empleado obtenido exitosamente");
+                genericResponse.setObjeto(empleados);
+                return genericResponse; // Si existe, devolver el objeto
+            } else {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existe empleado activo registrado con el valor proporcionado.");
+                genericResponse.setDatoAdicional("Nro de Documento: " + nroDocumento);
                 return genericResponse;
             }
         } catch (Exception e){

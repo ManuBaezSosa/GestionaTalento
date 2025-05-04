@@ -11,9 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "empleados")
+@Table(name = "empleados", uniqueConstraints = @UniqueConstraint(columnNames = {"cod_persona", "fec_acto_administrativo"}))
+
 public class Empleado {
 
     @Id
@@ -33,7 +33,6 @@ public class Empleado {
     @ManyToOne
     @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona")  // Clave foránea a `Persona`
     private Persona persona;
-    
     
     @Column(name = "estado")
     private String estado;

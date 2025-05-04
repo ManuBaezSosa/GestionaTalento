@@ -145,22 +145,25 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     /* Busqueda utilizada en Menu Principal del Front, para busqueda por nombre o nro_documento */
-    @Override
+  /*  @Override
     public Object buscarEmpleado(PersonaRequest request) {
         // Validación del tipo de búsqueda
         if (request.getTipoBusqueda() == null || request.getValor() == null) {
             throw new IllegalArgumentException("Debes proporcionar el tipo de búsqueda y un valor");
         }
-
+        List<Empleado> empleadoPersona;
         switch (request.getTipoBusqueda()) {
             case "nroDocumento":
-                return mapToFindEmpleadoResponse(
-                    empleadoRepository.findByNroDocumento(request.getValor())
-                    .orElseThrow(() -> new RuntimeException("La persona con el documento proporcionado no existe"))
-                );
+                empleadoPersona = empleadoRepository.findByNroDocumento(request.getValor());
+                if (empleadoPersona.isEmpty()) {
+                    throw new RuntimeException("La persona con el numero de documento proporcionado no existe");
+                }
+                return empleadoPersona.stream()
+                    .map(this::mapToFindEmpleadoResponse)
+                    .collect(Collectors.toList());
 
             case "nombres":
-                List<Empleado> empleadoPersona = empleadoRepository.findByNombre(request.getValor());
+                empleadoPersona = empleadoRepository.findByNombre(request.getValor());
                 if (empleadoPersona.isEmpty()) {
                     throw new RuntimeException("La persona con el nombre proporcionado no existe");
                 }
@@ -172,7 +175,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
                 throw new IllegalArgumentException("Tipo de búsqueda no válido. Use 'nroDocumento' o 'nombre'");
         }
     }
-
+*/
     private FindEmpleadoResponse mapToFindEmpleadoResponse(Empleado empleado) {
         FindEmpleadoResponse response = new FindEmpleadoResponse();
         

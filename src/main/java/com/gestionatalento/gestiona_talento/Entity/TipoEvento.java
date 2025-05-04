@@ -26,7 +26,7 @@ public class TipoEvento {
     private Long codTipEvento;
 
     @Column(name = "descripcion")
-    private Date descripcion;
+    private String descripcion;
 
     @Column(name = "activo")
     private String activo;
