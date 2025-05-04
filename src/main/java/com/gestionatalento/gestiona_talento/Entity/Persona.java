@@ -66,28 +66,5 @@ public class Persona {
     @ManyToOne
     @JoinColumn(name = "cod_estado_civil", referencedColumnName = "cod_estado_civil")
     private EstadoCivil estadoCivil;
-    
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Correo> correo;
-
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Telefono> telefono;
-
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    private List<Justificativo> justificativos;
-    
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    private List<Contrato> contratos;
-
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    private List<Comisionado> comisionados;
-
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    private List<PlanillaSalario> planillaSalario;
-
-    
-
-
-
 
 }

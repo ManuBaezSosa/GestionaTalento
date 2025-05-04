@@ -57,6 +57,8 @@ public class SecurityConfig {
 
                     .requestMatchers("/horas-extras/**").permitAll()
 
+                    .requestMatchers("/justificativos/**").permitAll()
+
 
                     // Cualquier otra solicitud requiere autenticación
                     //

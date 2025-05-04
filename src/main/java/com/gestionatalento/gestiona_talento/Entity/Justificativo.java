@@ -1,5 +1,6 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -26,13 +27,14 @@ public class Justificativo {
     private Long nroJustificativo;
 
     @Column(name = "fecha")
-    private LocalDate fecha;
+    private Date fecha;
 
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name = "tipo")
-    private String tipo;
+    @ManyToOne
+    @JoinColumn(name = "cod_tip_justificativo", referencedColumnName = "cod_tip_justificativo")
+    private TipoJustificativo tipoJustificativo;
 
     @Column(name = "estado")
     private String estado;
