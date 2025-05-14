@@ -48,17 +48,21 @@ public interface DescuentoSalarialMapper {
     
     private static Double calcularDescuentoSalarial(DescuentoSalarialDto descuentoSalarialDto, Empleado empleado){
         Double jornal, mtoEntradasTardias, mtoSalidasAnticipadas, mtoAusencias, mtoDescuento;
-
+    
         jornal = Math.round((empleado.getAsignacion() / 30) * 100.0) / 100.0;
+    
         if (descuentoSalarialDto.getEntradaTardia() > 2) {
             mtoEntradasTardias = (jornal * (descuentoSalarialDto.getEntradaTardia() - 2));
-        }else{
+        } else {
             mtoEntradasTardias = 0.00;
         }
+    
         mtoSalidasAnticipadas = (jornal * descuentoSalarialDto.getSalidaAnticipada());
         mtoAusencias = (jornal * descuentoSalarialDto.getAusencia());
+        
         mtoDescuento = mtoEntradasTardias + mtoSalidasAnticipadas + mtoAusencias;
-
-        return mtoDescuento;
+    
+        // Redondear mtoDescuento a cero decimales
+        return (double) Math.round(mtoDescuento);
     }
 }

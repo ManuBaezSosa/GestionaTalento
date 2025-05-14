@@ -65,7 +65,7 @@ public class MarcacionManualController {
         }
     }
 
-    @GetMapping("/obtener")
+    @PostMapping("/obtener")
     public GenericResponse obtenerMarcaciones(@Valid @RequestBody MarcacionVistaDtoRequest marcacionVistaDtoRequest) {
         GenericResponse genericResponse = new GenericResponse();
         try {

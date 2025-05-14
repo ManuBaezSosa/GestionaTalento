@@ -105,7 +105,7 @@ public class HoraExtraController {
         }
     }
 
-    @GetMapping("/calcular")
+    @PostMapping("/calcular")
     public GenericResponse calcularHoraExtra(@Valid @RequestBody HoraExtraDto horaExtraDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {

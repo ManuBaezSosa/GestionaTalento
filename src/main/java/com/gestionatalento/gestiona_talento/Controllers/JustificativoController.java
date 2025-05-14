@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionatalento.gestiona_talento.Dto.JustificativoDto;
+import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Entity.Justificativo;
 import com.gestionatalento.gestiona_talento.Repository.JustificativoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
@@ -57,32 +58,56 @@ public class JustificativoController {
         }
     }
 
-    @GetMapping("/obtenerLista")
-    public GenericResponse listarMarcaciones() {
+    @GetMapping("/obtenerListaJustificativos")
+    public GenericResponse listarJustificativos() {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            List<Justificativo> justificativos = justificativoRepository.findAll();
-
+            List<Justificativo> justificativos = justificativoRepository.listarJustificativos();
+    
             // Verificamos si la lista está vacía
             if (justificativos.isEmpty()) {
-                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
                 genericResponse.setMensaje("No existen justificativos registrados");
                 return genericResponse;
             }
-            
-            // Creamos un contenedor para la respuesta
-            List<Map<String, Object>> responseList = new ArrayList<>();
-
-            for (Justificativo justificativo : justificativos) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("justificativo", justificativo); 
-                responseList.add(response);
-            }
+    
+            List<Justificativo> responseList = new ArrayList<>();
+    
+            responseList.addAll(justificativos);
+    
             genericResponse.setCodigoMensaje("200");
-            genericResponse.setMensaje("Han sido obtenidas todos los justificativos correctamente");
-            genericResponse.setObjeto(responseList);
+            genericResponse.setMensaje("Han sido obtenidos los justificativos correctamente");
+            genericResponse.setObjeto(responseList); 
+    
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
 
+    @GetMapping("/obtenerListaVacaciones")
+    public GenericResponse listarVacaciones() {
+        GenericResponse genericResponse = new GenericResponse();
+        try {
+            List<Justificativo> justificativos = justificativoRepository.listarVacaciones();
+    
+            // Verificamos si la lista está vacía
+            if (justificativos.isEmpty()) {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existen vacaciones registradas");
+                return genericResponse;
+            }
+    
+            List<Justificativo> responseList = new ArrayList<>();
+    
+            responseList.addAll(justificativos);
+    
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Han sido obtenidas las vacaciones correctamente");
+            genericResponse.setObjeto(responseList); 
+    
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");

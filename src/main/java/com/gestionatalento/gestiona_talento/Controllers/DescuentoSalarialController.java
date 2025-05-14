@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionatalento.gestiona_talento.Dto.DescuentoSalarialDto;
 import com.gestionatalento.gestiona_talento.Entity.DescuentoSalarial;
+import com.gestionatalento.gestiona_talento.Entity.Justificativo;
 import com.gestionatalento.gestiona_talento.Repository.DescuentoSalarialRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.ServiceImpl.DescuentoSalarialServiceImpl;
@@ -72,31 +73,26 @@ public class DescuentoSalarialController {
     }
 
     @GetMapping("/obtenerLista")
-    public GenericResponse listarDescuentos() {
+    public GenericResponse listarDescuentosSalariales() {
         GenericResponse genericResponse = new GenericResponse();
         try {
             List<DescuentoSalarial> descuentos = descuentoSalarialRepository.findAll();
-
+    
             // Verificamos si la lista está vacía
             if (descuentos.isEmpty()) {
-                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
                 genericResponse.setMensaje("No existen descuentos salariales registrados");
                 return genericResponse;
             }
-            
-            // Creamos un contenedor para la respuesta
-            List<Map<String, Object>> responseList = new ArrayList<>();
-
-            for (DescuentoSalarial descuentoSalarial : descuentos) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("descuentoSalarial", descuentoSalarial); 
-                responseList.add(response);
-            }
+    
+            List<DescuentoSalarial> responseList = new ArrayList<>();
+    
+            responseList.addAll(descuentos);
+    
             genericResponse.setCodigoMensaje("200");
-            genericResponse.setMensaje("Han sido obtenidos los descuentos salariales correctamente");
-            genericResponse.setObjeto(responseList);
-
+            genericResponse.setMensaje("Han sido obtenidos todos los descuentos salariales correctamente");
+            genericResponse.setObjeto(responseList); 
+    
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");
@@ -105,7 +101,7 @@ public class DescuentoSalarialController {
         }
     }
 
-    @GetMapping("/calcular")
+    @PostMapping("/calcular")
     public GenericResponse calcularDescuentoSalarial(@Valid @RequestBody DescuentoSalarialDto descuentoSalarialDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
