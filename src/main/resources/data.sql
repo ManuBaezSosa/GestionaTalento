@@ -1,3 +1,4 @@
+delete from flyway_schema_history;
 DELETE FROM DESCUENTOS_SALARIALES;
 DELETE FROM HORAS_EXTRAS;
 DELETE FROM EVENTOS;
@@ -80,7 +81,7 @@ INSERT INTO SITUACIONES_LABORALES(COD_SITUACION_LABORAL, DESCRIPCION, ESTADO)
 VALUES (5, 'PASANTIA UNIVERSITARIA', 'A');
 
 INSERT INTO USUARIOS(COD_USUARIO, ADMIN, PASSWORD, USERNAME)
-VALUES (1, 1, "$2a$10$foCsZkbjViW4kioy84PPAupIk8G.kb80X29q6wKtV3mDpYTqkk/J6", "juan"); /*Contraseña: 12345*/
+VALUES (1, true, '$2a$10$foCsZkbjViW4kioy84PPAupIk8G.kb80X29q6wKtV3mDpYTqkk/J6', 'juan'); /*Contraseña: 12345*/
 
 insert into TIPOS_JUSTIFICATIVOS (cod_tip_justificativo, ACTIVO, descripcion)
 values (1, 'S', 'Reposo Medico');

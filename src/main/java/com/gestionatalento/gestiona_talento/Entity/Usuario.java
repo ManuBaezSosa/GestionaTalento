@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "usuarios", schema = "prueba")
+@Table(name = "usuarios")
 public class Usuario implements UserDetails {
     
     @Id

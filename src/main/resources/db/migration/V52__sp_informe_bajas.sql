@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION sp_informe_altas(p_periodo VARCHAR(6))
+CREATE OR REPLACE FUNCTION sp_informe_bajas(p_periodo VARCHAR(6))
 RETURNS TABLE (
     "C.I.N°" VARCHAR(20),
     "APELLIDOS" VARCHAR(100),
@@ -23,7 +23,7 @@ BEGIN
     v_fecha_fin := (v_fecha_inicio + INTERVAL '1 month') - INTERVAL '1 day';
 
     RETURN QUERY 
-    SELECT * FROM v_informe_altas 
+    SELECT * FROM v_informe_bajas
     WHERE "FECHA_ALTA" BETWEEN v_fecha_inicio AND v_fecha_fin;
 END;
 $$ LANGUAGE plpgsql;
