@@ -4,7 +4,6 @@ package com.gestionatalento.gestiona_talento.Service;
 import org.springframework.stereotype.Service;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
-import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 
 @Service

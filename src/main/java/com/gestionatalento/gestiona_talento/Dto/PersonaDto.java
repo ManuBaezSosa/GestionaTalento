@@ -3,6 +3,7 @@ package com.gestionatalento.gestiona_talento.Dto;
 import java.time.LocalDate;
 
 import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
+import com.gestionatalento.gestiona_talento.Entity.Pais;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -25,7 +26,7 @@ public class PersonaDto {
     @NotNull(message = "Los apellidos son obligatorios")
     private String apellidos;
     private String codNivelEstudio;
-    private Long codPaisNacimiento;
+    private Pais pais;
     private LocalDate fecNacimiento;
     private String lugarNacimiento;
     private String poseeDiscapacidad;

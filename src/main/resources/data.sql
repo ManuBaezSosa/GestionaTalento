@@ -1,4 +1,10 @@
 delete from flyway_schema_history;
+DELETE FROM PARAMETROS_SALARIALES;
+DELETE FROM SUBPROGRAMAS;
+DELETE FROM PROGRAMAS;
+DELETE FROM OBJETOS_GASTOS;
+DELETE FROM FUENTES_FINANCIAMIENTOS;
+DELETE FROM PRESUPUESTOS;
 DELETE FROM DESCUENTOS_SALARIALES;
 DELETE FROM HORAS_EXTRAS;
 DELETE FROM EVENTOS;
@@ -15,6 +21,9 @@ DELETE FROM ESTADOS_CIVILES;
 DELETE FROM CARGOS;
 DELETE FROM DEPARTAMENTOS;
 DELETE FROM DIRECCIONES;
+DELETE FROM PARAMETROS;
+DELETE FROM PERIODOS;
+DELETE FROM PAISES;
 
 INSERT INTO DIRECCIONES (COD_DIRECCION, DESCRIPCION, ESTADO)
 VALUES (1, 'DIRECCION DE GESTION Y DESARROLLO DE PERSONAS', 'A');
@@ -125,3 +134,298 @@ values (4, 'S', 'Con Exoneracion de Entrada');
 
 insert into TIPOS_EVENTOS (cod_tip_evento, ACTIVO, descripcion)
 values (5, 'S', 'Con Exoneracion de Salida');
+
+INSERT INTO programas
+(cod_programa, descripcion, cod_situacion_laboral)
+VALUES(1, 'Legislativo Municipal', 2);
+INSERT INTO programas
+(cod_programa, descripcion, cod_situacion_laboral)
+VALUES(2, 'Ejecutivo Municipal', 2);
+INSERT INTO programas
+(cod_programa, descripcion, cod_situacion_laboral)
+VALUES(3, 'Ejecutivo Municipal', 1);
+
+INSERT INTO subprogramas
+(cod_subprograma, descripcion)
+VALUES(1, 'Junta Municipal');
+INSERT INTO subprogramas
+(cod_subprograma, descripcion)
+VALUES(2, 'Intendencia Municipal');
+INSERT INTO subprogramas
+(cod_subprograma, descripcion)
+VALUES(3, 'Administracion y Finanzas');
+INSERT INTO subprogramas
+(cod_subprograma, descripcion)
+VALUES(5, 'Obras y Servicios Municipales');
+
+INSERT INTO presupuestos
+(cod_presupuesto, descripcion)
+VALUES(1, 'Actividades Centrales');
+INSERT INTO presupuestos
+(cod_presupuesto, descripcion)
+VALUES(2, 'Servicios Personales');
+
+INSERT INTO fuentes_financiamientos
+(cod_fuente_financiamiento, descripcion)
+VALUES(1, 'Recursos Propios');
+INSERT INTO fuentes_financiamientos
+(cod_fuente_financiamiento, descripcion)
+VALUES(2, 'Recursos Propios, Royalties y Compensaciones Según Disponibilidad');
+INSERT INTO fuentes_financiamientos
+(cod_fuente_financiamiento, descripcion)
+VALUES(30, 'Recursos Institucionales');
+
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(1, 'Honorarios Profesionales', 1);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(2, 'Contratación del Personal Técnico', 1);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(3, 'Jornal - Royalties y Compensaciones', 1);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(4, 'Jornales', 2);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(5, 'Jornal - Fondos Propios 60%', 1);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(111, 'Sueldos', 30);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(112, 'Dietas', 30);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(113, 'Gastos de Representación', 30);
+INSERT INTO objetos_gastos
+(cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
+VALUES(114, 'Aguinaldo Personal Permanente', 30);
+
+/*INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(1, 1, 112);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(1, 1, 113);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(1, 1, 114);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 2, 111);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 2, 113);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 2, 114);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 3, 111);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 3, 114);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 5, 111);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(2, 5, 114);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 1, 1);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 1, 4);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 2, 1);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 2, 2);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 2, 4);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 2, 5);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 3, 4);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 5, 1);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 5, 3);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 5, 4);
+INSERT INTO parametros_salariales
+(cod_programa, cod_subprograma, cod_objeto_gasto)
+VALUES(3, 5, 5);*/
+
+
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 1, 2, 30, 112, 1);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 1, 2, 30, 113, 1);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 2, 2, 30, 111, 1);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 2, 2, 30, 111, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 2, 2, 30, 111, 3);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 2, 2, 30, 111, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(1, 2, 2, 30, 113, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 1, 1);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 1, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 1, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 2, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 3, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 3, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 5, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 1, 5, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 2, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 3, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 4, 1);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 4, 2);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 4, 3);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 2, 4, 5);
+INSERT INTO parametros_salariales
+(cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)
+VALUES(2, 3, 1, 30, 2, 2);
+
+INSERT INTO parametros
+(cod_parametro, descripcion, valor)
+VALUES('PERIODO_HORAS_EXTRAS', 'Periodo en curso de gestión de horas extras', '2025/05');
+INSERT INTO parametros
+(cod_parametro, descripcion, valor)
+VALUES('PERIODO_DESCUENTOS_SALARIALES', 'Periodo en curso de gestión de descuentos salariales', '2025/05');
+INSERT INTO parametros
+(cod_parametro, descripcion, valor)
+VALUES('PERIODO_PLANILLA_SALARIOS', 'Periodo en curso de gestión de planilla de salarios', '2025/05');
+
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(1, 'ENERO 2025', '2025/01', 'Periodo Correspondiente a Enero del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(2, 'FEBRERO 2025', '2025/02', 'Periodo Correspondiente a Febrero del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(3, 'MARZO 2025', '2025/03', 'Periodo Correspondiente a Marzo del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(4, 'ABRIL 2025', '2025/04', 'Periodo Correspondiente a Abril del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(5, 'MAYO 2025', '2025/05', 'Periodo Correspondiente a Mayo del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(6, 'JUNIO 2025', '2025/06', 'Periodo Correspondiente a Junio del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(7, 'JULIO 2025', '2025/07', 'Periodo Correspondiente a Julio del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(8, 'AGOSTO 2025', '2025/08', 'Periodo Correspondiente a Agosto del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(9, 'SEPTIEMBRE 2025', '2025/09', 'Periodo Correspondiente a Septiembre del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(10, 'OCTUBRE 2025', '2025/10', 'Periodo Correspondiente a Octubre del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(11, 'NOVIEMBRE 2025', '2025/11', 'Periodo Correspondiente a Noviembre del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(12, 'DICIEMBRE 2025', '2025/12', 'Periodo Correspondiente a Diciembre del 2025');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(13, 'ENERO 2026', '2026/01', 'Periodo Correspondiente a Enero del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(14, 'FEBRERO 2026', '2026/02', 'Periodo Correspondiente a Febrero del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(15, 'MARZO 2026', '2026/03', 'Periodo Correspondiente a Marzo del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(16, 'ABRIL 2026', '2026/04', 'Periodo Correspondiente a Abril del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(17, 'MAYO 2026', '2026/05', 'Periodo Correspondiente a Mayo del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(18, 'JUNIO 2026', '2026/06', 'Periodo Correspondiente a Junio del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(19, 'JULIO 2026', '2026/07', 'Periodo Correspondiente a Julio del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(20, 'AGOSTO 2026', '2026/08', 'Periodo Correspondiente a Agosto del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(21, 'SEPTIEMBRE 2026', '2026/09', 'Periodo Correspondiente a Septiembre del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(22, 'OCTUBRE 2026', '2026/10', 'Periodo Correspondiente a Octubre del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(23, 'NOVIEMBRE 2026', '2026/11', 'Periodo Correspondiente a Noviembre del 2026');
+INSERT INTO periodos
+(nro_periodo, abreviatura, cod_periodo, descripcion)
+VALUES(24, 'DICIEMBRE 2026', '2026/12', 'Periodo Correspondiente a Diciembre del 2026');
+
+INSERT INTO PAISES (COD_PAIS, DESCRIPCION)
+VALUES(1, 'PARAGUAY');
+
+INSERT INTO PAISES (COD_PAIS, DESCRIPCION)
+VALUES(2, 'ARGENTINA');
+
+INSERT INTO PAISES (COD_PAIS, DESCRIPCION)
+VALUES(3, 'BRASIL');
+
+INSERT INTO PAISES (COD_PAIS, DESCRIPCION)
+VALUES(4, 'PARAGUAY');

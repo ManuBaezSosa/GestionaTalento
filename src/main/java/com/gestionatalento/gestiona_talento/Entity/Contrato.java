@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,27 +20,55 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "contratos")
 public class Contrato {
+    
     @Id
     @Column(name = "nro_contrato")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nroContrato;
 
-    @Column(name = "cod_persona")
-    private Long codPersona;
+    @ManyToOne
+    @JoinColumn(name = "cod_periodo", referencedColumnName = "cod_periodo")
+    private Periodo periodo;
 
-    @Column(name = "cod_periodo")
-    private String codPeriodo;
+    @ManyToOne
+    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona", insertable = false, updatable = false)
+    private Persona persona;
 
-    @Column(name = "nom_archivo")
-    private String nomArchivo;
+    @Column(name = "nro_documento")
+    private String nroDocumento;
+
+    @Column(name = "nombres")
+    private String nombres;
+
+    @Column(name = "apellidos")
+    private String apellidos;
+
+    @Column(name = "asignacion")
+    private Double asignacion;
+
+    @Column(name = "asignacion_letras")
+    private String montoLetras;
 
     @Column(name = "estado")
     private String estado;
 
+    @Column(name = "fec_desde")
+    private Date fecDesde;
+
+    @Column(name = "fec_hasta")
+    private Date fecHasta;
+
+    @ManyToOne
+    @JoinColumn(name = "cod_situacion_laboral", referencedColumnName = "cod_situacion_laboral", insertable = false, updatable = false)
+    private SituacionLaboral situacionLaboral;
+
+    @Column(name = "nom_firmante_1")
+    private String nomFirmante1;
+
+    @Column(name = "nom_firmante_2")
+    private String nomFirmante2;
+
     @Column(name = "observacion")
     private String observacion;
 
-    @ManyToOne
-    @JoinColumn(name = "cod_persona", insertable = false, updatable = false)
-    private Persona persona;
 }

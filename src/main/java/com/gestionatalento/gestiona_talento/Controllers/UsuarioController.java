@@ -14,14 +14,21 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestionatalento.gestiona_talento.Dto.EventoDto;
 import com.gestionatalento.gestiona_talento.Entity.Usuario;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioRepository;
 import com.gestionatalento.gestiona_talento.Request.UsuarioRequest;
+import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.ServiceImpl.UsuarioServiceImpl;
+
+import jakarta.validation.Valid;
+
+import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 
 
 @RestController
@@ -43,15 +50,16 @@ public class UsuarioController {
      */
     @PostMapping // Mapea este método al endpoint POST /api/admin/users
    // @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
-    public ResponseEntity<?> crearUsuario(@RequestBody UsuarioRequest request) {
+    public GenericResponse crearUsuario(@RequestBody UsuarioRequest request) {
+        GenericResponse genericResponse = new GenericResponse();
         try {
             // Verificar si ya existe un usuario con ese username
             try {
                 Optional<Usuario> existente = usuarioRepository.findByUsername(request.getUsername());
                 if (existente.isPresent()) {
-                    return ResponseEntity
-                            .status(HttpStatus.BAD_REQUEST)
-                            .body("El nombre de usuario ya existe");
+                    genericResponse.setCodigoMensaje("200");
+                    genericResponse.setMensaje("El nombre de usuario ya existe");
+                    return genericResponse;
                 }
             } catch (RuntimeException e) {
                 // El usuario no existe, podemos continuar
@@ -65,19 +73,20 @@ public class UsuarioController {
             usuario.setDocuemento(request.getDocumento());
             usuario.setCargo(request.getCargo());
             usuario.setFechaAlta(Date.valueOf(LocalDate.now()));
-            usuario.setEstado("ACTIVO");
+            usuario.setEstado("A");
             usuario.setAdmin(request.isAdmin()); // Usa el helper method
-
 
             // Usar el servicio para crear el usuario
             Usuario usuarioCreado = usuarioServiceImpl.crearUsuario(usuario);
-
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Usuario " + (request.isAdmin() ? "administrador" : "normal") + " creado exitosamente con ID: " + usuarioCreado.getId());
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Usuario Creado correctamente");
+            genericResponse.setObjeto(usuarioCreado);
+            return genericResponse;
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear usuario: " + e.getMessage());
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Error al crear usuario");
+            genericResponse.setObjeto(null);
+            return genericResponse;
         }
     }
 
@@ -99,20 +108,55 @@ public class UsuarioController {
         }
     }
 
-
     /**
      * Endpoint para obtener un usuario por su ID
      * Solo administradores pueden acceder
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    // @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
+    public GenericResponse getUserById(@PathVariable Long id) {
+        GenericResponse genericResponse = new GenericResponse();
         try {
-            return usuarioRepository.findById(id)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            Optional<Usuario> usuarios = usuarioRepository.findById(id);
+             if (usuarios.isEmpty()) {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existe el usuario buscado");
+                genericResponse.setObjeto(null);
+            }
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Ha sido obtenido el usuario");
+            genericResponse.setObjeto(usuarios);
+            return genericResponse;
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al obtener usuario: " + e.getMessage());
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;        
+        }
+    }
+
+     /**
+     * Endpoint para obtener todos los usuarios
+     * Solo administradores pueden acceder
+     */
+    @GetMapping("/obtenerTodos")
+    // @PreAuthorize("hasAuthority('ADMIN')") // Solo usuarios con rol ADMIN pueden acceder
+    public GenericResponse getAllUsers() {
+        GenericResponse genericResponse = new GenericResponse();
+        try {
+            List<Usuario> usuarios = usuarioRepository.obtenerTodos();
+            if (usuarios.isEmpty()) {
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existen usuarios");
+                genericResponse.setObjeto(null);
+            }
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Han sido obtenidos los usuarios");
+            genericResponse.setObjeto(usuarios);
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;        
         }
     }
 
@@ -143,8 +187,6 @@ public class UsuarioController {
         Usuario usuarioActualizado = usuarioServiceImpl.eleminarPermisosUsuarios(idUsuario, permisoIds);
         return ResponseEntity.ok(usuarioActualizado);
     }
-
-
 
 
 }

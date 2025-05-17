@@ -45,8 +45,9 @@ public class Persona {
     @Column(name = "cod_nivel_estudio", nullable = false)
     private String codNivelEstudio;
 
-    @Column(name = "cod_pais_nacimiento", nullable = false)
-    private Long codPaisNacimiento;
+    @ManyToOne
+    @JoinColumn(name = "cod_pais_nacimiento", referencedColumnName = "cod_pais", nullable = false)
+    private Pais pais;
 
     @Column(name = "fec_nacimiento", nullable = false)
     private LocalDate fecNacimiento;

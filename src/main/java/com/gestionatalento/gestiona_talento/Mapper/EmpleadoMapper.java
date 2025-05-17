@@ -3,7 +3,6 @@ package com.gestionatalento.gestiona_talento.Mapper;
 import java.util.Optional;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;

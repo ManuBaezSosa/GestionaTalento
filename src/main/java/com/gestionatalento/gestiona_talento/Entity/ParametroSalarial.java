@@ -1,10 +1,10 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,27 +14,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "parametros_salariales")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "planilla_salario")
-public class PlanillaSalario {
+@NoArgsConstructor
+public class ParametroSalarial {
     
     @EmbeddedId
-    private PlanillaSalarioPK id;
+    private ParametroSalarialPK id;
 
     @ManyToOne
-    @JoinColumn(name = "cod_empleado", referencedColumnName = "cod_empleado", insertable = false, updatable = false)
-    private Empleado empleado;
-
-    @ManyToOne
-    @JoinColumn(name = "cod_periodo", referencedColumnName = "cod_periodo", insertable = false, updatable = false)
-    private Periodo periodo;
+    @JoinColumn(name = "cod_fuente_financiamiento", referencedColumnName = "cod_fuente_financiamiento", insertable = false, updatable = false)
+    private FuenteFinanciamiento fuenteFinanciamiento;
 
     @ManyToOne
     @JoinColumn(name = "cod_presupuesto", referencedColumnName = "cod_presupuesto", insertable = false, updatable = false)
     private Presupuesto presupuesto;
 
+    // Repite esto con los demás campos:
     @ManyToOne
     @JoinColumn(name = "cod_programa", referencedColumnName = "cod_programa", insertable = false, updatable = false)
     private Programa programa;
@@ -44,22 +41,11 @@ public class PlanillaSalario {
     private SituacionLaboral situacionLaboral;
 
     @ManyToOne
-    @JoinColumn(name = "cod_fuente_financiamiento", referencedColumnName = "cod_fuente_financiamiento", insertable = false, updatable = false)
-    private FuenteFinanciamiento fuenteFinanciamiento;
-
-    @ManyToOne
     @JoinColumn(name = "cod_objeto_gasto", referencedColumnName = "cod_objeto_gasto", insertable = false, updatable = false)
     private ObjetoGasto objetoGasto;
 
     @ManyToOne
     @JoinColumn(name = "cod_subprograma", referencedColumnName = "cod_subprograma", insertable = false, updatable = false)
-    private Subprograma subprograma;
-
-    @ManyToOne
-    @JoinColumn(name = "nro_grado", referencedColumnName = "nro_grado", insertable = false, updatable = false)
-    private GradoSalarial gradoSalarial;
-
-    @Column(name = "asignacion")
-    private Double asignacion;
+    private Subprograma subPrograma;
     
 }

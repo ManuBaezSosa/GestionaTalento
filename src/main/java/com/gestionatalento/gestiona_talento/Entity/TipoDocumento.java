@@ -1,5 +1,8 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.sql.Date;
+import java.time.LocalTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,20 +14,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "sedes")
+@Table(name = "tipos_documentos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Sede {
+public class TipoDocumento {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_sede")
-    private Long codSede;
+    @Column(name = "cod_tipo_documento")
+    private Long codTipDocumento;
 
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name = "estado")
-    private String estado;
+    @Column(name = "activo")
+    private String activo;
+    
 }

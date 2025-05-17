@@ -3,6 +3,7 @@ package com.gestionatalento.gestiona_talento.Mapper;
 import java.util.Optional;
 import org.mapstruct.Mapper;
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
+import com.gestionatalento.gestiona_talento.Entity.Pais;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 
 @Mapper
@@ -15,7 +16,11 @@ public interface PersonaMapper {
         persona.setNombres(personaDto.getNombres());
         persona.setApellidos(personaDto.getApellidos());
         persona.setCodNivelEstudio(personaDto.getCodNivelEstudio());
-        persona.setCodPaisNacimiento(personaDto.getCodPaisNacimiento());
+
+        Pais pais = new Pais();
+        pais.setCodPais(personaDto.getPais().getCodPais());
+        persona.setPais(pais);
+
         persona.setFecNacimiento(personaDto.getFecNacimiento());
         persona.setLugarNacimiento(personaDto.getLugarNacimiento());
         persona.setPoseeDiscapacidad(personaDto.getPoseeDiscapacidad());
@@ -31,7 +36,11 @@ public interface PersonaMapper {
         personaActualizada.setNombres(persona.getNombres());
         personaActualizada.setApellidos(persona.getApellidos());
         personaActualizada.setCodNivelEstudio(persona.getCodNivelEstudio());
-        personaActualizada.setCodPaisNacimiento(persona.getCodPaisNacimiento());
+
+        Pais pais = new Pais();
+        pais.setCodPais(persona.getPais().getCodPais());
+        personaActualizada.setPais(pais);
+
         personaActualizada.setFecNacimiento(persona.getFecNacimiento());
         personaActualizada.setLugarNacimiento(persona.getLugarNacimiento());
         personaActualizada.setPoseeDiscapacidad(persona.getPoseeDiscapacidad());
@@ -43,7 +52,7 @@ public interface PersonaMapper {
         Optional.ofNullable(personaDto.getNombres()).ifPresent(personaActualizada::setNombres);
         Optional.ofNullable(personaDto.getApellidos()).ifPresent(personaActualizada::setApellidos);
         Optional.ofNullable(personaDto.getCodNivelEstudio()).ifPresent(personaActualizada::setCodNivelEstudio);
-        Optional.ofNullable(personaDto.getCodPaisNacimiento()).ifPresent(personaActualizada::setCodPaisNacimiento);
+        Optional.ofNullable(personaDto.getPais()).ifPresent(personaActualizada::setPais);
         Optional.ofNullable(personaDto.getFecNacimiento()).ifPresent(personaActualizada::setFecNacimiento);
         Optional.ofNullable(personaDto.getLugarNacimiento()).ifPresent(personaActualizada::setLugarNacimiento);
         Optional.ofNullable(personaDto.getPoseeDiscapacidad()).ifPresent(personaActualizada::setPoseeDiscapacidad);

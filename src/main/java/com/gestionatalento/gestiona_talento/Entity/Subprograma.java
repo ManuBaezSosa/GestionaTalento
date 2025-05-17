@@ -11,20 +11,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "sedes")
+@Table(name = "subprogramas")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Sede {
+public class Subprograma {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_sede")
-    private Long codSede;
+    @Column(name = "cod_subprograma")
+    private Long codSubPrograma;
 
     @Column(name = "descripcion")
     private String descripcion;
-
-    @Column(name = "estado")
-    private String estado;
+    
 }
