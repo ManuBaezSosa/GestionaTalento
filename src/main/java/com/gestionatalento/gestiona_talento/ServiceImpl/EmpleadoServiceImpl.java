@@ -235,7 +235,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public GenericResponse obtenerInformeAltas(String periodo) {
         GenericResponse response = new GenericResponse();
         try {
-            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("CALL sp_informe_altas(?)", periodo);
+            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("SELECT * FROM sp_informe_altas(?)", periodo);
             response.setCodigoMensaje("200");
             response.setMensaje("Informe de altas generado exitosamente.");
             response.setObjeto(resultado);
@@ -250,7 +250,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public GenericResponse obtenerInformeBajas(String periodo) {
         GenericResponse response = new GenericResponse();
         try {
-            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("CALL sp_informe_bajas(?)", periodo);
+            List<Map<String, Object>> resultado = jdbcTemplate.queryForList("SELECT * FROM sp_informe_bajas(?)", periodo);
             response.setCodigoMensaje("200");
             response.setMensaje("Informe de bajas generado exitosamente.");
             response.setObjeto(resultado);
@@ -266,7 +266,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         GenericResponse response = new GenericResponse();
         try {
             List<Map<String, Object>> resultado = jdbcTemplate.queryForList(
-                "CALL sp_informe_historico_asignacion(?)", 
+                "select * from sp_informe_historico_asignacion(?)", 
                 periodo
             );
             

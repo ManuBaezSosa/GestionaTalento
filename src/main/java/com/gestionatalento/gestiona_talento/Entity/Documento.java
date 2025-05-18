@@ -38,8 +38,14 @@ public class Documento {
     @Column(name = "nom_archivo")
     private String nomArchivo;
 
+    @Column(name = "tip_archivo")
+    private String tipArchivo;
+
+    @Column(name = "tam_archivo")
+    private Long tamArchivo;
+
     @Lob
-    @Column(name = "archivo", columnDefinition = "BYTEA")
+    @Column(name = "archivo")
     private byte[] archivo;
 
     @Column(name = "estado")

@@ -23,12 +23,15 @@ public class TipoDocumento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cod_tipo_documento")
-    private Long codTipDocumento;
+    private Long codTipoDocumento;
 
     @Column(name = "descripcion")
     private String descripcion;
 
     @Column(name = "activo")
     private String activo;
+
+    @Column(name = "tip_categoria")
+    private String tipCategoria;
     
 }

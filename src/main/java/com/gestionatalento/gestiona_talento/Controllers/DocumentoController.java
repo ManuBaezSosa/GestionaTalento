@@ -5,16 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionatalento.gestiona_talento.Dto.DocumentoDto;
+import com.gestionatalento.gestiona_talento.Dto.PruebaDto;
 import com.gestionatalento.gestiona_talento.Entity.Documento;
 import com.gestionatalento.gestiona_talento.Repository.DocumentoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
@@ -23,6 +27,7 @@ import com.gestionatalento.gestiona_talento.ServiceImpl.DocumentoServiceImpl;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RestController
 @RequestMapping("/personas/documentos")
@@ -33,11 +38,13 @@ public class DocumentoController {
     @Autowired
     DocumentoServiceImpl documentoServiceImpl;
 
-    @PostMapping("/crear")
-    public GenericResponse crearDocumento(@Valid @RequestBody DocumentoDto documentoDto, @RequestParam("file") MultipartFile archivo) {
+    @PostMapping(value = "/crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public GenericResponse crearDocumento(@RequestParam("data") String jsonDocumentoDto,
+                                          @RequestParam("archivo") MultipartFile archivo) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = documentoServiceImpl.crearDocumento(documentoDto);
+            DocumentoDto documentoDto = new ObjectMapper().readValue(jsonDocumentoDto, DocumentoDto.class);
+            genericResponse = documentoServiceImpl.crearDocumento(documentoDto, archivo);
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");

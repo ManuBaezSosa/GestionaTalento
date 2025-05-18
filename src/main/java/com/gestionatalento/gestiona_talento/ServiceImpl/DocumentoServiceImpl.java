@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gestionatalento.gestiona_talento.Dto.DocumentoDto;
 import com.gestionatalento.gestiona_talento.Entity.Documento;
@@ -23,14 +24,15 @@ public class DocumentoServiceImpl implements DocumentoService {
     DocumentoRepository documentoRepository;
 
     @Override
-    public GenericResponse crearDocumento(DocumentoDto documentoDto) {
+    public GenericResponse crearDocumento(DocumentoDto documentoDto, MultipartFile archivo) {
         GenericResponse genericResponse = new GenericResponse();
         try{
             logger.info("En DocumentoDto, en el Request: {}", documentoDto);
 
             /* Cargamos los datos del DTO al Documento */
-            Documento documento = DocumentoMapper.setDocumento(documentoDto);
-            logger.info("En DocumentoMapper, en el Request: {}", documento);
+            Documento documento = new Documento();
+            documento = DocumentoMapper.setDocumento(documentoDto, archivo);
+            //logger.info("En DocumentoMapper, en el Request: {}", documento);
             /* Guardamos la Documento */
             documento = documentoRepository.save(documento);
             /* Completamos los mensajes de retorno */

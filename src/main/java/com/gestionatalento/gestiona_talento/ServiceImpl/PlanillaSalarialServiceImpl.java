@@ -1,5 +1,6 @@
 package com.gestionatalento.gestiona_talento.ServiceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import com.gestionatalento.gestiona_talento.Dto.PlanillaSalarialDto;
 import com.gestionatalento.gestiona_talento.Entity.PlanillaSalarial;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Entity.ParametroSalarial;
 import com.gestionatalento.gestiona_talento.Mapper.PlanillaSalarialMapper;
 import com.gestionatalento.gestiona_talento.Repository.PlanillaSalarialRepository;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
+import com.gestionatalento.gestiona_talento.Repository.ParametroSalarialRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.Service.PlanillaSalarialService;
 
@@ -26,6 +29,9 @@ public class PlanillaSalarialServiceImpl implements PlanillaSalarialService {
 
     @Autowired
     EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    ParametroSalarialRepository parametroSalarialRepository;
 
     @Override
     public GenericResponse crearPlanillaSalarial(PlanillaSalarialDto planillaSalarialDto) {
@@ -124,4 +130,73 @@ public class PlanillaSalarialServiceImpl implements PlanillaSalarialService {
             return genericResponse;
         }   
     }
+
+    @Override
+    public GenericResponse obtenerParametroSalarial(PlanillaSalarialDto planillaSalarialDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En PlanillaSalarialDto, en el Request: {}", planillaSalarialDto);
+            if (planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral() != null) {
+                List<ParametroSalarial> parametroSalarial = parametroSalarialRepository.findBySituacionLaboral(planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral());
+                if (!parametroSalarial.isEmpty()) {
+                    if (planillaSalarialDto.getPresupuesto().getCodPresupuesto() != null) {
+                        parametroSalarial = parametroSalarialRepository.findByPresupuesto(planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral(),
+                                                                                          planillaSalarialDto.getPresupuesto().getCodPresupuesto());
+                        if (!parametroSalarial.isEmpty()) {
+                            if (planillaSalarialDto.getPrograma().getCodPrograma() != null) {
+                                parametroSalarial = parametroSalarialRepository.findByPrograma(planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral(),
+                                                                                               planillaSalarialDto.getPresupuesto().getCodPresupuesto(),
+                                                                                               planillaSalarialDto.getPrograma().getCodPrograma());
+                                if (!parametroSalarial.isEmpty()) {
+                                    if (planillaSalarialDto.getFuenteFinanciamiento().getCodFuenteFinanciamiento() != null) {
+                                        parametroSalarial = parametroSalarialRepository.findByFuenteFinanciamiento(planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral(),
+                                                                                                    planillaSalarialDto.getPresupuesto().getCodPresupuesto(),
+                                                                                                    planillaSalarialDto.getPrograma().getCodPrograma(),
+                                                                                                    planillaSalarialDto.getFuenteFinanciamiento().getCodFuenteFinanciamiento());
+                                        if (!parametroSalarial.isEmpty()) {
+                                            if (planillaSalarialDto.getObjetoGasto().getCodObjetoGasto() != null) {
+                                                parametroSalarial = parametroSalarialRepository.findByObjetoGasto(planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral(),
+                                                                                                            planillaSalarialDto.getPresupuesto().getCodPresupuesto(),
+                                                                                                            planillaSalarialDto.getPrograma().getCodPrograma(),
+                                                                                                            planillaSalarialDto.getFuenteFinanciamiento().getCodFuenteFinanciamiento(),
+                                                                                                            planillaSalarialDto.getObjetoGasto().getCodObjetoGasto());
+                                                genericResponse.setCodigoMensaje("200");
+                                                genericResponse.setMensaje("La lista de valores ha sido obtenida existosamente");
+                                                genericResponse.setObjeto(parametroSalarial);
+                                                return genericResponse;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            genericResponse.setCodigoMensaje("404");
+                            genericResponse.setMensaje("La lista de valores no posee registros con los filtros cargados (Presupuesto). ID: " + planillaSalarialDto.getPresupuesto().getCodPresupuesto());
+                            return genericResponse;
+                        }
+                    }
+                    genericResponse.setCodigoMensaje("200");
+                    genericResponse.setMensaje("La lista de valores ha sido obtenida existosamente");
+                    genericResponse.setObjeto(parametroSalarial);
+                    return genericResponse;
+                }else{
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("404");
+                    genericResponse.setMensaje("La lista de valores no posee registros con los filtros cargados (Situacion Laboral). ID: " + planillaSalarialDto.getEmpleado().getSituacionLaboral().getCodSituacionLaboral());
+                    return genericResponse;
+                }
+            } else {
+                    genericResponse.setCodigoMensaje("404");
+                    genericResponse.setMensaje("Debe ingresar una Situacion Laboral para obtener la lista de valores");
+                    return genericResponse;
+            }
+            
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }   
+    }
+
 }

@@ -100,4 +100,17 @@ public class PlanillaSalarialController {
             return genericResponse;
         }
     }
+
+    @PostMapping("/parametros/obtenerLista")
+    public GenericResponse obtenerParametroSalarial(@Valid @RequestBody PlanillaSalarialDto planillaSalarialDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try {
+            genericResponse = planillaSalarialServiceImpl.obtenerParametroSalarial(planillaSalarialDto);
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
 }
