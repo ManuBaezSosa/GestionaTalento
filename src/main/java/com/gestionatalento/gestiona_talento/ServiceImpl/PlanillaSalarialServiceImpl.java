@@ -199,4 +199,21 @@ public class PlanillaSalarialServiceImpl implements PlanillaSalarialService {
         }   
     }
 
+    @Override
+    public GenericResponse obtenerPlanillaSalarial(PlanillaSalarialDto planillaSalarialDto) {
+        GenericResponse genericResponse = new GenericResponse();
+        try{
+            logger.info("En PlanillaSalarialDto, en el Request: {}", planillaSalarialDto);
+            genericResponse.setCodigoMensaje("404");
+            genericResponse.setMensaje("Debe ingresar una Situacion Laboral para obtener la lista de valores");
+            return genericResponse;
+            
+        }catch (Exception e){
+            /* Completamos los mensajes de retorno */
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }   
+    }
+
 }

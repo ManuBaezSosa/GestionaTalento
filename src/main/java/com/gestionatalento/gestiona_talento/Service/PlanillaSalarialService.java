@@ -12,4 +12,5 @@ public interface PlanillaSalarialService {
     GenericResponse actualizarPlanillaSalarial(PlanillaSalarialDto planillaSalarialDto);
     GenericResponse eliminarPlanillaSalarial(PlanillaSalarialDto planillaSalarialDto);
     GenericResponse obtenerParametroSalarial(PlanillaSalarialDto planillaSalarialDto);
+    GenericResponse obtenerPlanillaSalarial(PlanillaSalarialDto planillaSalarialDto);
 }
