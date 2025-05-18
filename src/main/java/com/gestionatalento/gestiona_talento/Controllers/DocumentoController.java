@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionatalento.gestiona_talento.Dto.DocumentoDto;
-import com.gestionatalento.gestiona_talento.Dto.PruebaDto;
 import com.gestionatalento.gestiona_talento.Entity.Documento;
 import com.gestionatalento.gestiona_talento.Repository.DocumentoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
@@ -27,7 +25,6 @@ import com.gestionatalento.gestiona_talento.ServiceImpl.DocumentoServiceImpl;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RestController
 @RequestMapping("/personas/documentos")
