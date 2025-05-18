@@ -14,11 +14,11 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 
-    @Query("SELECT e FROM HoraExtra e WHERE e.id.codPeriodo = :codPeriodo AND e.id.codEmpleado = :codEmpleado")
-    HoraExtra findByHoraExtra(@Param("codPeriodo") String codPeriodo, @Param("codEmpleado") Long codEmpleado);
+    @Query("SELECT e FROM HoraExtra e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
+    HoraExtra findByHoraExtra(@Param("nroPeriodo") Long nroPeriodo, @Param("codEmpleado") Long codEmpleado);
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM HoraExtra e WHERE e.id.codPeriodo = :codPeriodo AND e.id.codEmpleado = :codEmpleado")
-    int deleteByHoraExtra(@Param("codPeriodo") String codPeriodo, @Param("codEmpleado") Long codEmpleado);
+    @Query("DELETE FROM HoraExtra e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
+    int deleteByHoraExtra(@Param("nroPeriodo") Long nroPeriodo, @Param("codEmpleado") Long codEmpleado);
 }

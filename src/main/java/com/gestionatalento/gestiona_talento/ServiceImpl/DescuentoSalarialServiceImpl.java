@@ -34,7 +34,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
             logger.info("En DescuentoSalarialDto, en el Request: {}", descuentoSalarialDto);
             Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(descuentoSalarialDto.getEmpleado().getCodEmpleado());
             if (empleado != null) {
-                DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getPeriodo().getNroPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
                 if (descuentoSalarialFind == null){
                     /* Cargamos los datos del DTO al Descuento Salarial */
                     DescuentoSalarial descuentoSalarial = DescuentoSalarialMapper.setDescuentoSalarial(descuentoSalarialDto, empleado);
@@ -48,7 +48,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
                     return genericResponse;
                 } else{
                     genericResponse.setCodigoMensaje("409");
-                    genericResponse.setMensaje("Ya existe un Descuento Salarial para el empleado y periodo proporcionado. ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado() + ", " + descuentoSalarialDto.getCodPeriodo());
+                    genericResponse.setMensaje("Ya existe un Descuento Salarial para el empleado y periodo proporcionado. ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado() + ", " + descuentoSalarialDto.getPeriodo().getNroPeriodo());
                     genericResponse.setObjeto(null);
                     return genericResponse;
                 }
@@ -72,7 +72,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
         try{
             logger.info("En DescuentoSalarialDto, en el Request: {}", descuentoSalarialDto);
             Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(descuentoSalarialDto.getEmpleado().getCodEmpleado());
-            DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+            DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getPeriodo().getNroPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
             if (descuentoSalarialFind != null) {
                 /* Cargamos los datos del DTO al Descuento Salarial */
                 DescuentoSalarial descuentoSalarial = new DescuentoSalarial();
@@ -88,7 +88,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getCodPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getPeriodo().getNroPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){
@@ -104,9 +104,9 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
         GenericResponse genericResponse = new GenericResponse();
         try{
             logger.info("En DescuentoSalarialDto, en el Request: {}", descuentoSalarialDto);
-            DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+            DescuentoSalarial descuentoSalarialFind = descuentoSalarialRepository.findByDescuentoSalarial(descuentoSalarialDto.getPeriodo().getNroPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
             if (descuentoSalarialFind != null) {
-                descuentoSalarialRepository.deleteByDescuentoSalarial(descuentoSalarialDto.getCodPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                descuentoSalarialRepository.deleteByDescuentoSalarial(descuentoSalarialDto.getPeriodo().getNroPeriodo(), descuentoSalarialDto.getEmpleado().getCodEmpleado());
                 genericResponse.setCodigoMensaje("200");
                 genericResponse.setMensaje("Descuento Salarial eliminado exitosamente");
                 genericResponse.setObjeto(descuentoSalarialDto);
@@ -114,7 +114,7 @@ public class DescuentoSalarialServiceImpl implements DescuentoSalarialService {
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getCodPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
+                genericResponse.setMensaje("No se encuentra un Descuento Salarial con el valor proporcionado. Periodo: " + descuentoSalarialDto.getPeriodo().getNroPeriodo() + ", ID: " + descuentoSalarialDto.getEmpleado().getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){

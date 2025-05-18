@@ -14,11 +14,11 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface DescuentoSalarialRepository extends JpaRepository<DescuentoSalarial, Long> {
 
-    @Query("SELECT e FROM DescuentoSalarial e WHERE e.id.codPeriodo = :codPeriodo AND e.id.codEmpleado = :codEmpleado")
-    DescuentoSalarial findByDescuentoSalarial(@Param("codPeriodo") String codPeriodo, @Param("codEmpleado") Long codEmpleado);
+    @Query("SELECT e FROM DescuentoSalarial e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
+    DescuentoSalarial findByDescuentoSalarial(@Param("nroPeriodo") Long nroPeriodo, @Param("codEmpleado") Long codEmpleado);
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM DescuentoSalarial e WHERE e.id.codPeriodo = :codPeriodo AND e.id.codEmpleado = :codEmpleado")
-    int deleteByDescuentoSalarial(@Param("codPeriodo") String codPeriodo, @Param("codEmpleado") Long codEmpleado);
+    @Query("DELETE FROM DescuentoSalarial e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
+    int deleteByDescuentoSalarial(@Param("nroPeriodo") Long nroPeriodo, @Param("codEmpleado") Long codEmpleado);
 }

@@ -25,7 +25,7 @@ public class DescuentoSalarial {
     private Empleado empleado;
 
     @ManyToOne
-    @JoinColumn(name = "cod_periodo", referencedColumnName = "cod_periodo", insertable = false, updatable = false)
+    @JoinColumn(name = "nro_periodo", referencedColumnName = "nro_periodo", insertable = false, updatable = false)
     private Periodo periodo;
 
     @Column(name = "entrada_tardia")

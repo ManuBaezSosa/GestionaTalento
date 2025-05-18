@@ -30,14 +30,4 @@ public interface DocumentoMapper {
 
         return documento;
     }
-
-    /*
-     *  private Persona persona;
-    private TipoDocumento tipoDocumento;
-    private String nomArchivo;
-    private String estado;
-    private Date fecDocumento;
-    private String observacion;
-     */
-    
 }

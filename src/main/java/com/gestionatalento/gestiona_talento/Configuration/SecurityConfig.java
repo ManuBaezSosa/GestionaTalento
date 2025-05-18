@@ -59,6 +59,10 @@ public class SecurityConfig {
 
                     .requestMatchers("/justificativos/**").permitAll()
 
+                    .requestMatchers("/salarios/**").permitAll()
+
+                    .requestMatchers("/contratos/**").permitAll()
+
 
                     // Cualquier otra solicitud requiere autenticación
                     //

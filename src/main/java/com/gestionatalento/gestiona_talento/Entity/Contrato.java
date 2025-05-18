@@ -27,11 +27,11 @@ public class Contrato {
     private Long nroContrato;
 
     @ManyToOne
-    @JoinColumn(name = "cod_periodo", referencedColumnName = "cod_periodo")
+    @JoinColumn(name = "nro_periodo", referencedColumnName = "nro_periodo")
     private Periodo periodo;
 
     @ManyToOne
-    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona", insertable = false, updatable = false)
+    @JoinColumn(name = "cod_persona", referencedColumnName = "cod_persona")
     private Persona persona;
 
     @Column(name = "nro_documento")
@@ -59,7 +59,7 @@ public class Contrato {
     private Date fecHasta;
 
     @ManyToOne
-    @JoinColumn(name = "cod_situacion_laboral", referencedColumnName = "cod_situacion_laboral", insertable = false, updatable = false)
+    @JoinColumn(name = "cod_situacion_laboral", referencedColumnName = "cod_situacion_laboral")
     private SituacionLaboral situacionLaboral;
 
     @Column(name = "nom_firmante_1")

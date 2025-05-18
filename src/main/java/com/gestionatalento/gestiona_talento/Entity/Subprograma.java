@@ -20,7 +20,7 @@ public class Subprograma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cod_subprograma")
-    private Long codSubPrograma;
+    private Long codSubprograma;
 
     @Column(name = "descripcion")
     private String descripcion;

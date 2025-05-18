@@ -16,7 +16,7 @@ public interface DescuentoSalarialMapper {
         DescuentoSalarialPK descuentoSalarialPK = new DescuentoSalarialPK();
 
         descuentoSalarialPK.setCodEmpleado(empleado.getCodEmpleado());
-        descuentoSalarialPK.setCodPeriodo(descuentoSalarialDto.getCodPeriodo());
+        descuentoSalarialPK.setNroPeriodo(descuentoSalarialDto.getPeriodo().getNroPeriodo());
 
         descuentoSalarial.setId(descuentoSalarialPK);
         descuentoSalarial.setEmpleado(empleado);
@@ -33,7 +33,7 @@ public interface DescuentoSalarialMapper {
         DescuentoSalarialPK descuentoSalarialPK = new DescuentoSalarialPK();
 
         descuentoSalarialPK.setCodEmpleado(descuentoSalarialDto.getEmpleado().getCodEmpleado());
-        descuentoSalarialPK.setCodPeriodo(descuentoSalarialDto.getCodPeriodo());
+        descuentoSalarialPK.setNroPeriodo(descuentoSalarialDto.getPeriodo().getNroPeriodo());
 
         descuentoSalarial.setId(descuentoSalarialPK);
         descuentoSalarial.setEmpleado(empleado);

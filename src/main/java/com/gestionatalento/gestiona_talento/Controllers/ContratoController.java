@@ -10,34 +10,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.gestionatalento.gestiona_talento.Dto.DocumentoDto;
-import com.gestionatalento.gestiona_talento.Entity.Documento;
-import com.gestionatalento.gestiona_talento.Repository.DocumentoRepository;
+import com.gestionatalento.gestiona_talento.Dto.ContratoDto;
+import com.gestionatalento.gestiona_talento.Entity.Contrato;
+import com.gestionatalento.gestiona_talento.Repository.ContratoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
-import com.gestionatalento.gestiona_talento.ServiceImpl.DocumentoServiceImpl;
+import com.gestionatalento.gestiona_talento.ServiceImpl.ContratoServiceImpl;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/personas/documentos")
-public class DocumentoController {
+@RequestMapping("/contratos")
+public class ContratoController {
 
     @Autowired
-    DocumentoRepository documentoRepository;
+    ContratoRepository contratoRepository;
     @Autowired
-    DocumentoServiceImpl documentoServiceImpl;
+    ContratoServiceImpl contratoServiceImpl;
 
     @PostMapping("/crear")
-    public GenericResponse crearDocumento(@Valid @RequestBody DocumentoDto documentoDto, @RequestParam("file") MultipartFile archivo) {
+    public GenericResponse crearContrato(@Valid @RequestBody ContratoDto contratoDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = documentoServiceImpl.crearDocumento(documentoDto);
+            genericResponse = contratoServiceImpl.crearContrato(contratoDto);
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");
@@ -47,10 +45,10 @@ public class DocumentoController {
     }
 
     @PutMapping("/actualizar")
-    public GenericResponse actualizarDocumento(@Valid @RequestBody DocumentoDto documentoDto) {
+    public GenericResponse actualizarContrato(@Valid @RequestBody ContratoDto contratoDto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = documentoServiceImpl.actualizarDocumento(documentoDto);
+            genericResponse = contratoServiceImpl.actualizarContrato(contratoDto);
             return genericResponse;
         } catch (Exception e) {
             genericResponse.setCodigoMensaje("500");
@@ -60,29 +58,29 @@ public class DocumentoController {
     }
 
     @GetMapping("/obtenerLista")
-    public GenericResponse listarDocumentos() {
+    public GenericResponse listarContratoes() {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            List<Documento> documentos = documentoRepository.findAll();
+            List<Contrato> contratos = contratoRepository.findAll();
 
             // Verificamos si la lista está vacía
-            if (documentos.isEmpty()) {
+            if (contratos.isEmpty()) {
                  /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No existen documentos registrados");
+                genericResponse.setMensaje("No existen contratos registrados");
                 return genericResponse;
             }
             
             // Creamos un contenedor para la respuesta
             List<Map<String, Object>> responseList = new ArrayList<>();
 
-            for (Documento documento : documentos) {
+            for (Contrato contrato : contratos) {
                 Map<String, Object> response = new HashMap<>();
-                response.put("documento", documento); 
+                response.put("contrato", contrato); 
                 responseList.add(response);
             }
             genericResponse.setCodigoMensaje("200");
-            genericResponse.setMensaje("Han sido obtenidos los documentos correctamente");
+            genericResponse.setMensaje("Han sido obtenidas las contratos correctamente");
             genericResponse.setObjeto(responseList);
 
             return genericResponse;

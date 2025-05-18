@@ -10,6 +10,9 @@ import com.gestionatalento.gestiona_talento.Entity.Programa;
 import com.gestionatalento.gestiona_talento.Entity.SituacionLaboral;
 import com.gestionatalento.gestiona_talento.Entity.Subprograma;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +20,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlanillaSalarioDto {
+public class PlanillaSalarialDto {
+
+    private Long nroPlanilla;
     private Empleado empleado;
     private Periodo periodo;
     private Presupuesto presupuesto;
@@ -28,4 +33,5 @@ public class PlanillaSalarioDto {
     private Subprograma subprograma;
     private GradoSalarial gradoSalarial;
     private Double asignacion;
+    
 }

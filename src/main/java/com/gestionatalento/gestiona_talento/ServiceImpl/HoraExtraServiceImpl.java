@@ -34,7 +34,7 @@ public class HoraExtraServiceImpl implements HoraExtraService {
             logger.info("En HoraExtraDto, en el Request: {}", horaExtraDto);
             Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(horaExtraDto.getEmpleado().getCodEmpleado());
             if (empleado != null) {
-                HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getCodPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
+                HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getPeriodo().getNroPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
                 if (horaExtraFind == null){
                     /* Cargamos los datos del DTO a la Hora Extra */
                     HoraExtra horaExtra = HoraExtraMapper.setHoraExtra(horaExtraDto, empleado);
@@ -48,7 +48,7 @@ public class HoraExtraServiceImpl implements HoraExtraService {
                     return genericResponse;
                 } else{
                     genericResponse.setCodigoMensaje("409");
-                    genericResponse.setMensaje("Ya existe la Hora Extra para el empleado y periodo proporcionado. ID: " + horaExtraDto.getEmpleado().getCodEmpleado() + ", " + horaExtraDto.getCodPeriodo());
+                    genericResponse.setMensaje("Ya existe la Hora Extra para el empleado y periodo proporcionado. ID: " + horaExtraDto.getEmpleado().getCodEmpleado() + ", " + horaExtraDto.getPeriodo().getNroPeriodo());
                     genericResponse.setObjeto(null);
                     return genericResponse;
                 }
@@ -72,7 +72,7 @@ public class HoraExtraServiceImpl implements HoraExtraService {
         try{
             logger.info("En HoraExtraDto, en el Request: {}", horaExtraDto);
             Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(horaExtraDto.getEmpleado().getCodEmpleado());
-            HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getCodPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
+            HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getPeriodo().getNroPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
             if (horaExtraFind != null) {
                 /* Cargamos los datos del DTO de la Hora Extra */
                 HoraExtra horaExtra = new HoraExtra();
@@ -88,7 +88,7 @@ public class HoraExtraServiceImpl implements HoraExtraService {
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un registro de Hora Extra con el valor proporcionado. Periodo: " + horaExtraDto.getCodPeriodo() + ", ID: " + horaExtraDto.getEmpleado().getCodEmpleado());
+                genericResponse.setMensaje("No se encuentra un registro de Hora Extra con el valor proporcionado. Periodo: " + horaExtraDto.getPeriodo().getNroPeriodo() + ", ID: " + horaExtraDto.getEmpleado().getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){
@@ -104,9 +104,9 @@ public class HoraExtraServiceImpl implements HoraExtraService {
         GenericResponse genericResponse = new GenericResponse();
         try{
             logger.info("En HoraExtraDto, en el Request: {}", horaExtraDto);
-            HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getCodPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
+            HoraExtra horaExtraFind = horaExtraRepository.findByHoraExtra(horaExtraDto.getPeriodo().getNroPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
             if (horaExtraFind != null) {
-                horaExtraRepository.deleteByHoraExtra(horaExtraDto.getCodPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
+                horaExtraRepository.deleteByHoraExtra(horaExtraDto.getPeriodo().getNroPeriodo(), horaExtraDto.getEmpleado().getCodEmpleado());
                 genericResponse.setCodigoMensaje("200");
                 genericResponse.setMensaje("Hora Extra eliminada exitosamente");
                 genericResponse.setObjeto(horaExtraDto);
@@ -114,7 +114,7 @@ public class HoraExtraServiceImpl implements HoraExtraService {
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un registro de Hora Extra con el valor proporcionado. Periodo: " + horaExtraDto.getCodPeriodo() + ", ID: " + horaExtraDto.getEmpleado().getCodEmpleado());
+                genericResponse.setMensaje("No se encuentra un registro de Hora Extra con el valor proporcionado. Periodo: " + horaExtraDto.getPeriodo().getNroPeriodo() + ", ID: " + horaExtraDto.getEmpleado().getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){

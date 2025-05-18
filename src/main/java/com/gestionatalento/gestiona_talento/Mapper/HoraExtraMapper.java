@@ -16,7 +16,7 @@ public interface HoraExtraMapper {
         HoraExtraPK horaExtraPK = new HoraExtraPK();
 
         horaExtraPK.setCodEmpleado(empleado.getCodEmpleado());
-        horaExtraPK.setCodPeriodo(horaExtraDto.getCodPeriodo());
+        horaExtraPK.setNroPeriodo(horaExtraDto.getPeriodo().getNroPeriodo());
 
         horaExtra.setId(horaExtraPK);
         horaExtra.setEmpleado(empleado);
@@ -32,7 +32,7 @@ public interface HoraExtraMapper {
         HoraExtraPK horaExtraPK = new HoraExtraPK();
 
         horaExtraPK.setCodEmpleado(empleado.getCodEmpleado());
-        horaExtraPK.setCodPeriodo(horaExtraDto.getCodPeriodo());
+        horaExtraPK.setNroPeriodo(horaExtraDto.getPeriodo().getNroPeriodo());
 
         horaExtra.setId(horaExtraPK);
         horaExtra.setEmpleado(empleado);

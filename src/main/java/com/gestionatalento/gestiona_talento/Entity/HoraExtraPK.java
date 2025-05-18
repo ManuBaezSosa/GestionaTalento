@@ -12,21 +12,21 @@ public class HoraExtraPK implements Serializable {
     @Column(name = "cod_empleado")
     private Long codEmpleado;
 
-    @Column(name = "cod_periodo")
-    private String codPeriodo;
+    @Column(name = "nro_periodo")
+    private Long nroPeriodo;
 
     public HoraExtraPK() {}
 
-    public HoraExtraPK(Long codEmpleado, String codPeriodo) {
+    public HoraExtraPK(Long codEmpleado, Long nroPeriodo) {
         this.codEmpleado = codEmpleado;
-        this.codPeriodo = codPeriodo;
+        this.nroPeriodo = nroPeriodo;
     }
 
     public Long getCodEmpleado() { return codEmpleado; }
     public void setCodEmpleado(Long codEmpleado) { this.codEmpleado = codEmpleado; }
 
-    public String getCodPeriodo() { return codPeriodo; }
-    public void setCodPeriodo(String codPeriodo) { this.codPeriodo = codPeriodo; }
+    public Long getNroPeriodo() { return nroPeriodo; }
+    public void setNroPeriodo(Long nroPeriodo) { this.nroPeriodo = nroPeriodo; }
 
     @Override
     public boolean equals(Object o) {
@@ -34,11 +34,11 @@ public class HoraExtraPK implements Serializable {
         if (!(o instanceof HoraExtraPK)) return false;
         HoraExtraPK that = (HoraExtraPK) o;
         return Objects.equals(codEmpleado, that.codEmpleado) &&
-               Objects.equals(codPeriodo, that.codPeriodo);
+               Objects.equals(nroPeriodo, that.nroPeriodo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codEmpleado, codPeriodo);
+        return Objects.hash(codEmpleado, nroPeriodo);
     }
 }

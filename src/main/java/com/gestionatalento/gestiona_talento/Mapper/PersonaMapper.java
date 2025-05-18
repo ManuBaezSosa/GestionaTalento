@@ -3,6 +3,7 @@ package com.gestionatalento.gestiona_talento.Mapper;
 import java.util.Optional;
 import org.mapstruct.Mapper;
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
+import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
 import com.gestionatalento.gestiona_talento.Entity.Pais;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 
@@ -20,6 +21,10 @@ public interface PersonaMapper {
         Pais pais = new Pais();
         pais.setCodPais(personaDto.getPais().getCodPais());
         persona.setPais(pais);
+
+        EstadoCivil estadoCivil = new EstadoCivil();
+        estadoCivil.setCodEstadoCivil(personaDto.getEstadoCivil().getCodEstadoCivil());
+        persona.setEstadoCivil(estadoCivil);
 
         persona.setFecNacimiento(personaDto.getFecNacimiento());
         persona.setLugarNacimiento(personaDto.getLugarNacimiento());
@@ -41,6 +46,10 @@ public interface PersonaMapper {
         pais.setCodPais(persona.getPais().getCodPais());
         personaActualizada.setPais(pais);
 
+        EstadoCivil estadoCivil = new EstadoCivil();
+        estadoCivil.setCodEstadoCivil(personaDto.getEstadoCivil().getCodEstadoCivil());
+        personaActualizada.setEstadoCivil(estadoCivil);
+
         personaActualizada.setFecNacimiento(persona.getFecNacimiento());
         personaActualizada.setLugarNacimiento(persona.getLugarNacimiento());
         personaActualizada.setPoseeDiscapacidad(persona.getPoseeDiscapacidad());
@@ -58,6 +67,7 @@ public interface PersonaMapper {
         Optional.ofNullable(personaDto.getPoseeDiscapacidad()).ifPresent(personaActualizada::setPoseeDiscapacidad);
         Optional.ofNullable(personaDto.getDescripcionDiscapacidad()).ifPresent(personaActualizada::setDescripcionDiscapacidad);
         Optional.ofNullable(personaDto.getRutaFoto()).ifPresent(personaActualizada::setRutaFoto);
+        Optional.ofNullable(personaDto.getEstadoCivil()).ifPresent(personaActualizada::setEstadoCivil);
         return personaActualizada;
     }
     
