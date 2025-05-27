@@ -1,5 +1,8 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +10,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +47,9 @@ public class PersonaController {
     @Autowired
     PersonaServiceImpl personaServiceImpl;
 
+    @Value("${storage.fotos.path}")
+    private String storagePath;
+
 
     @PostMapping("/crear")
     public GenericResponse crearPersona(@Valid
@@ -59,9 +70,12 @@ public class PersonaController {
     }
 
     @PutMapping("/actualizar")
-    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto, @RequestParam("foto") MultipartFile foto) {
+    public GenericResponse actualizarPersona(@Valid
+                                            @RequestParam("data") String jsonPersonaDto,
+                                            @RequestParam("foto") MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
+            PersonaDto personaDto = new ObjectMapper().readValue(jsonPersonaDto, PersonaDto.class);
             genericResponse = personaServiceImpl.actualizarPersona(personaDto, foto);
             return genericResponse;
         } catch (Exception e) {
@@ -129,6 +143,18 @@ public class PersonaController {
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
+    }
+
+    @GetMapping("/obtener/foto/{codPersona}")
+    public ResponseEntity<Resource> obtenerFoto(@PathVariable Long codPersona) throws IOException {
+        Optional<Persona> persona = personaRepository.findById(codPersona);;
+
+        Path filepath = Paths.get(storagePath, persona.get().getRutaFoto());
+        Resource resource = new UrlResource(filepath.toUri());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(resource);
     }
 
 

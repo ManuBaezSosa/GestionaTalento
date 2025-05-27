@@ -40,15 +40,15 @@ public interface PersonaMapper {
         persona.setLugarNacimiento(personaDto.getLugarNacimiento());
         persona.setPoseeDiscapacidad(personaDto.getPoseeDiscapacidad());
         persona.setDescripcionDiscapacidad(personaDto.getDescripcionDiscapacidad());
-        persona.setRutaFoto(personaDto.getRutaFoto());
+        persona.setRutaFoto(fotoString.getOriginalFilename());
 
-        String filename = UUID.randomUUID() + "_" + fotoString.getOriginalFilename();
+        String filename = fotoString.getOriginalFilename();
         Path filepath = Paths.get(storagePath, filename);
         Files.copy(fotoString.getInputStream(), filepath);
 
         return persona;
     }
-    public static Persona setActualizarPersona(Persona persona, PersonaDto personaDto, MultipartFile foto, String storagePath) {
+    public static Persona setActualizarPersona(Persona persona, PersonaDto personaDto, MultipartFile fotoString, String storagePath) throws IOException{
         Persona personaActualizada = new Persona();
         personaActualizada.setCodPersona(persona.getCodPersona());
         personaActualizada.setNroDocumento(persona.getNroDocumento());
@@ -69,7 +69,11 @@ public interface PersonaMapper {
         personaActualizada.setLugarNacimiento(persona.getLugarNacimiento());
         personaActualizada.setPoseeDiscapacidad(persona.getPoseeDiscapacidad());
         personaActualizada.setDescripcionDiscapacidad(persona.getDescripcionDiscapacidad());
-        personaActualizada.setRutaFoto(persona.getRutaFoto());
+        personaActualizada.setRutaFoto(fotoString.getOriginalFilename());
+
+        String filename = fotoString.getOriginalFilename();
+        Path filepath = Paths.get(storagePath, filename);
+        Files.copy(fotoString.getInputStream(), filepath);
 
         return personaActualizada;
     }
