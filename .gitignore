@@ -33,4 +33,7 @@ build/
 .vscode/
 
 ### fotos de empleados ###
-uploads/
+# Ignorar todos los archivos en uploads/fotos/
+uploads/fotos/*
+# Exceptuar un marcador vacío para mantener la carpeta
+!uploads/fotos/.gitkeep

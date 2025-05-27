@@ -95,16 +95,23 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             logger.info("En EmpleadoDto, en el Request: {}", empleadoDto);
             Empleado empleadoExistente = empleadoRepository.findByIdEmpleadoActivo(empleadoDto.getCodEmpleado());
             if (empleadoExistente != null) {
-                /* Cargamos los datos del DTO al Empleado */
-                Empleado empleado = EmpleadoMapper.setActualizarEmpleado(empleadoExistente, empleadoDto);
-                logger.info("En EmpleadoMapper, en el Request: {}", empleado);
-                /* Guardar cambios */
-                empleado = empleadoRepository.save(empleado);
-                /* Completamos los mensajes de retorno */
-                genericResponse.setCodigoMensaje("200");
-                genericResponse.setMensaje("Empleado actualizado exitosamente");
-                genericResponse.setObjeto(empleado);
-                return genericResponse;
+                if (empleadoExistente.getEstado().equals("A")){
+                    /* Cargamos los datos del DTO al Empleado */
+                    Empleado empleado = EmpleadoMapper.setActualizarEmpleado(empleadoExistente, empleadoDto);
+                    logger.info("En EmpleadoMapper, en el Request: {}", empleado);
+                    /* Guardar cambios */
+                    empleado = empleadoRepository.save(empleado);
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("200");
+                    genericResponse.setMensaje("Empleado actualizado exitosamente");
+                    genericResponse.setObjeto(empleado);
+                    return genericResponse;
+                } else {
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("404");
+                    genericResponse.setMensaje("No se pueden modificar datos de empleados inactivos");
+                    return genericResponse;
+                }
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
