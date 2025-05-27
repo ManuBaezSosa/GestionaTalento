@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionatalento.gestiona_talento.Dto.DocumentoDto;
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
@@ -36,13 +40,15 @@ public class PersonaController {
     PersonaServiceImpl personaServiceImpl;
 
 
-
     @PostMapping("/crear")
-    public GenericResponse crearPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse crearPersona(@Valid
+                                        @RequestParam("data") String jsonPersonaDto,
+                                        @RequestParam("foto") MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            // Intentamos crear el empleado
-            genericResponse = personaServiceImpl.crearPersona(personaDto);
+            // Intentamos crear el empleado 
+            PersonaDto personaDto = new ObjectMapper().readValue(jsonPersonaDto, PersonaDto.class);
+            genericResponse = personaServiceImpl.crearPersona(personaDto, foto);
             return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno
@@ -53,10 +59,10 @@ public class PersonaController {
     }
 
     @PutMapping("/actualizar")
-    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto, @RequestParam("foto") MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = personaServiceImpl.actualizarPersona(personaDto);
+            genericResponse = personaServiceImpl.actualizarPersona(personaDto, foto);
             return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno

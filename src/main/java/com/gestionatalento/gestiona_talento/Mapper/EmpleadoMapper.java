@@ -34,16 +34,16 @@ public interface EmpleadoMapper {
         empleadoActualizado.setPersona(empleado.getPersona());
         empleadoActualizado.setEstado(empleado.getEstado());
         empleadoActualizado.setSituacionLaboral(empleado.getSituacionLaboral());
-        Optional.ofNullable(empleado.getFecActoAdministrativo()).ifPresent(empleadoActualizado::setFecActoAdministrativo);
-        Optional.ofNullable(empleado.getFecIngreso()).ifPresent(empleadoActualizado::setFecIngreso);
-        Optional.ofNullable(empleado.getFecEgreso()).ifPresent(empleadoActualizado::setFecEgreso);
-        Optional.ofNullable(empleado.getObservacion()).ifPresent(empleadoActualizado::setObservacion);
-        Optional.ofNullable(empleado.getAsignacion()).ifPresent(empleadoActualizado::setAsignacion);
-        Optional.ofNullable(empleado.getNroResolucion()).ifPresent(empleadoActualizado::setNroResolucion);
-        Optional.ofNullable(empleado.getHoraEntrada()).ifPresent(empleadoActualizado::setHoraEntrada);
-        Optional.ofNullable(empleado.getHoraSalida()).ifPresent(empleadoActualizado::setHoraSalida);
-        Optional.ofNullable(empleado.getCargo()).ifPresent(empleadoActualizado::setCargo);
-        Optional.ofNullable(empleado.getSede()).ifPresent(empleadoActualizado::setSede);
+        empleadoActualizado.setAsignacion(empleado.getAsignacion());
+
+        empleadoActualizado.setFecActoAdministrativo(empleadoDto.getFecActoAdministrativo());
+        empleadoActualizado.setFecIngreso(empleadoDto.getFecIngreso());
+        empleadoActualizado.setObservacion(empleadoDto.getObservacion());
+        empleadoActualizado.setNroResolucion(empleadoDto.getNroResolucion());
+        empleadoActualizado.setHoraEntrada(empleadoDto.getHoraEntrada());
+        empleadoActualizado.setHoraSalida(empleadoDto.getHoraEntrada());
+        empleadoActualizado.setCargo(empleadoDto.getCargo());
+        empleadoActualizado.setSede(empleadoDto.getSede());
 
         return empleadoActualizado;
     }

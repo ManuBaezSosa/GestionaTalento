@@ -1,16 +1,26 @@
 package com.gestionatalento.gestiona_talento.Mapper;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.mapstruct.Mapper;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
 import com.gestionatalento.gestiona_talento.Entity.Pais;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 
+import java.nio.file.Path;
+
 @Mapper
 public interface PersonaMapper {
-
-    public static Persona setPersona(PersonaDto personaDto){
+    
+    public static Persona setPersona(PersonaDto personaDto, MultipartFile fotoString, String storagePath) throws IOException{
         Persona persona = new Persona();
         persona.setNroDocumento(personaDto.getNroDocumento());
         persona.setNroRuc(personaDto.getNroRuc());
@@ -31,9 +41,14 @@ public interface PersonaMapper {
         persona.setPoseeDiscapacidad(personaDto.getPoseeDiscapacidad());
         persona.setDescripcionDiscapacidad(personaDto.getDescripcionDiscapacidad());
         persona.setRutaFoto(personaDto.getRutaFoto());
+
+        String filename = UUID.randomUUID() + "_" + fotoString.getOriginalFilename();
+        Path filepath = Paths.get(storagePath, filename);
+        Files.copy(fotoString.getInputStream(), filepath);
+
         return persona;
     }
-    public static Persona setActualizarPersona(Persona persona, PersonaDto personaDto) {
+    public static Persona setActualizarPersona(Persona persona, PersonaDto personaDto, MultipartFile foto, String storagePath) {
         Persona personaActualizada = new Persona();
         personaActualizada.setCodPersona(persona.getCodPersona());
         personaActualizada.setNroDocumento(persona.getNroDocumento());
@@ -56,18 +71,6 @@ public interface PersonaMapper {
         personaActualizada.setDescripcionDiscapacidad(persona.getDescripcionDiscapacidad());
         personaActualizada.setRutaFoto(persona.getRutaFoto());
 
-        Optional.ofNullable(personaDto.getNroDocumento()).ifPresent(personaActualizada::setNroDocumento);
-        Optional.ofNullable(personaDto.getNroRuc()).ifPresent(personaActualizada::setNroRuc);
-        Optional.ofNullable(personaDto.getNombres()).ifPresent(personaActualizada::setNombres);
-        Optional.ofNullable(personaDto.getApellidos()).ifPresent(personaActualizada::setApellidos);
-        Optional.ofNullable(personaDto.getCodNivelEstudio()).ifPresent(personaActualizada::setCodNivelEstudio);
-        Optional.ofNullable(personaDto.getPais()).ifPresent(personaActualizada::setPais);
-        Optional.ofNullable(personaDto.getFecNacimiento()).ifPresent(personaActualizada::setFecNacimiento);
-        Optional.ofNullable(personaDto.getLugarNacimiento()).ifPresent(personaActualizada::setLugarNacimiento);
-        Optional.ofNullable(personaDto.getPoseeDiscapacidad()).ifPresent(personaActualizada::setPoseeDiscapacidad);
-        Optional.ofNullable(personaDto.getDescripcionDiscapacidad()).ifPresent(personaActualizada::setDescripcionDiscapacidad);
-        Optional.ofNullable(personaDto.getRutaFoto()).ifPresent(personaActualizada::setRutaFoto);
-        Optional.ofNullable(personaDto.getEstadoCivil()).ifPresent(personaActualizada::setEstadoCivil);
         return personaActualizada;
     }
     

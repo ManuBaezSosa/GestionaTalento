@@ -1,7 +1,9 @@
 package com.gestionatalento.gestiona_talento.Dto;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
 import com.gestionatalento.gestiona_talento.Entity.Pais;
 
@@ -27,7 +29,8 @@ public class PersonaDto {
     private String apellidos;
     private String codNivelEstudio;
     private Pais pais;
-    private LocalDate fecNacimiento;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date fecNacimiento;
     private String lugarNacimiento;
     private String poseeDiscapacidad;
     private String descripcionDiscapacidad;

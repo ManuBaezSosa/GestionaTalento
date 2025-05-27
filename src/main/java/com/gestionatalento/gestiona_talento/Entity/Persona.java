@@ -1,5 +1,6 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class Persona {
     private Pais pais;
 
     @Column(name = "fec_nacimiento", nullable = false)
-    private LocalDate fecNacimiento;
+    private Date fecNacimiento;
 
     @Column(name = "lugar_nacimiento", nullable = false)
     private String lugarNacimiento;

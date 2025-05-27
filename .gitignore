@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### fotos de empleados ###
+uploads/

@@ -45,4 +45,6 @@ public class EmpleadoDto {
     private Sede sede;
     private SituacionLaboral situacionLaboral;
 
+    /* Agregado para baja de empleados */
+    private String comentario;
 }
