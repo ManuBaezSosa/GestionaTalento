@@ -1,7 +1,5 @@
 package com.gestionatalento.gestiona_talento.Mapper;
 
-import java.util.Optional;
-
 import org.mapstruct.Mapper;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;

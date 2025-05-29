@@ -5,7 +5,6 @@ import java.sql.Date;
 import com.gestionatalento.gestiona_talento.Entity.Periodo;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Entity.SituacionLaboral;
-import com.gestionatalento.gestiona_talento.Entity.TipoDocumento;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

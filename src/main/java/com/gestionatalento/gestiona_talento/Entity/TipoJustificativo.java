@@ -1,8 +1,5 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
-import java.sql.Date;
-import java.time.LocalTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

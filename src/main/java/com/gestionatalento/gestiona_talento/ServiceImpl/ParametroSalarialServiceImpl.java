@@ -1,7 +1,5 @@
 package com.gestionatalento.gestiona_talento.ServiceImpl;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.gestionatalento.gestiona_talento.Dto.ParametroSalarialDto;
 import com.gestionatalento.gestiona_talento.Entity.ParametroSalarial;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
-import com.gestionatalento.gestiona_talento.Mapper.ParametroSalarialMapper;
 import com.gestionatalento.gestiona_talento.Repository.ParametroSalarialRepository;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;

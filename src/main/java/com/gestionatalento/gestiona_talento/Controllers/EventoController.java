@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.yaml.snakeyaml.events.Event;
 
 import com.gestionatalento.gestiona_talento.Dto.EventoDto;
-import com.gestionatalento.gestiona_talento.Entity.Empleado;
 import com.gestionatalento.gestiona_talento.Entity.Evento;
 import com.gestionatalento.gestiona_talento.Repository.EventoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;

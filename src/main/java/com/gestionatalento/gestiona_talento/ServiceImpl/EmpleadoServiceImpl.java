@@ -2,14 +2,10 @@ package com.gestionatalento.gestiona_talento.ServiceImpl;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,6 @@ import com.gestionatalento.gestiona_talento.Mapper.EmpleadoMapper;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoNovedadRepository;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
-import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Response.FindEmpleadoResponse;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.Service.EmpleadoService;

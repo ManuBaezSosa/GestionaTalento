@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestionatalento.gestiona_talento.Entity.TipoEvento;
 import com.gestionatalento.gestiona_talento.Entity.TipoJustificativo;
-import com.gestionatalento.gestiona_talento.Repository.TipoEventoRepository;
 import com.gestionatalento.gestiona_talento.Repository.TipoJustificativoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 

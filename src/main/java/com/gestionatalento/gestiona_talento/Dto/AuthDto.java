@@ -1,7 +1,5 @@
 package com.gestionatalento.gestiona_talento.Dto;
 
-import com.gestionatalento.gestiona_talento.Entity.Departamento;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

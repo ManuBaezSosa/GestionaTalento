@@ -20,6 +20,7 @@ public interface DescuentoSalarialMapper {
 
         descuentoSalarial.setId(descuentoSalarialPK);
         descuentoSalarial.setEmpleado(empleado);
+        descuentoSalarial.setPeriodo(descuentoSalarialDto.getPeriodo());
         descuentoSalarial.setAusencia(descuentoSalarialDto.getAusencia());
         descuentoSalarial.setEntradaTardia(descuentoSalarialDto.getEntradaTardia());
         descuentoSalarial.setSalidaAnticipada(descuentoSalarialDto.getSalidaAnticipada());
@@ -37,6 +38,7 @@ public interface DescuentoSalarialMapper {
 
         descuentoSalarial.setId(descuentoSalarialPK);
         descuentoSalarial.setEmpleado(empleado);
+        descuentoSalarial.setPeriodo(descuentoSalarialDto.getPeriodo());
         descuentoSalarial.setAusencia(descuentoSalarialDto.getAusencia());
         descuentoSalarial.setEntradaTardia(descuentoSalarialDto.getEntradaTardia());
         descuentoSalarial.setSalidaAnticipada(descuentoSalarialDto.getSalidaAnticipada());

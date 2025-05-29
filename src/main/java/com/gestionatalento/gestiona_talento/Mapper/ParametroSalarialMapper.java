@@ -4,7 +4,6 @@ package com.gestionatalento.gestiona_talento.Mapper;
 import java.io.IOException;
 
 import org.mapstruct.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.gestionatalento.gestiona_talento.Dto.ParametroSalarialDto;
 import com.gestionatalento.gestiona_talento.Entity.ParametroSalarial;

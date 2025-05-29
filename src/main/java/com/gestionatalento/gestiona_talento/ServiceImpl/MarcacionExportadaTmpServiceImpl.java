@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gestionatalento.gestiona_talento.Dto.MarcacionExportadaTmpDto;
 import com.gestionatalento.gestiona_talento.Entity.MarcacionExportadaTmp;
 import com.gestionatalento.gestiona_talento.Entity.MarcacionExportadaTmpPK;
-import com.gestionatalento.gestiona_talento.Entity.UsuarioExportado;
 import com.gestionatalento.gestiona_talento.Entity.UsuarioExportadoTmp;
 import com.gestionatalento.gestiona_talento.Repository.MarcacionExportadaTmpRepository;
 import com.gestionatalento.gestiona_talento.Repository.UsuarioExportadoTmpRepository;

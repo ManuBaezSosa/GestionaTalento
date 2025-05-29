@@ -16,8 +16,6 @@ import com.gestionatalento.gestiona_talento.Dto.MarcacionManualDto;
 import com.gestionatalento.gestiona_talento.Dto.MarcacionVistaDto;
 import com.gestionatalento.gestiona_talento.Dto.MarcacionVistaDtoRequest;
 import com.gestionatalento.gestiona_talento.Entity.MarcacionManual;
-import com.gestionatalento.gestiona_talento.Entity.MarcacionVista;
-import com.gestionatalento.gestiona_talento.Entity.TipoEvento;
 import com.gestionatalento.gestiona_talento.Repository.MarcacionManualRepository;
 import com.gestionatalento.gestiona_talento.Repository.MarcacionVistaRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;

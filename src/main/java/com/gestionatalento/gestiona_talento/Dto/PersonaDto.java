@@ -1,15 +1,11 @@
 package com.gestionatalento.gestiona_talento.Dto;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gestionatalento.gestiona_talento.Entity.EstadoCivil;
 import com.gestionatalento.gestiona_talento.Entity.Pais;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

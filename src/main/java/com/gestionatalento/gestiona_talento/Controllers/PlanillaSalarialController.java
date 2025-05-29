@@ -1,9 +1,7 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import com.gestionatalento.gestiona_talento.Dto.PlanillaSalarialDetDto;
 import com.gestionatalento.gestiona_talento.Dto.PlanillaSalarialDto;
 import com.gestionatalento.gestiona_talento.Dto.PlanillaSalarialInfDto;
 import com.gestionatalento.gestiona_talento.Entity.PlanillaSalarial;
-import com.gestionatalento.gestiona_talento.Entity.Justificativo;
 import com.gestionatalento.gestiona_talento.Entity.ParametroSalarial;
 import com.gestionatalento.gestiona_talento.Repository.ParametroSalarialRepository;
 import com.gestionatalento.gestiona_talento.Repository.PlanillaSalarialRepository;
