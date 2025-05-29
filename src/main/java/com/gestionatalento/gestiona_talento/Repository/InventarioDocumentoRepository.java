@@ -15,7 +15,7 @@ import com.gestionatalento.gestiona_talento.Entity.InventarioDocumento;
 @Repository
 public interface InventarioDocumentoRepository extends JpaRepository<InventarioDocumento, Long> {
     
-    @Query("SELECT e FROM DescuentoSalarial e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
+    @Query("SELECT e FROM InventarioDocumento e WHERE e.id.nroPeriodo = :nroPeriodo AND e.id.codEmpleado = :codEmpleado")
     InventarioDocumento findByInventarioDocumento(@Param("nroPeriodo") Long nroPeriodo, @Param("codEmpleado") Long codEmpleado);
 
     @Modifying

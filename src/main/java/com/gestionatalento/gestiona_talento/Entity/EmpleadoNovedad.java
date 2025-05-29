@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,9 @@ public class EmpleadoNovedad {
 
     @Column(name =  "estado")
     private String estado;
+
+    @Column(name =  "fecha")
+    private LocalDateTime fecha;
 
     @Column(name =  "comentario")
     private String comentario;

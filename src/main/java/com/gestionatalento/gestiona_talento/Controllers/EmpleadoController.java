@@ -1,7 +1,10 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
+import com.gestionatalento.gestiona_talento.Dto.NovedadDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Entity.EmpleadoNovedad;
+import com.gestionatalento.gestiona_talento.Repository.EmpleadoNovedadRepository;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.ServiceImpl.EmpleadoServiceImpl;
@@ -34,8 +40,12 @@ public class EmpleadoController {
     // ----------- EMPLEADOS -------- //
     @Autowired
     EmpleadoRepository empleadoRepository;
+
     @Autowired
     EmpleadoServiceImpl empleadoServiceImpl;
+
+    @Autowired
+    EmpleadoNovedadRepository empleadoNovedadRepository;
 
     /* Este metodo crea los empleados, se debe de ver el metodo de crearEmpleado en la clase de EmpleadoServiceImpl */
     @PostMapping("/crear")
@@ -194,6 +204,34 @@ public class EmpleadoController {
     public ResponseEntity<GenericResponse> obtenerInformeHistoricoAsignacion(@RequestParam("periodo") String periodo) {
         GenericResponse response = empleadoServiceImpl.obtenerInformeHistoricoAsignacion(periodo);
         return new ResponseEntity<>(response, getStatusFromCodigo(response.getCodigoMensaje()));
+    }
+
+    @GetMapping("/dashboard/obtenerNovedades")
+    public List<NovedadDto> obtenerUltimos6Meses() {
+        List<String> meses = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES"));
+        LocalDate fechaActual = LocalDate.now();
+        NovedadDto novedadDto;
+
+        List<NovedadDto> novedades = new ArrayList<>();
+        for (int i = 5; i >= 0; i--) {
+            LocalDate mes = fechaActual.minusMonths(i);
+            System.out.println(mes);
+
+            String nomMes = mes.format(formatter).toString();
+            nomMes = nomMes.toUpperCase();
+            int cantidadAltas = empleadoNovedadRepository.findByMesAlta(mes);
+            int cantidadBajas = empleadoNovedadRepository.findByMesBaja(mes);
+
+            novedadDto = new NovedadDto();
+            novedadDto.setMes(nomMes);
+            novedadDto.setCantidadAltas(cantidadAltas);           
+            novedadDto.setCantidadBajas(cantidadBajas);          
+
+            novedades.add(novedadDto);
+        }
+
+        return novedades;
     }
 
     private HttpStatus getStatusFromCodigo(String codigo) {
