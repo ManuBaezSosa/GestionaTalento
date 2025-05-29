@@ -2,6 +2,8 @@ package com.gestionatalento.gestiona_talento.Dto;
 
 import java.util.List;
 
+import com.gestionatalento.gestiona_talento.Entity.DescuentoSalarial;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlanillaSalarialInfDto {
+public class DescuentoSalarialInfDto {
 
-    private PlanillaSalarialCabDto cabecera;
-    private List<PlanillaSalarialDetDto> detalle;
+    private DescuentoSalarialCabDto cabecera;
+    private List<DescuentoSalarial> detalle;
     
 }

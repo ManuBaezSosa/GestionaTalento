@@ -155,8 +155,6 @@ public class PlanillaSalarialController {
                 planillaSalarialCabecera.setObjetoGasto(parametroSalarial.getObjetoGasto());
                 planillaSalarialCabecera.setSubprograma(parametroSalarial.getSubPrograma());
                 
-                planillaSalarialInforme.setCabecera(planillaSalarialCabecera);
-
                 List<PlanillaSalarial> detallesSalariales = planillaSalarialRepository.findByCabecera(parametroSalarial.getSituacionLaboral().getCodSituacionLaboral(),
                                                                                                        parametroSalarial.getPresupuesto().getCodPresupuesto(),
                                                                                                        parametroSalarial.getPrograma().getCodPrograma(),
