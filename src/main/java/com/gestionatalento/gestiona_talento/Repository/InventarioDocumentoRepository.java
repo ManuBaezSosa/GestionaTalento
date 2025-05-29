@@ -25,6 +25,6 @@ public interface InventarioDocumentoRepository extends JpaRepository<InventarioD
     @Query("SELECT d FROM InventarioDocumento d WHERE d.id.nroPeriodo = :nroPeriodo")
     List<InventarioDocumento> findByInventarioDocumentoExistentes(@Param("nroPeriodo") Long nroPeriodo);
 
-    @Query("SELECT e FROM Empleado e WHERE NOT EXISTS(SELECT null FROM InventarioDocumento x WHERE x.empleado.codEmpleado = e.codEmpleado and x.id.nroPeriodo = :nroPeriodo)")
+    @Query("SELECT e FROM Empleado e WHERE e.estado = 'A' AND e.situacionLaboral.codSituacionLaboral = 1 AND NOT EXISTS(SELECT null FROM InventarioDocumento x WHERE x.empleado.codEmpleado = e.codEmpleado and x.id.nroPeriodo = :nroPeriodo)")
     List<Empleado> findByInventarioDocumentoFaltantes(@Param("nroPeriodo") Long nroPeriodo);
 }
