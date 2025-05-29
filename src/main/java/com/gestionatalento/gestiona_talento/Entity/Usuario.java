@@ -1,23 +1,21 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,78 +31,120 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cod_usuario")
-    private Long id ;
-    private String username;
-    private String password;
-    @Column(name = "nombre_completo")
-    private String nombre;
-    private String docuemento;
-    private Date fechaAlta;
-    private Date fechaBaja;
-    private String cargo;
-    private String estado;
-    private boolean admin;
+    private Long codUsuario;
 
-    public boolean isBlocked() {
-        return "BLOQUEADO".equals(estado) || (intentosFallidos != null && intentosFallidos >= 3);
+    @Column(name = "nombre_usuario")
+    private String nombreUsuario;
+
+    @Column(name = "credencial")
+    private String credencial;
+
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
+
+    @Column(name = "fecha_alta")
+    private LocalDateTime fechaAlta;
+
+    @Column(name = "fecha_baja")
+    private LocalDateTime fechaBaja;
+
+    @Column(name = "cargo")
+    private String cargo;
+
+    @Column(name = "activo")
+    private String activo;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<UsuarioRol> roles = new ArrayList<>();
+
+    public Long getCodUsuario() {
+        return codUsuario;
     }
 
-    
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "usuario_roles",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    public void setCodUsuario(Long codUsuario) {
+        this.codUsuario = codUsuario;
+    }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-    name = "usuario_permisos",
-    joinColumns = @JoinColumn(name = "usuario_id"),
-    inverseJoinColumns = @JoinColumn(name = "permiso_id")
-    )
-    private Set<Permiso> permisosAdicionales = new HashSet<>();
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
 
-    @Column(name = "intentos_fallidos")
-    private Integer intentosFallidos = 0;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
 
-    @Column(name = "creado_por")
-    private String creadoPor;
+    public String getCredencial() {
+        return credencial;
+    }
 
+    public void setCredencial(String credencial) {
+        this.credencial = credencial;
+    }
 
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public LocalDateTime getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(LocalDateTime fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public LocalDateTime getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(LocalDateTime fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
+    }
+
+    public List<UsuarioRol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UsuarioRol> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-
-        // Solo agregar roles como authorities
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        
-        // Agregar permisos directos del usuario
-        for (Permiso permiso : permisosAdicionales) {
-            authorities.add(new SimpleGrantedAuthority(permiso.getName()));
-        }
-
-        return authorities;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
     }
 
     @Override
-    public String getPassword() { return password; }
-    @Override
-    public String getUsername() { return username; }
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-    @Override
-    public boolean isEnabled() { return true; }
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    }
 
-  
-    
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+    }
 
 }

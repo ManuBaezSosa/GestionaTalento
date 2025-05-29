@@ -22,5 +22,7 @@ public class DocumentoDto {
     private Long tamArchivo;
     private String estado;
     private Date fecDocumento;
+    private Date fecVencimiento;
     private String observacion;
+    
 }

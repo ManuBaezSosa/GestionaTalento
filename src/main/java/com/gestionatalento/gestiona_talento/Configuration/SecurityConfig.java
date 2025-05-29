@@ -3,7 +3,9 @@ package com.gestionatalento.gestiona_talento.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.gestionatalento.gestiona_talento.Jwt.JwtAuthenticationFilter;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration // Indica que esta clase proporciona configuración de beans para Spring
@@ -23,9 +23,6 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity // Habilita la seguridad a nivel de método con anotaciones como @PreAuthorize
 @RequiredArgsConstructor // Genera un constructor con todos los campos final como parámetros
 public class SecurityConfig {
-
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
     private AuthenticationProvider authProvider;
@@ -81,15 +78,13 @@ public class SecurityConfig {
             // Registramos nuestro proveedor de autenticación
             .authenticationProvider(authProvider)
             
-            // Agregamos nuestro filtro JWT antes del filtro de autenticación estándar
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            
             // Construimos la cadena de filtros de seguridad
             .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
+    
 }

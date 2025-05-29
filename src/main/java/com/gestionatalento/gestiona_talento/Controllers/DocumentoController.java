@@ -96,4 +96,39 @@ public class DocumentoController {
             return genericResponse;
         }
     }
+
+    @GetMapping("/obtenerListaVencidos")
+    public GenericResponse listarDocumentosVencidos() {
+        GenericResponse genericResponse = new GenericResponse();
+        try {
+            List<DocumentoDto> documentos = documentoRepository.findByFecVencimiento();
+
+            System.out.println(documentos);
+            // Verificamos si la lista está vacía
+            if (documentos.isEmpty()) {
+                 /* Completamos los mensajes de retorno */
+                genericResponse.setCodigoMensaje("404");
+                genericResponse.setMensaje("No existen documentos vencidos");
+                return genericResponse;
+            }
+            
+            // Creamos un contenedor para la respuesta
+            List<Map<String, Object>> responseList = new ArrayList<>();
+
+            for (DocumentoDto documento : documentos) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("documento", documento); 
+                responseList.add(response);
+            }
+            genericResponse.setCodigoMensaje("200");
+            genericResponse.setMensaje("Han sido obtenidos los documentos vencidos correctamente");
+            genericResponse.setObjeto(responseList);
+
+            return genericResponse;
+        } catch (Exception e) {
+            genericResponse.setCodigoMensaje("500");
+            genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
+            return genericResponse;
+        }
+    }
 }

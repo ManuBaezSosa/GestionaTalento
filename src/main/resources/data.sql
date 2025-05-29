@@ -443,3 +443,6 @@ VALUES(2, 'S', 'TITULO UNIVERSITARIO', 'P');
 
 INSERT INTO TIPOS_DOCUMENTOS(COD_TIPO_DOCUMENTO, ACTIVO, descripcion, tip_categoria)
 VALUES(3, 'S', 'FOTOCOPIA DE CEDULA DE IDENTIDAD', 'P');
+
+insert into tipos_documentos(cod_tipo_documento, activo, descripcion, tip_categoria)
+values(4, 'S', 'MEMORANDUM', 'G');

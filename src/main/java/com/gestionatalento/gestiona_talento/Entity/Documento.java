@@ -54,6 +54,9 @@ public class Documento {
     @Column(name = "fec_documento")
     private Date fecDocumento;
 
+    @Column(name = "fec_vencimiento")
+    private Date fecVencimiento;
+
     @Column(name = "observacion")
     private String observacion;
 
