@@ -58,6 +58,8 @@ public class SecurityConfig {
 
                     .requestMatchers("/justificativos/**").permitAll()
 
+                    .requestMatchers("/vacaciones/**").permitAll()
+
                     .requestMatchers("/salarios/**").permitAll()
 
                     .requestMatchers("/contratos/**").permitAll()
