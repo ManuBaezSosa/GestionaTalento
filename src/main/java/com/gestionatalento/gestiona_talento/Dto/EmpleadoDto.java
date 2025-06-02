@@ -9,17 +9,11 @@ import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Entity.Sede;
 import com.gestionatalento.gestiona_talento.Entity.SituacionLaboral;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Data
@@ -45,4 +39,6 @@ public class EmpleadoDto {
     private Sede sede;
     private SituacionLaboral situacionLaboral;
 
+    /* Agregado para baja de empleados */
+    private String comentario;
 }

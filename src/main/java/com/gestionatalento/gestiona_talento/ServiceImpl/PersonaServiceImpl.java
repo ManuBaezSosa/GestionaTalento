@@ -1,14 +1,14 @@
 package com.gestionatalento.gestiona_talento.ServiceImpl;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
@@ -18,6 +18,7 @@ import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.Service.PersonaService;
 
+
 @Service
 public class PersonaServiceImpl implements PersonaService{
     private static final Logger logger = LoggerFactory.getLogger(PersonaServiceImpl.class);
@@ -25,20 +26,23 @@ public class PersonaServiceImpl implements PersonaService{
     @Autowired
     PersonaRepository personaRepository;
 
+    @Value("${storage.fotos.path}")
+    private String storagePath;
+
     @Override
     public List<Persona> findAllPersonas() {
         return personaRepository.findAll();
     }
 
     @Override
-    public GenericResponse crearPersona(PersonaDto personaDto) {
+    public GenericResponse crearPersona(PersonaDto personaDto, MultipartFile foto) {
         /* Buscamos a la persona */
         GenericResponse genericResponse = new GenericResponse();
         try{
             logger.info("En PersonaDto, en el Request: {}", personaDto);
             Optional<Persona> personaResponse = personaRepository.findByNroDocumento(personaDto.getNroDocumento());
             if (!personaResponse.isPresent()) {
-                Persona persona = PersonaMapper.setPersona(personaDto);
+                Persona persona = PersonaMapper.setPersona(personaDto, foto, storagePath);
                 logger.info("En PersonaMapper, en el Request: {}", persona);
                 /* Guardamos la persona */
                 persona = personaRepository.save(persona);
@@ -82,7 +86,7 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public GenericResponse actualizarPersona(PersonaDto personaDto) {
+    public GenericResponse actualizarPersona(PersonaDto personaDto, MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try{
             logger.info("En PersonaDto, en el Request: {}", personaDto);
@@ -93,7 +97,7 @@ public class PersonaServiceImpl implements PersonaService{
 
                 /* Cargamos los datos del DTO al Empleado */
                 Persona personaActualizada = new Persona();
-                personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto);
+                personaActualizada = PersonaMapper.setActualizarPersona(personaOriginal, personaDto, foto, storagePath);
                 logger.info("En PersonaMapper, en el Request: {}", personaActualizada);
                 if (!personaActualizada.getNroDocumento().equals(personaOriginal.getNroDocumento())) {
                     personaResponse = personaRepository.findByNroDocumento(personaActualizada.getNroDocumento());

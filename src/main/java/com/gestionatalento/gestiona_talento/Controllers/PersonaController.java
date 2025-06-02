@@ -1,5 +1,8 @@
 package com.gestionatalento.gestiona_talento.Controllers;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +10,19 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionatalento.gestiona_talento.Dto.PersonaDto;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
@@ -35,14 +45,19 @@ public class PersonaController {
     @Autowired
     PersonaServiceImpl personaServiceImpl;
 
+    @Value("${storage.fotos.path}")
+    private String storagePath;
 
 
     @PostMapping("/crear")
-    public GenericResponse crearPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse crearPersona(@Valid
+                                        @RequestParam("data") String jsonPersonaDto,
+                                        @RequestParam(value = "foto", required = false) MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            // Intentamos crear el empleado
-            genericResponse = personaServiceImpl.crearPersona(personaDto);
+            // Intentamos crear el empleado 
+            PersonaDto personaDto = new ObjectMapper().readValue(jsonPersonaDto, PersonaDto.class);
+            genericResponse = personaServiceImpl.crearPersona(personaDto, foto);
             return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno
@@ -53,10 +68,13 @@ public class PersonaController {
     }
 
     @PutMapping("/actualizar")
-    public GenericResponse actualizarPersona(@Valid @RequestBody PersonaDto personaDto) {
+    public GenericResponse actualizarPersona(@Valid
+                                            @RequestParam("data") String jsonPersonaDto,
+                                            @RequestParam(value = "foto", required = false) MultipartFile foto) {
         GenericResponse genericResponse = new GenericResponse();
         try {
-            genericResponse = personaServiceImpl.actualizarPersona(personaDto);
+            PersonaDto personaDto = new ObjectMapper().readValue(jsonPersonaDto, PersonaDto.class);
+            genericResponse = personaServiceImpl.actualizarPersona(personaDto, foto);
             return genericResponse;
         } catch (Exception e) {
             // Si hay un error en la creación del empleado, retornamos un error interno
@@ -123,6 +141,18 @@ public class PersonaController {
             genericResponse.setMensaje("Ha ocurrido un error interno en el servidor: " + e.getMessage());
             return genericResponse;
         }
+    }
+
+    @GetMapping("/obtener/foto/{codPersona}")
+    public ResponseEntity<Resource> obtenerFoto(@PathVariable Long codPersona) throws IOException {
+        Optional<Persona> persona = personaRepository.findById(codPersona);;
+
+        Path filepath = Paths.get(storagePath, persona.get().getRutaFoto());
+        Resource resource = new UrlResource(filepath.toUri());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(resource);
     }
 
 

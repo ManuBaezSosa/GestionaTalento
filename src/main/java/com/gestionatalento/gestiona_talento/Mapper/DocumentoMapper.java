@@ -18,6 +18,7 @@ public interface DocumentoMapper {
         documento.setTipoDocumento(documentoDto.getTipoDocumento());
         documento.setEstado(documentoDto.getEstado());
         documento.setFecDocumento(documentoDto.getFecDocumento());
+        documento.setFecVencimiento(documentoDto.getFecVencimiento());
         documento.setObservacion(documentoDto.getObservacion());
         documento.setNomArchivo(archivo.getOriginalFilename());
         documento.setTipArchivo(archivo.getContentType());
@@ -33,6 +34,7 @@ public interface DocumentoMapper {
         documento.setNomArchivo(documentoDto.getNomArchivo());
         documento.setEstado(documentoDto.getEstado());
         documento.setFecDocumento(documentoDto.getFecDocumento());
+        documento.setFecVencimiento(documentoDto.getFecVencimiento());
         documento.setObservacion(documentoDto.getObservacion());
 
         return documento;

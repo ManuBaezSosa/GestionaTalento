@@ -2,8 +2,6 @@ package com.gestionatalento.gestiona_talento.Dto;
 
 import java.time.LocalDate;
 
-import org.springframework.cglib.core.Local;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

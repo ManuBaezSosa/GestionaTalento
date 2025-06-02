@@ -2,14 +2,10 @@ package com.gestionatalento.gestiona_talento.ServiceImpl;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.gestionatalento.gestiona_talento.Dto.EmpleadoDto;
 import com.gestionatalento.gestiona_talento.Entity.Empleado;
+import com.gestionatalento.gestiona_talento.Entity.EmpleadoNovedad;
 import com.gestionatalento.gestiona_talento.Entity.Persona;
 import com.gestionatalento.gestiona_talento.Mapper.EmpleadoMapper;
+import com.gestionatalento.gestiona_talento.Repository.EmpleadoNovedadRepository;
 import com.gestionatalento.gestiona_talento.Repository.EmpleadoRepository;
 import com.gestionatalento.gestiona_talento.Repository.PersonaRepository;
-import com.gestionatalento.gestiona_talento.Request.PersonaRequest;
 import com.gestionatalento.gestiona_talento.Response.FindEmpleadoResponse;
 import com.gestionatalento.gestiona_talento.Response.GenericResponse;
 import com.gestionatalento.gestiona_talento.Service.EmpleadoService;
@@ -37,6 +34,8 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     EmpleadoRepository empleadoRepository;
     @Autowired
     PersonaRepository personaRepository;
+    @Autowired
+    EmpleadoNovedadRepository empleadoNovedadRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -91,16 +90,23 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             logger.info("En EmpleadoDto, en el Request: {}", empleadoDto);
             Empleado empleadoExistente = empleadoRepository.findByIdEmpleadoActivo(empleadoDto.getCodEmpleado());
             if (empleadoExistente != null) {
-                /* Cargamos los datos del DTO al Empleado */
-                Empleado empleado = EmpleadoMapper.setActualizarEmpleado(empleadoExistente, empleadoDto);
-                logger.info("En EmpleadoMapper, en el Request: {}", empleado);
-                /* Guardar cambios */
-                empleado = empleadoRepository.save(empleado);
-                /* Completamos los mensajes de retorno */
-                genericResponse.setCodigoMensaje("200");
-                genericResponse.setMensaje("Empleado actualizado exitosamente");
-                genericResponse.setObjeto(empleado);
-                return genericResponse;
+                if (empleadoExistente.getEstado().equals("A")){
+                    /* Cargamos los datos del DTO al Empleado */
+                    Empleado empleado = EmpleadoMapper.setActualizarEmpleado(empleadoExistente, empleadoDto);
+                    logger.info("En EmpleadoMapper, en el Request: {}", empleado);
+                    /* Guardar cambios */
+                    empleado = empleadoRepository.save(empleado);
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("200");
+                    genericResponse.setMensaje("Empleado actualizado exitosamente");
+                    genericResponse.setObjeto(empleado);
+                    return genericResponse;
+                } else {
+                    /* Completamos los mensajes de retorno */
+                    genericResponse.setCodigoMensaje("404");
+                    genericResponse.setMensaje("No se pueden modificar datos de empleados inactivos");
+                    return genericResponse;
+                }
             }else{
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
@@ -116,24 +122,32 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public GenericResponse bajarEmpleado(EmpleadoDto request) {
+    @Transactional
+    public GenericResponse bajarEmpleado(EmpleadoDto empleadoDto) {
         GenericResponse genericResponse = new GenericResponse();
         try{
-            Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(request.getCodEmpleado());
+            Empleado empleado = empleadoRepository.findByIdEmpleadoActivo(empleadoDto.getCodEmpleado());
             if (empleado != null) {
                 /* Asignamos los valores por baja de empleado */
-                empleado.setFecEgreso(request.getFecEgreso());
+                empleado.setFecEgreso(empleadoDto.getFecEgreso());
                 empleado.setEstado("I");
                 /* Enviamos el request */
                 empleadoRepository.save(empleado);
+
+                EmpleadoNovedad empleadoNovedad = new EmpleadoNovedad();
+                empleadoNovedad.setEmpleado(empleado);
+                empleadoNovedad.setComentario(empleadoDto.getComentario());
+                empleadoNovedad.setEstado("BAJA");
+                empleadoNovedadRepository.save(empleadoNovedad);
+                
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("200");
-                genericResponse.setMensaje("Empleado dado de baja correctamente con valor proporcionado. ID: " + request.getCodEmpleado());
+                genericResponse.setMensaje("Empleado dado de baja correctamente con valor proporcionado. ID: " + empleadoDto.getCodEmpleado());
                 return genericResponse;
             } else {
                 /* Completamos los mensajes de retorno */
                 genericResponse.setCodigoMensaje("404");
-                genericResponse.setMensaje("No se encuentra un empleado activo con el valor proporcionado. ID: " + request.getCodEmpleado());
+                genericResponse.setMensaje("No se encuentra un empleado activo con el valor proporcionado. ID: " + empleadoDto.getCodEmpleado());
                 return genericResponse;
             }
         }catch (Exception e){

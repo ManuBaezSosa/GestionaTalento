@@ -1,4 +1,4 @@
-package com.gestionatalento.gestiona_talento.Controllers;
+/*package com.gestionatalento.gestiona_talento.Controllers;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -190,3 +190,4 @@ public class UsuarioController {
 
 
 }
+*/

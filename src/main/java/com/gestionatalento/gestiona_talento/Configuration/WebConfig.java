@@ -14,7 +14,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Puerto de tu frontend (Vite/React)
+                        .allowedOrigins("http://localhost:5173",
+                        "http://35.199.102.120") // Puerto de tu frontend (Vite/React)
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);

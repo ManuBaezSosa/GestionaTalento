@@ -10,9 +10,6 @@ import com.gestionatalento.gestiona_talento.Entity.Programa;
 import com.gestionatalento.gestiona_talento.Entity.SituacionLaboral;
 import com.gestionatalento.gestiona_talento.Entity.Subprograma;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
