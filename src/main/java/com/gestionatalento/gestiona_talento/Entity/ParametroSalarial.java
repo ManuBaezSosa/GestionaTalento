@@ -1,5 +1,8 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -10,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "parametros_salariales")
+@Table(schema = "gestiona", name = "parametros_salariales")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,4 +47,15 @@ public class ParametroSalarial {
     @JoinColumn(name = "cod_subprograma", referencedColumnName = "cod_subprograma", insertable = false, updatable = false)
     private Subprograma subPrograma;
     
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 }

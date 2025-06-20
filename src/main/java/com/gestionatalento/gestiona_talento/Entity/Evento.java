@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.Column;
@@ -16,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "eventos")
+@Table(schema = "gestiona", name = "eventos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,4 +46,16 @@ public class Evento {
 
     @Column(name = "vigente")
     private String vigente;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 }

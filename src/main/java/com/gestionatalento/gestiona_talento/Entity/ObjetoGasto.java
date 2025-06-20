@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "objetos_gastos")
+@Table(schema = "gestiona", name = "objetos_gastos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,16 @@ public class ObjetoGasto {
     @ManyToOne
     @JoinColumn(name = "cod_fuente_financiamiento", referencedColumnName = "cod_fuente_financiamiento")
     private FuenteFinanciamiento fuenteFinanciamiento;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 }

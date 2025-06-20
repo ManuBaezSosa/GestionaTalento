@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "HISTORICO_EMPLEADOS")
+@Table(schema = "gestiona", name = "HISTORICO_EMPLEADOS")
 public class HistoricoEmpleado {
     
 

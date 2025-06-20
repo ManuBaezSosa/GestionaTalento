@@ -36,9 +36,9 @@ public class PermisoServiceImpl implements PermisoService  {
 
     @Override
     public Permiso delete(Permiso permiso) {
-        Optional<Permiso> permisoOtp = permisoRepository.findById(permiso.getId());
+        Optional<Permiso> permisoOtp = permisoRepository.findById(permiso.getNroPermiso());
         if(!permisoOtp.isPresent()){
-            throw new RolNotFoundException("El permiso con el id " + permiso.getId() + " no existe");
+            throw new RolNotFoundException("El permiso con el id " + permiso.getNroPermiso() + " no existe");
         }
         permisoRepository.delete(permiso);
         return permisoOtp.get();

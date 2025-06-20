@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "contratos")
+@Table(schema = "gestiona", name = "contratos")
 public class Contrato {
     
     @Id
@@ -70,5 +71,17 @@ public class Contrato {
 
     @Column(name = "observacion")
     private String observacion;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 
 }

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "usuarios")
+@Table(schema = "gestiona", name = "usuarios")
 public class Usuario implements UserDetails {
     
     @Id
@@ -53,6 +53,18 @@ public class Usuario implements UserDetails {
 
     @Column(name = "activo")
     private String activo;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<UsuarioRol> roles = new ArrayList<>();

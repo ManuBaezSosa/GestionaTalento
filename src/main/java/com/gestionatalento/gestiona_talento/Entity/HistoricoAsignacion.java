@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "historico_asignacion")
+@Table(schema = "gestiona", name = "historico_asignacion")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,13 +48,19 @@ public class HistoricoAsignacion {
 
     @Column(name = "salario_actual")
     private Double salarioActual;
-
-    @Column(name = "fecha_modificacion")
-    private LocalDateTime fechaModificacion;
-
-    @Column(name = "usuario_modificacion")
-    private String usuarioModificacion;
     
     @Column(name = "nro_resolucion")
     private String nro_resolucion;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 }

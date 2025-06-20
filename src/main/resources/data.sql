@@ -1,4 +1,3 @@
-delete from flyway_schema_history;
 DELETE FROM PARAMETROS_SALARIALES;
 DELETE FROM GRADOS_SALARIALES;
 DELETE FROM SUBPROGRAMAS;
@@ -204,71 +203,6 @@ VALUES(113, 'Gastos de Representación', 30);
 INSERT INTO objetos_gastos
 (cod_objeto_gasto, descripcion, cod_fuente_financiamiento)
 VALUES(114, 'Aguinaldo Personal Permanente', 30);
-
-/*INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(1, 1, 112);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(1, 1, 113);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(1, 1, 114);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 2, 111);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 2, 113);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 2, 114);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 3, 111);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 3, 114);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 5, 111);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(2, 5, 114);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 1, 1);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 1, 4);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 2, 1);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 2, 2);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 2, 4);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 2, 5);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 3, 4);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 5, 1);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 5, 3);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 5, 4);
-INSERT INTO parametros_salariales
-(cod_programa, cod_subprograma, cod_objeto_gasto)
-VALUES(3, 5, 5);*/
-
 
 INSERT INTO parametros_salariales
 (cod_presupuesto, cod_programa, cod_situacion_laboral, cod_fuente_financiamiento, cod_objeto_gasto, cod_subprograma)

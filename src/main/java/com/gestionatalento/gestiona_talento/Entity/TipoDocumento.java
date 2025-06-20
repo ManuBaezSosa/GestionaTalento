@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tipos_documentos")
+@Table(schema = "gestiona", name = "tipos_documentos")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,5 +32,17 @@ public class TipoDocumento {
 
     @Column(name = "tip_categoria")
     private String tipCategoria;
+    
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
     
 }

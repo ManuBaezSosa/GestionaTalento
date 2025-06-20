@@ -1,5 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "planillas_salariales",
+@Table(schema = "gestiona", name = "planillas_salariales",
        uniqueConstraints = @UniqueConstraint(columnNames = {
            "cod_empleado", "nro_periodo", "cod_presupuesto", "cod_programa",
            "cod_situacion_laboral", "cod_fuente_financiamiento", "cod_objeto_gasto", "cod_subprograma"
@@ -67,5 +69,17 @@ public class PlanillaSalarial {
 
     @Column(name = "asignacion")
     private Double asignacion;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
     
 }

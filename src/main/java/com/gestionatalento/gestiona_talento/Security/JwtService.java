@@ -18,7 +18,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     // Clave secreta base64 (debe ser segura y guardarse seguro en prod)
-    private static final String SECRET_KEY = "tuClaveSecretaMuySeguraBase64EncodedAquiEjemplo1234567890abcdef";
+    private static final String SECRET_KEY = "MuniLuque20062025FPUNAPROYII";
 
     // Tiempo de expiración 24 horas en milisegundos
     private static final long JWT_EXPIRATION = 24 * 60 * 60 * 1000;

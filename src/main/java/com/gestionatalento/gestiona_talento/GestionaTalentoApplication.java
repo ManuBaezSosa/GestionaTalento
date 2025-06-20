@@ -1,4 +1,4 @@
-package com.gestionatalento.gestiona_talento;
+/*package com.gestionatalento.gestiona_talento;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +20,7 @@ public class GestionaTalentoApplication extends SpringBootServletInitializer {
 
 }
 
-/* 
+*/
 
 package com.gestionatalento.gestiona_talento;
 
@@ -34,4 +34,4 @@ public class GestionaTalentoApplication {
 		SpringApplication.run(GestionaTalentoApplication.class, args);
 	}
 
-}*/
+}

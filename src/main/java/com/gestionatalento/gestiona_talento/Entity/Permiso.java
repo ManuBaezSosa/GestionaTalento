@@ -1,6 +1,8 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,15 +17,28 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "permisos")
+@Table(schema = "gestiona", name = "permisos")
 public class Permiso {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "nro_permiso")
+    private Long nroPermiso;
 
-    @Column(unique = true)
-    private String name; // "ACCESS_VENTAS" o "ACCESS_COMPRAS"
+    @Column(name = "cod_permiso", unique = true)
+    private String codPermiso; // "ACCESS_VENTAS" o "ACCESS_COMPRAS"
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 
 
 }

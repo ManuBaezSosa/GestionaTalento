@@ -5,39 +5,39 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.gestionatalento.gestiona_talento.Entity.Role;
+import com.gestionatalento.gestiona_talento.Entity.Rol;
 import com.gestionatalento.gestiona_talento.Repository.RoleRepository;
 import com.gestionatalento.gestiona_talento.Service.RoleService;
 
-public class RoleServiceImpl implements RoleService {
+public class RolServiceImpl implements RoleService {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepository rolRepository;
 
     @Override
-    public Role delete(Role rol) {
+    public Rol delete(Rol rol) {
        // Para borrar un rol primero lo busco para asi devolverlo
-       Optional<Role> rolEliminado = roleRepository.findByName(rol.getName());
+       Optional<Rol> rolEliminado = rolRepository.findByCodRol(rol.getCodRol());
 
        if(!rolEliminado.isPresent()){
-            throw new RolNotFoundException("El rol con nombre " + rol.getName() + " no existe");
+            throw new RolNotFoundException("El rol con nombre " + rol.getCodRol() + " no existe");
        }
 
-       roleRepository.delete(rol);
+       rolRepository.delete(rol);
 
        return rolEliminado.get();
        
     }
 
     @Override
-    public List<Role> findAll() {
-        return roleRepository.findAll();
+    public List<Rol> findAll() {
+        return rolRepository.findAll();
     }
 
     @Override
-    public Role findById(Long id) {
+    public Rol findById(Long id) {
         // Para borrar un rol primero lo busco para asi devolverlo
-       Optional<Role> rolBuscado = roleRepository.findById(id);
+       Optional<Rol> rolBuscado = rolRepository.findById(id);
 
        if(!rolBuscado.isPresent()){
             throw new RolNotFoundException("El rol con el id " + id + " no existe");
@@ -48,8 +48,8 @@ public class RoleServiceImpl implements RoleService {
 
     
     @Override
-    public Role save(Role rol) {
-        return roleRepository.save(rol);
+    public Rol save(Rol rol) {
+        return rolRepository.save(rol);
     }
 
     public class RolNotFoundException extends RuntimeException {

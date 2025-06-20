@@ -22,7 +22,7 @@ public class UsuarioPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return usuario.getRoles().stream()
             .map(UsuarioRol::getRol)
-            .map(rol -> new SimpleGrantedAuthority(rol.getDescripcion()))
+            .map(rol -> new SimpleGrantedAuthority(rol.getCodRol()))
             .collect(Collectors.toList());
     }
 

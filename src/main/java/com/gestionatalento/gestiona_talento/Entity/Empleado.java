@@ -1,6 +1,7 @@
 package com.gestionatalento.gestiona_talento.Entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "empleados", uniqueConstraints = @UniqueConstraint(columnNames = {"cod_persona", "fec_acto_administrativo"}))
+@Table(schema = "gestiona", name = "empleados", uniqueConstraints = @UniqueConstraint(columnNames = {"cod_persona", "fec_acto_administrativo"}))
 
 public class Empleado {
 
@@ -72,5 +73,16 @@ public class Empleado {
     @JoinColumn(name = "cod_situacion_laboral", referencedColumnName = "cod_situacion_laboral")
     private SituacionLaboral situacionLaboral;
 
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
     
 }

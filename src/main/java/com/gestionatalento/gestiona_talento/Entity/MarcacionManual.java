@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "marcaciones_manuales")
+@Table(schema = "gestiona", name = "marcaciones_manuales")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +32,16 @@ public class MarcacionManual {
 
     @Column(name = "fec_marcacion")
     private LocalDateTime fecMarcacion;
+
+    @Column(name = "usuario_creacion", nullable = false)
+    private String usuarioCreacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "usuario_actualizacion", nullable = false)
+    private String usuarioActualizacion;
+
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 }

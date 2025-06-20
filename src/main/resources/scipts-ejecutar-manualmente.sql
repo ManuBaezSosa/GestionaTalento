@@ -1,0 +1,23 @@
+CREATE DATABASE gestionaBD;
+-- DENTRO DE LA BD
+   CREATE SCHEMA IF NOT EXISTS GESTIONA;
+
+CREATE OR REPLACE FUNCTION gestiona.carga_campos_auditoria()
+RETURNS trigger AS $$
+DECLARE
+    FECHA_ACTUAL TIMESTAMP := NOW();
+BEGIN
+	
+   IF TG_OP = 'INSERT' THEN
+      IF current_setting('application_name', true) <> 'gestiona-api' THEN
+        NEW.USUARIO_CREACION := user;
+      END IF;
+	  NEW.FECHA_CREACION := FECHA_ACTUAL;
+   END IF;
+
+   NEW.USUARIO_ACTUALIZACION := user;
+   NEW.FECHA_ACTUALIZACION := FECHA_ACTUAL;
+
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
